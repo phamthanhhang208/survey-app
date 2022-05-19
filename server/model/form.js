@@ -29,8 +29,8 @@ const questionSchema = new Schema({
 
 const formSchema = new Schema({
 	title: String,
-	lastUpdate: Date,
 	createdAt: Date,
+	updateAt: Date,
 	description: String,
 	questions: [questionSchema],
 	responses: [

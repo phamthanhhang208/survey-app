@@ -6,6 +6,7 @@ const responseSchema = new Schema({
 	answers: [
 		{
 			_id: false,
+			questionId: String,
 			questionText: String,
 			answer: [
 				{

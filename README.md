@@ -16,5 +16,4 @@
 ### Responses:
 
 - Base on the type of the question, the application provide a different chart to represent the responses.
-
 - User can also view each response
