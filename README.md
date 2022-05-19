@@ -11,7 +11,17 @@
 ### Question:
 
 - Each question has 3 important fields: question, validation and answer
-- Base on the type of the question, the answer and validation vary
+- Base on the type of the question, the answer and validation vary:
+  - Short answer:
+    - Number : the answer is a number
+    - Text : the answer is a text
+    - Length: maximum or minimum of character count
+  - Pararaph:
+    - Length: maximum or minimum of character count
+  - Checkboxes:
+    - Select at least
+    - Select at most
+    - Select exactly
 
 ### Responses:
 
