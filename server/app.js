@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-let port = process.env.PORT || 3000;
+const route = require("./router/form.router");
+let port = process.env.PORT || 8080;
 
 mongoose.connect("mongodb://localhost:27017/survey-app", {
 	useNewUrlParser: true,
@@ -16,6 +17,8 @@ db.once("open", () => {
 const app = express();
 app.use(express.json());
 
+app.use("/", route);
+
 app.listen(port, () => {
-	console.log("Serving on port 3000");
+	console.log("Serving on port", port);
 });

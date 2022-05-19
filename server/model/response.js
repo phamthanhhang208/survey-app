@@ -5,20 +5,12 @@ const responseSchema = new Schema({
 	createdAt: Date,
 	answers: [
 		{
-			questionId: ObjectId,
+			_id: false,
 			questionText: String,
 			answer: [
 				{
-					options: {
-						optionText: String,
-					},
-
-					choices: [
-						{
-							choiceText: String,
-						},
-					],
-					input: String,
+					content: String,
+					_id: false,
 				},
 			],
 		},
