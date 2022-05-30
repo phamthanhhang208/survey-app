@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const form = require("../controller/form.controller");
+const { validateQuiz } = require("../middleware/validateQuestion");
 
 router.post("/new", form.createForm);
 router.get("/", form.getAllForms);
 router.delete("/:id", form.deleteForm);
 router.post("/:id/responses", form.addResponseToForm);
+router.post("/question", validateQuiz, form.dummyApi);
 
 router.use((err, req, res, next) => {
 	console.log(err);

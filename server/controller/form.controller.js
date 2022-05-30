@@ -1,4 +1,3 @@
-const form = require("../model/form");
 const Form = require("../model/form");
 const Response = require("../model/response");
 
@@ -27,4 +26,9 @@ module.exports.addResponseToForm = async (req, res) => {
 	await response.save();
 	await form.save();
 	return res.status(200).send("added response");
+};
+
+module.exports.dummyApi = async (req, res) => {
+	console.log(req.body);
+	return res.status(200).send("this shall pass");
 };
