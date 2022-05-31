@@ -25,7 +25,7 @@ module.exports.deleteForm = async (req, res) => {
 
 module.exports.updateForm = async (req, res) => {
 	const { id } = req.params;
-	await Form.findByIdAndUpdate(id, req.body);
+	await Form.findByIdAndUpdate(id, req.body.form);
 	return res.status(200).send("form updated");
 };
 

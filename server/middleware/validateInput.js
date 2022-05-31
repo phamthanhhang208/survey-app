@@ -1,8 +1,18 @@
-const { validateQuestion, validateForm } = require("../helper/validator");
+const {
+	validateQuestion,
+	validateForm,
+	validateQuestions,
+} = require("../helper/validator");
 
 exports.validateQuiz = (req, res, next) => {
 	const isValid = validateQuestion(req.body);
 	if (!isValid) return next(validateQuestion.errors);
+	return next();
+};
+
+exports.validationQuestionList = (req, res, next) => {
+	const isValid = validateQuestions(req.body);
+	if (!isValid) return next(validateQuestions.errors);
 	return next();
 };
 

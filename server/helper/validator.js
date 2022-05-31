@@ -13,8 +13,10 @@ const schemaQuestions = {
 	items: schemaQuestion,
 };
 
-const validateQuestion = ajv.compile(schemaQuestions);
+const validateQuestions = ajv.compile(schemaQuestions);
+const validateQuestion = ajv.compile(schemaQuestion);
 const validateForm = ajv.compile(schemaForm);
 
+exports.validateQuestions = validateQuestions;
 exports.validateQuestion = validateQuestion;
 exports.validateForm = validateForm;
