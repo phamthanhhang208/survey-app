@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-//const Response = require("./response");
+const dayjs = require("dayjs");
 const Schema = mongoose.Schema;
 
 const questionValidateSchema = new Schema(
@@ -27,18 +27,25 @@ const questionSchema = new Schema({
 	],
 });
 
-const formSchema = new Schema({
-	title: String,
-	createdAt: Date,
-	updateAt: Date,
-	description: String,
-	questions: [questionSchema],
-	responses: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: "Response",
+const formSchema = new Schema(
+	{
+		title: String,
+		createdAt: Number,
+		updatedAt: Number,
+		description: String,
+		questions: [questionSchema],
+		responses: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Response",
+			},
+		],
+	},
+	{
+		timestamps: {
+			currentTime: () => dayjs().unix(),
 		},
-	],
-});
+	}
+);
 
 module.exports = mongoose.model("Form", formSchema);

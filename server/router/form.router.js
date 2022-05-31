@@ -1,13 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const form = require("../controller/form.controller");
-const { validateQuiz } = require("../middleware/validateQuestion");
+const question = require("../controller/question.controller");
+const response = require("../controller/response.controller");
+const {
+	validateQuiz,
+	validateFormInput,
+} = require("../middleware/validateInput");
 
-router.post("/new", form.createForm);
+router.post("/new", validateFormInput, form.createForm);
 router.get("/", form.getAllForms);
+router.get("/:id", form.getForm);
 router.delete("/:id", form.deleteForm);
-router.post("/:id/responses", form.addResponseToForm);
-router.post("/question", validateQuiz, form.dummyApi);
+router.put("/:id", validateFormInput, form.updateForm);
+router.post("/:id/responses", response.addResponseToForm);
+router.post("/:id/questions", validateQuiz, question.addQuestions);
 
 router.use((err, req, res, next) => {
 	console.log(err);
