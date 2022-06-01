@@ -34,6 +34,7 @@ const formSchema = new Schema(
 		updatedAt: Number,
 		description: String,
 		questions: [questionSchema],
+		order: [String],
 		responses: [
 			{
 				type: Schema.Types.ObjectId,

@@ -16,6 +16,20 @@ const schemaForm = {
 	},
 };
 
+const schemaFormEdit = {
+	type: "object",
+	additionalProperties: false,
+	properties: {
+		title: {
+			type: "string",
+		},
+		description: {
+			type: "string",
+		},
+	},
+};
+
 module.exports = {
 	schemaForm,
+	schemaFormEdit,
 };

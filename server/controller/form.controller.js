@@ -3,7 +3,14 @@ const Form = require("../model/form");
 module.exports.createForm = async (req, res, next) => {
 	const form = new Form(req.body.form);
 	await form.save();
-	console.log(form);
+	//get all question id
+	if (form.questions.length !== 0) {
+		const questionsId = form.questions.map((q) => q._id);
+		//push to order array
+		form.order.push(...questionsId);
+		//save form
+		await form.save();
+	}
 	return res.status(200).send("form saved");
 };
 

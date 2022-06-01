@@ -2,6 +2,7 @@ const {
 	validateQuestion,
 	validateForm,
 	validateQuestions,
+	validateFormEdit,
 } = require("../helper/validator");
 
 exports.validateQuiz = (req, res, next) => {
@@ -19,5 +20,11 @@ exports.validationQuestionList = (req, res, next) => {
 exports.validateFormInput = (req, res, next) => {
 	const isValid = validateForm(req.body.form);
 	if (!isValid) return next(validateForm.errors);
+	return next();
+};
+
+exports.validateFormEditInput = (req, res, next) => {
+	const isValid = validateFormEdit(req.body.form);
+	if (!isValid) return next(validateFormEdit.errors);
 	return next();
 };
