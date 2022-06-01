@@ -8,8 +8,7 @@ exports.validateFormId = async (req, res, next) => {
 };
 
 exports.validateQuesionId = async (req, res, next) => {
-	const { id } = req.params;
-	const { questionId } = req.params;
+	const { id, questionId } = req.params;
 	const question = await Form.findOne({ _id: id, "questions._id": questionId });
 	if (!question) return next(new Error("question not found"));
 	return next();

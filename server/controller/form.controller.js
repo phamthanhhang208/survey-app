@@ -30,8 +30,10 @@ module.exports.deleteForm = async (req, res) => {
 	return res.status(200).send("form deleted");
 };
 
-module.exports.updateForm = async (req, res) => {
+module.exports.updateForm = async (req, res, next) => {
 	const { id } = req.params;
+	const { questions, order } = req.body.form;
+	if (questions || order) return next(new Error("invalid input"));
 	await Form.findByIdAndUpdate(id, req.body.form);
 	return res.status(200).send("form updated");
 };

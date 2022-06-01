@@ -49,4 +49,14 @@ const formSchema = new Schema(
 	}
 );
 
+formSchema.post("findByIdAndDelete", async function (doc) {
+	if (doc) {
+		await Response.deleteMany({
+			_id: {
+				$in: doc.responses,
+			},
+		});
+	}
+});
+
 module.exports = mongoose.model("Form", formSchema);

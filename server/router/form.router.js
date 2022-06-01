@@ -3,34 +3,20 @@ const router = express.Router();
 const form = require("../controller/form.controller");
 const question = require("../controller/question.controller");
 const response = require("../controller/response.controller");
-const {
-	validateQuiz,
-	validateFormInput,
-	validationQuestionList,
-	validateFormEditInput,
-} = require("../middleware/validateInput");
+const { validateFormInput } = require("../middleware/validateInput");
 
 const {
 	validateFormId,
-	validateQuesionId,
 	validateAllQuestionIds,
 } = require("../middleware/validateId");
 
-router.post("/new", validateFormInput, form.createForm);
+router.post("/", validateFormInput, form.createForm);
 router.get("/", form.getAllForms);
-router.get("/:id", form.getForm);
-router.delete("/:id", form.deleteForm);
-router.put("/:id", validateFormEditInput, form.updateForm);
-router.post("/:id/responses", response.addResponseToForm);
-router.post("/:id/questions", validationQuestionList, question.addQuestions);
-router.post("/:id/questions/one", validateQuiz, question.addQuestion);
-router.delete("/:id/questions/:questionId", question.deleteQuestion);
-router.put(
-	"/:id/questions/:questionId",
-	validateQuesionId,
-	validateQuiz,
-	question.editQuestion
-);
+router.get("/:id", validateFormId, form.getForm);
+router.delete("/:id", validateFormId, form.deleteForm);
+router.put("/:id", validateFormId, validateFormInput, form.updateForm);
+router.post("/:id/responses", validateFormId, response.addResponseToForm);
+
 router.patch(
 	"/:id",
 	validateFormId,
