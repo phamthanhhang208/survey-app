@@ -1,4 +1,5 @@
 const Form = require("../model/form");
+const mongoose = require("mongoose");
 
 module.exports.createForm = async (req, res, next) => {
 	const form = new Form(req.body.form);
@@ -14,14 +15,26 @@ module.exports.createForm = async (req, res, next) => {
 	return res.status(200).send("form saved");
 };
 
+//get all form sorted by recent
 module.exports.getAllForms = async (req, res, next) => {
-	const form = await Form.find({});
+	const form = await Form.find({}).sort({ updatedAt: -1 });
 	return res.status(200).send(form);
 };
 
+//get form and sorted questions
 module.exports.getForm = async (req, res, next) => {
-	const form = await Form.findById(req.params.id);
-	return res.status(200).send(form);
+	const { id } = req.params;
+	const form = await Form.findById(id);
+	const { order, questions } = form;
+
+	//reorder question based on order
+	const reordered = questions.slice().sort(function (a, b) {
+		return order.indexOf(a._id) - order.indexOf(b._id);
+	});
+
+	const reorderedForm = { ...form._doc, questions: reordered };
+
+	return res.status(200).send(reorderedForm);
 };
 
 module.exports.deleteForm = async (req, res) => {
