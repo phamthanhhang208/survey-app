@@ -15,7 +15,15 @@ router.get("/", form.getAllForms);
 router.get("/:id", validateFormId, form.getForm);
 router.delete("/:id", validateFormId, form.deleteForm);
 router.put("/:id", validateFormId, validateFormInput, form.updateForm);
+
 router.post("/:id/responses", validateFormId, response.addResponseToForm);
+router.get("/:id/responses", validateFormId, response.getResponses);
+router.get("/:id/responses/:responseId", validateFormId, response.getResponse);
+router.delete(
+	"/:id/responses/:responseId",
+	validateFormId,
+	response.deleteResponse
+);
 
 router.patch(
 	"/:id",
