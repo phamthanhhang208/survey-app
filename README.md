@@ -27,3 +27,16 @@
 
 - Base on the type of the question, the application provide a different chart to represent the responses.
 - User can also view each response
+
+## Technology:
+
+- Frontend : ReactJS
+- Backend : Node.JS, Mongoose, Express, Ajv
+
+### ToDo:
+
+- Backend:
+  [] Add more validation for short answer
+  [] Add image for question and answer
+  [] Add error code and message
+  [] Refactor code for better error handling

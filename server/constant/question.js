@@ -4,7 +4,7 @@ const SHORT = "short-paragraph";
 const PARAGRAPH = "long-paragrapgh";
 
 const checkBoxesValidationRules = ["maxChoices", "minChoices", "exactChoices"];
-const shortParagraphValidationRules = ["isNumber", "isCharacter", "isBetween"];
+const shortParagraphValidationRules = ["isNumber", "isCharacter", "maxLength"];
 const paragraphQuestionValidationRules = ["minLength", "maxLength"];
 
 const schemaQuestion = {

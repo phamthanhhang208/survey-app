@@ -25,12 +25,15 @@ exports.validateAnswer = async (req, res, next) => {
 	const { answers } = req.body;
 	for (let i = 0; i < answers.length; i++) {
 		const question = form.questions.id(answers[i].questionId);
+		if (question.type == MULTIPLECHOICE) {
+			if (answers[i].length !== 1)
+				return next(new Error("only 1 choice allowed"));
+		}
 		const { validator } = question;
 		if (!validator) continue;
 		const isAnswerValid = validateAnswerSchema(validator, answers[i].answer);
 		if (!isAnswerValid) {
-			continue;
-			//return next(new Error("answer is not valid"));
+			return next(new Error(validator.message || "answer is not valid"));
 		} else {
 			continue;
 		}
