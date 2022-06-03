@@ -33,10 +33,10 @@
 - Frontend : ReactJS
 - Backend : Node.JS, Mongoose, Express, Ajv
 
-### ToDo:
+### To Do:
 
 - Backend:
-  [] Add more validation for short answer
-  [] Add image for question and answer
-  [] Add error code and message
-  [] Refactor code for better error handling
+  - [ ] Add more validation for short answer
+  - [ ] Add image for question and answer
+  - [ ] Add error code and message
+  - [ ] Refactor code for better error handling
