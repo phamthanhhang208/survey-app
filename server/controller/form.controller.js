@@ -52,6 +52,6 @@ module.exports.updateForm = async (req, res, next) => {
 };
 
 module.exports.dummyApi = async (req, res) => {
-	console.log(req.body);
+	//console.log(req.body);
 	return res.status(200).send("this shall pass");
 };

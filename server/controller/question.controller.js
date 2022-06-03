@@ -1,4 +1,5 @@
 const Form = require("../model/form");
+const Response = require("../model/response");
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
 	const form = await Form.findById(req.params.id);
@@ -40,6 +41,9 @@ module.exports.editQuestion = async (req, res, next) => {
 			$set: {
 				"questions.$": question,
 			},
+		},
+		{
+			new: true,
 		}
 	);
 
@@ -60,6 +64,9 @@ module.exports.deleteQuestion = async (req, res, next) => {
 	}
 	// save form
 	await form.save();
+	//delete all answers in response
+	await Response.updateMany({}, { $pull: { answers: { questionId } } });
+
 	return res.status(200).send("question deleted");
 };
 

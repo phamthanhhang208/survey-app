@@ -25,3 +25,15 @@ exports.validateAllQuestionIds = async (req, res, next) => {
 	if (!isOrderCorrect) return next(new Error("wrong ids"));
 	return next();
 };
+
+exports.validateResponseQuestionId = async (req, res, next) => {
+	const { id } = req.params;
+	const answers = req.body.answers;
+	const ids = answers.map((a) => a.questionId);
+	const form = await Form.findById(id);
+	if (!form) return next(new Error("form not found"));
+	const questionIds = form.questions.map((q) => q._id.toString());
+	const isQuestionCorrect = ids.every((q) => questionIds.includes(q));
+	if (!isQuestionCorrect) return next(new Error("wrong ids"));
+	return next();
+};
