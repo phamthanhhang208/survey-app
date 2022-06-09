@@ -46,6 +46,9 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
       title: 'Last Edited',
       dataIndex: 'lastEdited',
       width: 200,
+      render: (v: any) => {
+        return new Date(Number(v)).toLocaleDateString('en-GB');
+      },
     },
     {
       title: 'Actions',
