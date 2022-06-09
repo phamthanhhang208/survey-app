@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 import { FunctionComponent } from 'react';
 import './AppLayout.scss';
 import logo from '@/assets/logo-dhbkhn.png';
+import { Link } from 'react-router-dom';
 
 interface AppLayoutProps {
   children: any;
@@ -15,7 +16,9 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({ children }) => {
       <Layout>
         <Header>
           <div className='logo'>
-            <img src={logo} alt='' />
+            <Link to={'/'}>
+              <img src={logo} alt='' />
+            </Link>
             <div className='logo-text'>
               <span>HỆ THỐNG QUẢN TRỊ ĐẠI HỌC TRỰC TUYẾN</span>
               <span>

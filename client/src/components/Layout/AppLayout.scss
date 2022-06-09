@@ -2,14 +2,18 @@
 
 .app-layout {
   .ant-layout {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: relative;
+
     .ant-layout-header {
-      color: white;
       height: 85px;
       background-color: $main-red-color;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
+      padding: 0 30px;
       line-height: 0;
 
       .logo {
@@ -25,6 +29,7 @@
           flex-direction: column;
           justify-content: center;
           gap: 1.3rem;
+          color: white;
 
           span:first-child {
             font-weight: 600;
@@ -34,13 +39,27 @@
           span {
             font-size: 15px;
           }
-
         }
 
-        img {
-          height: 80%;
+        a {
+          height: 100%;
+          display: flex;
+          align-items: center;
+
+          img {
+            height: 80%;
+          }
         }
       }
     }
+
+    .ant-layout-content {
+
+      width: 70%;
+      margin: 2rem auto;
+
+    }
+
+    .ant-layout-footer {}
   }
 }

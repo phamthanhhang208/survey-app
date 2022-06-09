@@ -1,1 +1,11 @@
-.home-page {}
+.home-page {
+  .functions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    .ant-input-affix-wrapper .search-input {
+      width: 80%;
+    }
+  }
+}
