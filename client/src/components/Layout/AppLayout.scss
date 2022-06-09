@@ -1,1 +1,46 @@
-.layout {}
+@import '@/const/globalStyles.scss';
+
+.app-layout {
+  .ant-layout {
+    .ant-layout-header {
+      color: white;
+      height: 85px;
+      background-color: $main-red-color;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      line-height: 0;
+
+      .logo {
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        .logo-text {
+          margin-left: 1rem;
+          height: 80%;
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          gap: 1.3rem;
+
+          span:first-child {
+            font-weight: 600;
+            font-size: 18px;
+          }
+
+          span {
+            font-size: 15px;
+          }
+
+        }
+
+        img {
+          height: 80%;
+        }
+      }
+    }
+  }
+}

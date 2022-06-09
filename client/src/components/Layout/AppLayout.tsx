@@ -1,5 +1,7 @@
 import { Layout } from 'antd';
 import { FunctionComponent } from 'react';
+import './AppLayout.scss';
+import logo from '@/assets/logo-dhbkhn.png';
 
 interface AppLayoutProps {
   children: any;
@@ -9,11 +11,24 @@ const { Header, Content, Footer } = Layout;
 
 const AppLayout: FunctionComponent<AppLayoutProps> = ({ children }) => {
   return (
-    <Layout>
-      <Header></Header>
-      <Content>{children}</Content>
-      <Footer></Footer>
-    </Layout>
+    <div className='app-layout'>
+      <Layout>
+        <Header>
+          <div className='logo'>
+            <img src={logo} alt='' />
+            <div className='logo-text'>
+              <span>HỆ THỐNG QUẢN TRỊ ĐẠI HỌC TRỰC TUYẾN</span>
+              <span>
+                TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI - TRƯỜNG CÔNG NGHỆ THÔNG TIN VÀ
+                TRUYỀN THÔNG
+              </span>
+            </div>
+          </div>
+        </Header>
+        <Content>{children}</Content>
+        <Footer></Footer>
+      </Layout>
+    </div>
   );
 };
 
