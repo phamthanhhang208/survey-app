@@ -12,13 +12,20 @@ const { Item } = Form;
 
 const HomePage: FunctionComponent<HomePageProps> = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
+    form.submit();
+    form.getFieldValue('form-name') && setIsModalVisible(false);
+  };
+
+  const handleSubmit = (data: any) => {
+    console.log(data);
+    form.resetFields();
   };
 
   const handleCancel = () => {
@@ -84,9 +91,18 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form>
-          <Item label={'Form name'}>
-            <Input />
+        <Form form={form} layout='vertical' onFinish={handleSubmit}>
+          <Item
+            label={'Form name'}
+            rules={[
+              { required: true, message: 'Form name must not be empty.' },
+            ]}
+            name={'form-name'}
+          >
+            <Input placeholder='Form name' />
+          </Item>
+          <Item label={'Description'} name={'form-description'}>
+            <Input.TextArea placeholder='Description' />
           </Item>
         </Form>
       </Modal>
