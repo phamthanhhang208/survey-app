@@ -93,7 +93,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
       >
         <Form form={form} layout='vertical' onFinish={handleSubmit}>
           <Item
-            label={'Form name'}
+            label={'Form name:'}
             rules={[
               { required: true, message: 'Form name must not be empty.' },
             ]}
@@ -101,7 +101,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
           >
             <Input placeholder='Form name' />
           </Item>
-          <Item label={'Description'} name={'form-description'}>
+          <Item label={'Description:'} name={'form-description'}>
             <Input.TextArea placeholder='Description' />
           </Item>
         </Form>
