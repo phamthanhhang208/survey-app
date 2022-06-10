@@ -1,4 +1,4 @@
-@import '@/const/globalStyles.scss';
+@import '@/styles/globalStyles.scss';
 
 .my-table-container {
   position: relative;
@@ -59,14 +59,15 @@
     justify-content: space-around;
     height: 20px;
 
-    span:first-child:hover {
-      color: $main-red-color;
-    }
 
     span:hover {
       color: $main-blue-color;
       transform: scale(1.4);
       transition: 300ms;
+    }
+
+    .delete-icon:hover {
+      color: $main-red-color;
     }
   }
 }

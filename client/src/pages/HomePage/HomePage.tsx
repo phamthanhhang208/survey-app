@@ -71,11 +71,22 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
       render: (v: any, record: any) => {
         return (
           <div className='actions' key={record.id}>
-            <Tooltip title={'Delete form'}>
-              <DeleteOutlined onClick={() => handleDelete(record?.id)} />
-            </Tooltip>
-            <Tooltip title={'Delete form'}>
+            <Tooltip
+              title={'Edit form'}
+              mouseEnterDelay={0.05}
+              mouseLeaveDelay={0.05}
+            >
               <EditOutlined onClick={() => handleEdit(record?.id)} />
+            </Tooltip>
+            <Tooltip
+              title={'Delete form'}
+              mouseEnterDelay={0.05}
+              mouseLeaveDelay={0.05}
+            >
+              <DeleteOutlined
+                className='delete-icon'
+                onClick={() => handleDelete(record?.id)}
+              />
             </Tooltip>
           </div>
         );
