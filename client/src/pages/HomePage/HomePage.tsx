@@ -29,6 +29,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalVisible(false);
   };
 
@@ -45,8 +46,13 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
       title: 'Name',
       dataIndex: 'name',
       width: 1000,
+
       render: (v: any, record: any) => {
-        return <Link to={`${record?.id}`}>{v}</Link>;
+        return (
+          <Link key={record.id} to={`${record?.id}`}>
+            {v}
+          </Link>
+        );
       },
     },
     {
@@ -59,12 +65,12 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
     },
     {
       title: 'Actions',
-      dataIndex: 'actions',
+      dataIndex: 'name',
       width: 100,
       required: true,
       render: (v: any, record: any) => {
         return (
-          <div className='actions'>
+          <div className='actions' key={record.id}>
             <Tooltip title={'Delete form'}>
               <DeleteOutlined onClick={() => handleDelete(record?.id)} />
             </Tooltip>
@@ -84,7 +90,11 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
           New form
         </Button>
       </div>
-      <MyTable columns={columns} dataSource={data} />
+      <MyTable
+        columns={columns}
+        dataSource={data}
+        rowKey={(item) => item?.id}
+      />
       <Modal
         title='Create new form'
         visible={isModalVisible}
