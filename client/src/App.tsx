@@ -4,23 +4,13 @@ import MyRoutes from "@/routes/MyRoutes";
 import { BrowserRouter } from "react-router-dom";
 
 function App() {
-<<<<<<< HEAD
 	return (
-		<AppLayout>
-			<BrowserRouter>
+		<BrowserRouter>
+			<AppLayout>
 				<MyRoutes />
-			</BrowserRouter>
-		</AppLayout>
+			</AppLayout>
+		</BrowserRouter>
 	);
-=======
-  return (
-    <BrowserRouter>
-      <AppLayout>
-        <MyRoutes />
-      </AppLayout>
-    </BrowserRouter>
-  );
->>>>>>> minhdl
 }
 
 export default App;
