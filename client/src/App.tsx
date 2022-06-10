@@ -4,6 +4,7 @@ import MyRoutes from "@/routes/MyRoutes";
 import { BrowserRouter } from "react-router-dom";
 
 function App() {
+<<<<<<< HEAD
 	return (
 		<AppLayout>
 			<BrowserRouter>
@@ -11,6 +12,15 @@ function App() {
 			</BrowserRouter>
 		</AppLayout>
 	);
+=======
+  return (
+    <BrowserRouter>
+      <AppLayout>
+        <MyRoutes />
+      </AppLayout>
+    </BrowserRouter>
+  );
+>>>>>>> minhdl
 }
 
 export default App;
