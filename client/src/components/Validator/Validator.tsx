@@ -9,11 +9,27 @@ const Validator = (props: any) => {
 	const { type, resetField } = props;
 
 	return questionValidation[type].length !== 0 ? (
-		<Form.Item label="validation" name="validator" style={{ width: "100%" }}>
+		<Form.Item
+			label="Response validation"
+			name="validator"
+			style={{ width: "100%" }}
+			noStyle
+		>
 			<Input.Group style={{ width: "100%", whiteSpace: "nowrap" }} compact>
 				<Form.Item
 					name={["validator", "type"]}
-					style={{ width: "calc(100% - 43rem)" }}
+					style={{ width: "35%" }}
+					rules={[
+						({ getFieldValue }) => ({
+							validator(_, value) {
+								const validator = getFieldValue("validator");
+								if (validator?.length && !value)
+									return Promise.reject(
+										new Error("Please choose the validation type first!")
+									);
+							},
+						}),
+					]}
 				>
 					<Select>
 						{questionValidation[type].map((q: any) => {
@@ -32,17 +48,17 @@ const Validator = (props: any) => {
 					}
 				>
 					{({ getFieldValue }) => {
-						//console.log(getFieldValue("validator"));
 						const validator = getFieldValue("validator");
-						return validator?.type !== isNumber ||
-							validator?.type !== isCharacter ? (
+						const required = validator?.type !== null;
+						return validator?.type === isNumber ||
+							validator?.type === isCharacter ? null : (
 							<Form.Item name={["validator", "length"]}>
-								<InputNumber min={0} />
+								<InputNumber min={0} placeholder="Number" required={required} />
 							</Form.Item>
-						) : null;
+						);
 					}}
 				</Form.Item>
-				<Form.Item name={["validator", "message"]} style={{ width: "50%" }}>
+				<Form.Item name={["validator", "message"]} style={{ width: "45%" }}>
 					<Input placeholder="Enter custom message ..." allowClear />
 				</Form.Item>
 				<Form.Item>

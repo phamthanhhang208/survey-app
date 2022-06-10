@@ -4,13 +4,18 @@ import "./QuestionForm.scss";
 import Answer from "@/components/Answer/Answer";
 import { question } from "@/const/question";
 import Validator from "@/components/Validator/Validator";
+import { removeUndefinedValue } from "@/utills/utils";
 const { Option } = Select;
 
 export default function QuestionForm(props: any) {
 	const { visible, setVisible } = props;
 	const [form] = Form.useForm();
 	const [type, setType] = useState("");
+
 	const onFinish = (values: any) => {
+		values = removeUndefinedValue(values);
+		const { answers } = values;
+		if (!answers) values.answer = [{ content: "" }];
 		console.log("Success:", values);
 	};
 
@@ -56,7 +61,7 @@ export default function QuestionForm(props: any) {
 				>
 					<Form.Item
 						label="Question"
-						name="question-text"
+						name="questionText"
 						rules={[
 							{
 								required: true,

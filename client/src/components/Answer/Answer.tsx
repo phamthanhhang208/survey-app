@@ -14,7 +14,7 @@ const Answer = (props: any) => {
 
 	if (type === SHORT || type === PARAGRAPH) {
 		element = (
-			<Form.Item name={["answers", "content"]} initialValue={""}>
+			<Form.Item>
 				<TextArea autoSize={type === SHORT ? { maxRows: 1 } : true} disabled />
 			</Form.Item>
 		);
