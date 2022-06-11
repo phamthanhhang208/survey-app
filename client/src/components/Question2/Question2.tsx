@@ -1,9 +1,10 @@
 import { question as questionTypeList } from '@/const/question';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Select, Radio } from 'antd';
 import { FunctionComponent, useState } from 'react';
-import './Question2.scss'
+import RadioList from '@/components/RadioList/RadioList';
+import './Question2.scss';
 
 interface Question2Props {
   fields?: any;
@@ -27,7 +28,14 @@ const Question2: FunctionComponent<Question2Props> = ({
       case 'checkboxes':
         return <Form.Item name={[index, 'answer']}></Form.Item>;
       case 'multiple-choice':
-        return <Form.Item name={[index, 'answer']}></Form.Item>;
+        return (
+          <Form.Item name={[index, 'answer']} initialValue={null}>
+            <Radio.Group name='radio-group' className={'radio-group'}>
+              <RadioList />
+            </Radio.Group>
+          </Form.Item>
+          // <MyRadio index={index} />
+        );
       case 'short-paragraph':
         return (
           <Form.Item name={[index, 'answer']}>
@@ -52,7 +60,6 @@ const Question2: FunctionComponent<Question2Props> = ({
   };
 
   const handleQuestionTypeChange = (v: any) => {
-    console.log(v);
     setQuestionTypeState(v);
   };
 
