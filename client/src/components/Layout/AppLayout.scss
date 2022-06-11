@@ -6,9 +6,10 @@
     justify-content: center;
     width: 100vw;
     position: relative;
+    background-color: $main-background-color;
 
     .ant-layout-header {
-      height: 85px;
+      min-height: 85px;
       background-color: $main-red-color;
       display: flex;
       align-items: center;
@@ -30,14 +31,17 @@
           justify-content: center;
           gap: 1.3rem;
           color: white;
+          flex-wrap: content;
 
-          span:first-child {
+          create-form-page span:first-child {
             font-weight: 600;
             font-size: 18px;
           }
 
           span {
             font-size: 15px;
+            width: 100%;
+            text-overflow: hidden;
           }
         }
 
@@ -54,12 +58,14 @@
     }
 
     .ant-layout-content {
-
-      width: 70%;
+      background-color: $main-background-color;
+      width: 60%;
       margin: 2rem auto;
 
     }
 
-    .ant-layout-footer {}
+    .ant-layout-footer {
+      background-color: $main-background-color;
+    }
   }
 }

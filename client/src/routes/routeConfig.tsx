@@ -17,7 +17,13 @@ export const routerConfig: Array<RouterInterface> = [
     grantPermission: [],
   },
   {
-    path: routePaths.CREATE,
+    path: routePaths.EDIT,
+    component: CreateFormPage,
+    needAuthor: true,
+    grantPermission: [],
+  },
+  {
+    path: routePaths.CREATOR_VIEW_RESPONSE,
     component: CreateFormPage,
     needAuthor: true,
     grantPermission: [],

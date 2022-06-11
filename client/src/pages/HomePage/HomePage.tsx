@@ -49,7 +49,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 
       render: (v: any, record: any) => {
         return (
-          <Link key={record.id} to={`${record?.id}`}>
+          <Link key={record.id} to={`/forms/${record?.id}/edit`}>
             {v}
           </Link>
         );

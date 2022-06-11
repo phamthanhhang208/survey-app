@@ -5,7 +5,7 @@
 		{
 			"questionText": "can i update order form?",
 			"type": "checkboxes",
-			"requried": true,
+			"required": true,
 			"description": "this is not new",
 			"answer": [
 				{
@@ -20,7 +20,7 @@
 		{
 			"questionText": "can i add many questions to a form?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -31,7 +31,7 @@
 		{
 			"questionText": "can i update order form?",
 			"type": "checkboxes",
-			"requried": true,
+			"required": true,
 			"description": "this is not new",
 			"answer": [
 				{
@@ -46,7 +46,7 @@
 		{
 			"questionText": "can i add many questions to a form?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -57,7 +57,7 @@
 		{
 			"questionText": "can i update order form?",
 			"type": "checkboxes",
-			"requried": true,
+			"required": true,
 			"description": "this is not new",
 			"answer": [
 				{
@@ -72,7 +72,7 @@
 		{
 			"questionText": "can i add many questions to a form?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -83,7 +83,7 @@
 		{
 			"questionText": "can i only get id?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -94,7 +94,7 @@
 		{
 			"questionText": "can i only get id?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -105,7 +105,7 @@
 		{
 			"questionText": "can i only get id?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -116,7 +116,7 @@
 		{
 			"questionText": "can i only get id?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -127,7 +127,7 @@
 		{
 			"questionText": "can i only get id?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -138,7 +138,7 @@
 		{
 			"questionText": "can i edit a question?",
 			"type": "multiple-choice",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": "yes"
@@ -152,7 +152,7 @@
 		{
 			"questionText": "can i add many questions to a form?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -163,7 +163,7 @@
 		{
 			"questionText": "can i add a new question to a form?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": ""
@@ -174,7 +174,7 @@
 		{
 			"questionText": "question with validation?",
 			"type": "short-paragraph",
-			"requried": false,
+			"required": false,
 			"validator": {
 				"type": "isNumber",
 				"message": "must be a number"
@@ -189,7 +189,7 @@
 		{
 			"questionText": "question type multiple choice?",
 			"type": "multiple-choice",
-			"requried": false,
+			"required": false,
 			"answer": [
 				{
 					"content": "choice 1"

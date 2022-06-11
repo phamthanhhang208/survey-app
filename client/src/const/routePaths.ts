@@ -1,4 +1,5 @@
 export const routePaths = {
-  HOME: '/',
-  CREATE: '/create',
+  HOME: '/forms',
+  EDIT: '/forms/:id/edit',
+  CREATOR_VIEW_RESPONSE: '/forms/:id/edit#response',
 };
