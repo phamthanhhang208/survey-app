@@ -14,8 +14,8 @@ export default function QuestionForm(props: any) {
 
 	const onFinish = (values: any) => {
 		values = removeUndefinedValue(values);
-		const { answers } = values;
-		if (!answers) values.answer = [{ content: "" }];
+		const { answer } = values;
+		if (!answer) values.answer = [{ content: "" }];
 		console.log("Success:", values);
 	};
 

@@ -1,8 +1,10 @@
 import "./Question.scss";
-import { Card, Typography, Input, Tooltip, Popconfirm } from "antd";
+import { Card, Typography, Tooltip, Popconfirm } from "antd";
+import Answer from "../Answer/Answer";
 //import { SettingOutlined, DeleteOutlined } from "@ant-design/icons";
 
-const Question = () => {
+const Question = (props: any) => {
+	const { questionText, type, description, answer } = props;
 	return (
 		<div style={{ margin: "24px 0" }}>
 			<Card
@@ -11,11 +13,11 @@ const Question = () => {
 				//onClick={() => console.log("click on card")}
 				//onMouseEnter={() => console.log("hover on card")}
 			>
-				<Typography.Title level={4}>question</Typography.Title>
-				<Card.Meta description={"description"} />
+				<Typography.Title level={4}>{questionText}</Typography.Title>
+				{description && <Card.Meta description={description} />}
 				<br />
 				<div className="answer-group">
-					<Input.TextArea autoSize />
+					<Answer type={type} defaultValues={answer} />
 				</div>
 				{/* <div className="icon-group">
 					<span className="icon">
