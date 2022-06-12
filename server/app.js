@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const formRoute = require("./router/form.router");
+const cors = require("cors");
 const questionRoute = require("./router/question.router");
 const responseRoute = require("./router/response.router");
 let port = process.env.PORT || 8080;
@@ -17,6 +18,8 @@ db.once("open", () => {
 });
 
 const app = express();
+app.use(cors());
+app.options("*", cors());
 app.use(express.json());
 
 app.use("/forms", formRoute);
