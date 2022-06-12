@@ -1,1 +1,30 @@
-.create-form-page {}
+.create-form-page {
+  .create-form-header {
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 6px;
+    padding: 20px 20px 0px 20px;
+    background-color: white;
+    width: 100%;
+  }
+
+  .create-form {
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  & .ant-form-item-label {
+    font-weight: 700;
+
+    label {
+      font-size: 1.1rem;
+    }
+  }
+
+  & .submit-btn {
+    margin-top: 14px;
+  }
+}

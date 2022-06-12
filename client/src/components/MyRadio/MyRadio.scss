@@ -1,0 +1,14 @@
+.my-radio {
+  display: flex;
+  align-items: center;
+
+  .radio-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .icon {
+      font-size: 20px;
+    }
+  }
+}

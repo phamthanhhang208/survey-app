@@ -14,7 +14,7 @@ export default function MyRoutes() {
         );
       })}
 
-      <Route path='/' element={<Navigate to='/home' replace />} />
+      <Route path='/' element={<Navigate to='/forms' replace />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );

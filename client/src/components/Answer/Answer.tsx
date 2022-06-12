@@ -6,9 +6,7 @@ const { TextArea } = Input;
 
 const Answer = (props: any) => {
 	let element = null;
-	const { type, defaultValues } = props;
-
-	//console.log(defaultValues);
+	const { type } = props;
 
 	if (type === "") {
 		element = null;
@@ -24,10 +22,7 @@ const Answer = (props: any) => {
 
 	if (type === CHECKBOX || type === MULTIPLECHOICE) {
 		element = (
-			<Form.List
-				name="answer"
-				initialValue={defaultValues || [{ content: "Option 1" }]}
-			>
+			<Form.List name="answers" initialValue={[{ content: "Option 1" }]}>
 				{(fields, { add, remove }, { errors }) => (
 					<>
 						{fields.map((field, index) => (
@@ -48,7 +43,7 @@ const Answer = (props: any) => {
 										}}
 									/>
 								</Form.Item>
-								{fields.length > 1 && !defaultValues ? (
+								{fields.length > 1 ? (
 									<MinusCircleOutlined
 										className="dynamic-delete-button"
 										onClick={() => remove(field.name)}
@@ -56,18 +51,16 @@ const Answer = (props: any) => {
 								) : null}
 							</Form.Item>
 						))}
-						{!defaultValues ? (
-							<Form.Item>
-								<Button
-									type="dashed"
-									onClick={() => add({ content: "Other" })}
-									icon={<PlusOutlined />}
-								>
-									Add field
-								</Button>
-								<Form.ErrorList errors={errors} />
-							</Form.Item>
-						) : null}
+						<Form.Item>
+							<Button
+								type="dashed"
+								onClick={() => add({ content: "Other" })}
+								icon={<PlusOutlined />}
+							>
+								Add field
+							</Button>
+							<Form.ErrorList errors={errors} />
+						</Form.Item>
 					</>
 				)}
 			</Form.List>
