@@ -27,7 +27,7 @@ const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
     <div className='my-checkbox'>
       <Checkbox
         value={value}
-        // disabled={permission === 'edit' ? true : false}
+        disabled={permission === 'edit' ? true : false}
       ></Checkbox>
       <div className='checkbox-input'>
         <Input onChange={handleInputChange} />
