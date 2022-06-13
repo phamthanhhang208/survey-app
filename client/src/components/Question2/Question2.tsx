@@ -1,10 +1,11 @@
 import { question as questionTypeList } from '@/const/question';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { MinusCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Radio } from 'antd';
+import { Button, Form, Input, Select, Radio, Checkbox } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import RadioList from '@/components/RadioList/RadioList';
 import './Question2.scss';
+import CheckboxList from '@/components/CheckboxList/CheckboxList';
 
 interface Question2Props {
   fields?: any;
@@ -26,7 +27,13 @@ const Question2: FunctionComponent<Question2Props> = ({
   const dynamicQuestion = (index?: any) => {
     switch (questionTypeState) {
       case 'checkboxes':
-        return <Form.Item name={[index, 'answer']}></Form.Item>;
+        return (
+          <Form.Item name={[index, 'answer']}>
+            <Checkbox.Group name='checkbox-group' className={'radio-group'}>
+              <CheckboxList />
+            </Checkbox.Group>
+          </Form.Item>
+        );
       case 'multiple-choice':
         return (
           <Form.Item name={[index, 'answer']} initialValue={null}>
@@ -34,7 +41,6 @@ const Question2: FunctionComponent<Question2Props> = ({
               <RadioList />
             </Radio.Group>
           </Form.Item>
-          // <MyRadio index={index} />
         );
       case 'short-paragraph':
         return (
