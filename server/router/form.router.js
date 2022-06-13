@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const form = require("../controller/form.controller");
 const question = require("../controller/question.controller");
+const analytic = require("../controller/analytic.controller");
 const { validateFormInput } = require("../middleware/validateInput");
 
 const {
@@ -21,6 +22,8 @@ router.patch(
 	validateAllQuestionIds,
 	question.reorderQuestions
 );
+
+router.get("/:id/analytic", analytic.getAnalytics);
 
 router.use((err, req, res, next) => {
 	console.log(err);
