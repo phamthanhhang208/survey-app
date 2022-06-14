@@ -3,10 +3,8 @@ import "./HomePage.scss";
 import { Input, Button, Tooltip, Modal, Form, Spin } from "antd";
 import MyTable from "@/components/MyTable/MyTable";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-//import data from '@/const/mockData.json';
 import { Link, useNavigate } from "react-router-dom";
-//import {useQueryClient} from "react-query"
-import useForms from "@/hooks/form.hook";
+import { useForms, useCreateForm, useDeleteForm } from "@/hooks/form.hook";
 import dayjs from "dayjs";
 
 interface HomePageProps {}
@@ -14,10 +12,11 @@ interface HomePageProps {}
 const { Item } = Form;
 
 const HomePage: FunctionComponent<HomePageProps> = () => {
-	//const queryClient = useQueryClient();
 	let navigate = useNavigate();
-	const { data, error, isFetching } = useForms();
+	const { data, isFetching } = useForms();
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const { mutate: createForm } = useCreateForm();
+	const { mutate: deleteForm } = useDeleteForm();
 	const [form] = Form.useForm();
 
 	const showModal = () => {
@@ -34,7 +33,11 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 	};
 
 	const handleSubmit = (data: any) => {
-		console.log(data);
+		const newForm = {
+			title: data["form-name"],
+			description: data["form-description"],
+		};
+		createForm(newForm);
 		form.resetFields();
 	};
 
@@ -44,11 +47,12 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 	};
 
 	const handleDelete = (v: any) => {
-		console.log("delete", v);
+		//console.log("delete", v);
+		deleteForm(v);
 	};
 
 	const handleEdit = (v: any) => {
-		console.log("edit", v);
+		//console.log("edit", v);
 		navigate(`/forms/${v}/edit`);
 	};
 
@@ -72,7 +76,6 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 			width: 200,
 			render: (v: any) => {
 				return dayjs.unix(v).format("DD-MM-YYYY");
-				//new Date(Number(v)).toLocaleDateString("en-GB");
 			},
 		},
 		{

@@ -1,7 +1,7 @@
 const Form = require("../model/form");
 
 module.exports.createForm = async (req, res, next) => {
-	const form = new Form(req.body.form);
+	const form = new Form(req.body);
 	await form.save();
 	//get all question id
 	if (form.questions.length !== 0) {
@@ -11,7 +11,7 @@ module.exports.createForm = async (req, res, next) => {
 		//save form
 		await form.save();
 	}
-	return res.status(200).send("form saved");
+	return res.status(200).send(form._id);
 };
 
 //get all form sorted by recent

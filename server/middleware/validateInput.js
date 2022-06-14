@@ -18,7 +18,7 @@ exports.validationQuestionList = (req, res, next) => {
 };
 
 exports.validateFormInput = (req, res, next) => {
-	const isValid = validateForm(req.body.form);
+	const isValid = validateForm(req.body);
 	if (!isValid) return next(validateForm.errors);
 	return next();
 };

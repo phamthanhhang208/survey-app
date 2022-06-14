@@ -14,6 +14,7 @@ const schemaForm = {
 			items: schemaQuestion,
 		},
 	},
+	required: ["title"],
 };
 
 module.exports = {

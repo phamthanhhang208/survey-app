@@ -14,3 +14,8 @@ export const deleteForm = async (id: any) => {
 	const { data } = await axiosClient.delete(`/forms/${id}`);
 	return data;
 };
+
+export const updateForm = async ({ id, values }: { id: any; values: any }) => {
+	const { data } = await axiosClient.put(`/forms/${id}`, values);
+	return data;
+};
