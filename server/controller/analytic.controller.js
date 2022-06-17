@@ -1,9 +1,19 @@
 const Form = require("../model/form");
 const Response = require("../model/response");
+const Question = require("../model/question");
 
 module.exports.getAnalytics = async (req, res, next) => {
 	const form = await Form.findById(req.params.id);
 	const { responses, questions } = form;
+	const questionsContext = await Question.aggregate([
+		{
+			$match: {
+				_id: {
+					$in: questions,
+				},
+			},
+		},
+	]);
 	const pipeline = [
 		{
 			$match: {
@@ -18,9 +28,6 @@ module.exports.getAnalytics = async (req, res, next) => {
 		{
 			$group: {
 				_id: "$answers.questionId",
-				records: {
-					$sum: 1,
-				},
 				responses: {
 					$push: "$answers.answer",
 				},
@@ -56,14 +63,14 @@ module.exports.getAnalytics = async (req, res, next) => {
 					},
 				},
 				records: {
-					$first: "$records",
+					$sum: "$count",
 				},
 			},
 		},
 	];
 	const analytic = await Response.aggregate(pipeline);
 
-	const result = questions.map((question) => {
+	const result = questionsContext.map((question) => {
 		const { questionText, description, type, required, answer, _id } = question;
 		let obj = analytic.find((o) => o._id === question._id.toString());
 		if (!obj) {
