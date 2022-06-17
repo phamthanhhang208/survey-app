@@ -1,20 +1,20 @@
 import useCurrentPermission from '@/hooks/useCurrentPermission';
-import { Radio, Input } from 'antd';
+import { Input, Checkbox } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import './MyRadio.scss';
+import './MyCheckbox.scss';
 
-interface MyRadioProps {
+interface MyCheckboxProps {
   index?: any;
-  addNewRadio?: any;
-  removeRadio?: any;
+  addNewCheckbox?: any;
+  removeCheckbox?: any;
   isTop?: boolean;
 }
 
-const MyRadio: FunctionComponent<MyRadioProps> = ({
+const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
   index,
-  addNewRadio,
-  removeRadio,
+  addNewCheckbox,
+  removeCheckbox,
   isTop,
 }) => {
   const permission = useCurrentPermission();
@@ -22,13 +22,14 @@ const MyRadio: FunctionComponent<MyRadioProps> = ({
   const handleInputChange = (v: any) => {
     setValue(v.target.value);
   };
+
   return (
-    <div className='my-radio'>
-      <Radio
+    <div className='my-checkbox'>
+      <Checkbox
         value={value}
         disabled={permission === 'edit' ? true : false}
-      ></Radio>
-      <div className='radio-input'>
+      ></Checkbox>
+      <div className='checkbox-input'>
         <Input
           onChange={handleInputChange}
           disabled={permission === 'edit' ? false : true}
@@ -37,13 +38,13 @@ const MyRadio: FunctionComponent<MyRadioProps> = ({
           <PlusCircleOutlined
             className='icon'
             onClick={() => {
-              addNewRadio();
+              addNewCheckbox();
             }}
           />
         ) : (
           <MinusCircleOutlined
             className='icon'
-            onClick={() => removeRadio(index)}
+            onClick={() => removeCheckbox(index)}
           />
         )}
       </div>
@@ -51,4 +52,4 @@ const MyRadio: FunctionComponent<MyRadioProps> = ({
   );
 };
 
-export default MyRadio;
+export default MyCheckbox;

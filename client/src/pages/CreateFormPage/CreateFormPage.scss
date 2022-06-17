@@ -20,11 +20,15 @@
     font-weight: 700;
 
     label {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
   }
 
   & .submit-btn {
     margin-top: 14px;
+  }
+
+  .ant-divider-horizontal {
+    margin: 1rem 0;
   }
 }

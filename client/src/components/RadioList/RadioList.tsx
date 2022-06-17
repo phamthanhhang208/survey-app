@@ -1,7 +1,6 @@
-import useCurrentPermission from '@/hooks/useCurrentPermission';
-import { v4 } from 'uuid';
 import MyRadio from '@/components/MyRadio/MyRadio';
 import { FunctionComponent, useState } from 'react';
+import { v4 } from 'uuid';
 import './RadioList.scss';
 
 interface RadioListProps {}
