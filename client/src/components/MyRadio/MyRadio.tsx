@@ -29,7 +29,10 @@ const MyRadio: FunctionComponent<MyRadioProps> = ({
         disabled={permission === 'edit' ? true : false}
       ></Radio>
       <div className='radio-input'>
-        <Input onChange={handleInputChange} />
+        <Input
+          onChange={handleInputChange}
+          disabled={permission === 'edit' ? false : true}
+        />
         {isTop ? (
           <PlusCircleOutlined
             className='icon'

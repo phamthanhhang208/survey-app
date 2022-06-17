@@ -30,7 +30,10 @@ const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
         disabled={permission === 'edit' ? true : false}
       ></Checkbox>
       <div className='checkbox-input'>
-        <Input onChange={handleInputChange} />
+        <Input
+          onChange={handleInputChange}
+          disabled={permission === 'edit' ? false : true}
+        />
         {isTop ? (
           <PlusCircleOutlined
             className='icon'

@@ -1,4 +1,5 @@
-import Question2 from '@/components/Question2/Question2';
+import Question from '@/components/Question/Question';
+import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, FormInstance } from 'antd';
 import { FunctionComponent } from 'react';
@@ -9,14 +10,20 @@ interface QuestionListProps {
 }
 
 const QuestionList: FunctionComponent<QuestionListProps> = ({ form }) => {
+  const permission = useCurrentPermission();
+
   return (
     <Form.List name='fields'>
       {(fields, { add, remove }) => {
         return (
           <div className='question-list'>
             {fields.map((field, index) => (
-              <div key={field.key}>
-                <Question2
+              <div
+                key={field.key}
+                // draggable={true}
+                // onDragStart={(e) => console.log(e.target)}
+              >
+                <Question
                   field={field}
                   index={index}
                   fields={fields}
@@ -25,9 +32,11 @@ const QuestionList: FunctionComponent<QuestionListProps> = ({ form }) => {
               </div>
             ))}
 
-            <Button onClick={() => add()}>
-              <PlusOutlined /> Add question
-            </Button>
+            {permission === 'edit' && (
+              <Button onClick={() => add()}>
+                <PlusOutlined /> Add question
+              </Button>
+            )}
           </div>
         );
       }}
