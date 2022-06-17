@@ -1,7 +1,8 @@
-const { schemaQuestion } = require("../constant/question");
+//const { schemaQuestion } = require("../constant/question");
 
 const schemaForm = {
 	type: "object",
+	additionalProperties: false,
 	properties: {
 		title: {
 			type: "string",
@@ -9,10 +10,10 @@ const schemaForm = {
 		description: {
 			type: "string",
 		},
-		questions: {
-			type: "array",
-			items: schemaQuestion,
-		},
+		// questions: {
+		// 	type: "array",
+		// 	items: schemaQuestion,
+		// },
 	},
 	required: ["title"],
 };
