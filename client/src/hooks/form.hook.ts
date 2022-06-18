@@ -1,5 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { getFormList, createForm, deleteForm, updateForm } from "@/api/form";
+import {
+	getFormList,
+	createForm,
+	deleteForm,
+	updateForm,
+	getForm,
+	reorderFormQuestions,
+	getFormAnalytic,
+} from "@/api/form";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 
@@ -48,9 +56,9 @@ export function useDeleteForm() {
 export function useUpdateForm() {
 	const queryClient = useQueryClient();
 	return useMutation(updateForm, {
-		onSuccess: () => {
+		onSuccess: (data: any) => {
 			message.info("Modified");
-			queryClient.invalidateQueries("formDetail");
+			queryClient.invalidateQueries(["forms", "detail", data._id]);
 		},
 		onError: (error: any) => {
 			console.log(error);
@@ -58,6 +66,41 @@ export function useUpdateForm() {
 		},
 		onMutate: () => {
 			message.loading("loading");
+		},
+	});
+}
+
+export function useGetForm(id: any) {
+	return useQuery(["forms", "detail", `${id}`], getForm, {
+		onError: (error: any) => {
+			console.log(error);
+			message.error("meaningful error message is comming soon");
+		},
+	});
+}
+
+export function useReorderedForm() {
+	const queryClient = useQueryClient();
+	return useMutation(reorderFormQuestions, {
+		onSuccess: (data: any) => {
+			message.info("Modified");
+			queryClient.invalidateQueries(["forms", "detail", data._id]);
+		},
+		onError: (error: any) => {
+			console.log(error);
+			message.error(error);
+		},
+		onMutate: () => {
+			message.loading("loading");
+		},
+	});
+}
+
+export function useGetFormAnalytic(id: any) {
+	return useQuery(["forms", "detail", `${id}`], getFormAnalytic, {
+		onError: (error: any) => {
+			console.log(error);
+			message.error("meaningful error message is comming soon");
 		},
 	});
 }
