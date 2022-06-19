@@ -3,6 +3,7 @@ const router = express.Router();
 const form = require("../controller/form.controller");
 const question = require("../controller/question.controller");
 const analytic = require("../controller/analytic.controller");
+const exportFile = require("../controller/export.controller");
 const { validateFormInput } = require("../middleware/validateInput");
 
 const {
@@ -24,6 +25,8 @@ router.patch(
 );
 
 router.get("/:id/analytic", analytic.getAnalytics);
+
+router.get("/:id/download", exportFile.exportsToExcel);
 
 router.use((err, req, res, next) => {
 	console.log(err);
