@@ -40,3 +40,5 @@
   - [ ] Add image for question and answer
   - [ ] Add error code and message
   - [ ] Refactor code for better error handling
+  - [x] Add analytic API
+  - [x] Export to Excel
