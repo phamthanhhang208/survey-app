@@ -10,8 +10,14 @@ const questionValidateSchema = new Schema(
 	{ _id: false }
 );
 
+const ImageSchema = new Schema({
+	url: String,
+	filename: String,
+});
+
 const questionSchema = new Schema({
 	questionText: String,
+	questionMedia: { ImageSchema },
 	type: String,
 	requried: Boolean,
 	description: String,
@@ -22,6 +28,7 @@ const questionSchema = new Schema({
 		{
 			_id: false,
 			content: String,
+			media: { ImageSchema },
 		},
 	],
 });
