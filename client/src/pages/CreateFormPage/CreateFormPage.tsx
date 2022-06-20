@@ -1,8 +1,11 @@
-import { FunctionComponent } from 'react';
-import { Button, Form, Input, Divider } from 'antd';
-import './CreateFormPage.scss';
 import QuestionList from '@/components/QuestionList/QuestionList';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
+import { Button, Divider, Form, Input } from 'antd';
+import { FunctionComponent, useState } from 'react';
+import './CreateFormPage.scss';
+
+//mock
+import mockForm from '@/const/mockForm.json';
 
 const { Item } = Form;
 
@@ -11,8 +14,29 @@ interface CreateFormPageProps {}
 const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   const permission = useCurrentPermission();
   const [form] = Form.useForm();
+  const [, reload] = useState(true);
+
   const handleFinish = (v: any) => {
-    console.log(v);
+    console.log(form.getFieldValue(['questions']));
+  };
+
+  const convertedQuestionsData = () => {
+    const res = mockForm?.questions.map((q: any) => {
+      return {
+        ...q,
+        answers: [...q.answer],
+        additionalFields: [
+          q?.description && 'question-description',
+          q?.validator && 'response-validation',
+        ],
+      };
+    });
+
+    res.forEach((element) => {
+      delete element.answer;
+    });
+
+    return res;
   };
 
   return (
@@ -22,6 +46,10 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
         form={form}
         layout={'vertical'}
         className={'create-form'}
+        initialValues={{
+          questions: [...convertedQuestionsData()],
+          title: mockForm?.title,
+        }}
       >
         <div className='create-form-header'>
           <Item
@@ -29,19 +57,14 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
             rules={[
               { required: true, message: 'Form name must not be empty.' },
             ]}
-            name={'form-name'}
-            initialValue={'Form name 01'}
+            name={'title'}
           >
             <Input
               placeholder='Form name'
               disabled={permission === 'edit' ? false : true}
             />
           </Item>
-          <Item
-            label={'Description:'}
-            name={'form-description'}
-            initialValue='Short description'
-          >
+          <Item label={'Description:'} name={'formDescription'}>
             <Input.TextArea
               placeholder='Description'
               disabled={permission === 'edit' ? false : true}

@@ -7,27 +7,33 @@ import './QuestionList.scss';
 
 interface QuestionListProps {
   form?: FormInstance<any>;
+  data?: any;
 }
 
 const QuestionList: FunctionComponent<QuestionListProps> = ({ form }) => {
   const permission = useCurrentPermission();
 
+  // useEffect(() => {
+  //   first;
+
+  //   return () => {
+  //     second
+  //   }
+  // }, [third])
+
   return (
-    <Form.List name='fields'>
-      {(fields, { add, remove }) => {
+    <Form.List name='questions'>
+      {(questions, { add, remove }) => {
         return (
           <div className='question-list'>
-            {fields.map((field, index) => (
-              <div
-                key={field.key}
-                // draggable={true}
-                // onDragStart={(e) => console.log(e.target)}
-              >
+            {questions.map((field, index) => (
+              <div key={field.key}>
                 <Question
                   field={field}
                   index={index}
-                  fields={fields}
+                  fields={questions}
                   remove={remove}
+                  data={form?.getFieldValue('questions')[index]}
                 />
               </div>
             ))}

@@ -3,12 +3,14 @@ import { FunctionComponent, useState } from 'react';
 import { v4 } from 'uuid';
 import './RadioList.scss';
 
-interface RadioListProps {}
+interface RadioListProps {
+  answer?: any;
+}
 
-const RadioList: FunctionComponent<RadioListProps> = () => {
-  const [radioList, setRadioList] = useState([v4()]);
+const RadioList: FunctionComponent<RadioListProps> = ({ answer }) => {
+  const [radioList, setRadioList] = useState(() => answer.map(() => v4()));
   const addNewRadio = () => {
-    setRadioList((prev) => [...prev, v4()]);
+    setRadioList((prev: any) => [...prev, v4()]);
   };
 
   const removeRadio = (v: any) => {
@@ -24,13 +26,14 @@ const RadioList: FunctionComponent<RadioListProps> = () => {
 
   return (
     <div className='radio-list'>
-      {radioList.map((r) => (
+      {radioList.map((r: any, index: number) => (
         <MyRadio
           key={r}
           addNewRadio={addNewRadio}
           removeRadio={removeRadio}
           index={r}
           isTop={r === radioList[radioList.length - 1]}
+          initialValue={answer[index]}
         />
       ))}
     </div>
