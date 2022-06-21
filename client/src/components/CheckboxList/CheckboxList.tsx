@@ -3,12 +3,16 @@ import { FunctionComponent, useState } from 'react';
 import { v4 } from 'uuid';
 import './CheckboxList.scss';
 
-interface CheckboxListProps {}
+interface CheckboxListProps {
+  answer?: any;
+}
 
-const CheckboxList: FunctionComponent<CheckboxListProps> = () => {
-  const [checkboxList, setCheckboxList] = useState([v4()]);
+const CheckboxList: FunctionComponent<CheckboxListProps> = ({ answer }) => {
+  const [checkboxList, setCheckboxList] = useState(() =>
+    answer.map(() => v4())
+  );
   const addNewCheckbox = () => {
-    setCheckboxList((prev) => [...prev, v4()]);
+    setCheckboxList((prev: any) => [...prev, v4()]);
   };
 
   const removeCheckbox = (v: any) => {
@@ -24,13 +28,14 @@ const CheckboxList: FunctionComponent<CheckboxListProps> = () => {
 
   return (
     <div className='checkbox-list'>
-      {checkboxList.map((r) => (
+      {checkboxList.map((r: any, index: number) => (
         <MyCheckbox
           key={r}
           addNewCheckbox={addNewCheckbox}
           removeCheckbox={removeCheckbox}
           index={r}
           isTop={r === checkboxList[checkboxList.length - 1]}
+          initialValue={answer[index]}
         />
       ))}
     </div>

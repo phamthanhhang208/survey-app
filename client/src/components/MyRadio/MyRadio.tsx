@@ -9,6 +9,7 @@ interface MyRadioProps {
   addNewRadio?: any;
   removeRadio?: any;
   isTop?: boolean;
+  initialValue?: any;
 }
 
 const MyRadio: FunctionComponent<MyRadioProps> = ({
@@ -16,11 +17,12 @@ const MyRadio: FunctionComponent<MyRadioProps> = ({
   addNewRadio,
   removeRadio,
   isTop,
+  initialValue,
 }) => {
   const permission = useCurrentPermission();
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(initialValue);
   const handleInputChange = (v: any) => {
-    setValue(v.target.value);
+    setValue({ content: v.target.value });
   };
   return (
     <div className='my-radio'>
@@ -30,6 +32,7 @@ const MyRadio: FunctionComponent<MyRadioProps> = ({
       ></Radio>
       <div className='radio-input'>
         <Input
+          value={value && value.content}
           onChange={handleInputChange}
           disabled={permission === 'edit' ? false : true}
         />

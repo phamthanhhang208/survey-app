@@ -22,35 +22,47 @@ interface QuestionProps {
   field?: any;
   index?: any;
   remove?: any;
+  id?: any;
+  data?: any;
 }
 
 const Question: FunctionComponent<QuestionProps> = ({
   index,
   field,
   fields,
+  id = 'form-mock',
+  data,
   ...rest
 }) => {
   const permission = useCurrentPermission();
   const [isQuestionDescriptionShown, setIsQuestionDescriptionShown] =
-    useState(false);
-  const [isValidationRequired, setIsValidationRequired] = useState(false);
-  const [questionTypeState, setQuestionTypeState] = useState('');
+    useState<boolean>(() => (data?.description ? true : false));
+  const [isValidatorShown, setIsValidatorShown] = useState(() =>
+    data?.validator ? true : false
+  );
+  const [isRequired, setIsRequired] = useState(() =>
+    data?.required ? true : false
+  );
+  const [questionTypeState, setQuestionTypeState] = useState<string>(
+    () => data?.type
+  );
   const [visible, setVisible] = useState(false);
-  const dynamicQuestion = (index?: any) => {
+
+  const dynamicQuestion = (index?: any, answer?: any) => {
     switch (questionTypeState) {
       case 'checkboxes':
         return (
           <Form.Item name={[index, 'answer']}>
             <Checkbox.Group name='checkbox-group' className={'radio-group'}>
-              <CheckboxList />
+              <CheckboxList answer={answer} />
             </Checkbox.Group>
           </Form.Item>
         );
       case 'multiple-choice':
         return (
-          <Form.Item name={[index, 'answer']} initialValue={null}>
+          <Form.Item name={[index, 'answer']}>
             <Radio.Group name='radio-group' className={'radio-group'}>
-              <RadioList />
+              <RadioList answer={answer} />
             </Radio.Group>
           </Form.Item>
         );
@@ -88,16 +100,15 @@ const Question: FunctionComponent<QuestionProps> = ({
   return (
     <div className='question'>
       <Form.Item
-        name={[index, 'question']}
+        name={[index, 'questionText']}
         label='Question'
         rules={[{ required: true }]}
-        initialValue={''}
       >
         <Input placeholder='Question' />
       </Form.Item>
 
       {isQuestionDescriptionShown && (
-        <Form.Item name={[index, 'question-description']} label='Description'>
+        <Form.Item name={[index, 'description']} label='Description'>
           <Input.TextArea placeholder='Description' />
         </Form.Item>
       )}
@@ -121,9 +132,9 @@ const Question: FunctionComponent<QuestionProps> = ({
         </Select>
       </Form.Item>
 
-      {dynamicQuestion(index)}
+      {dynamicQuestion(index, data?.answers)}
 
-      {isValidationRequired && <div>Validation</div>}
+      {isValidatorShown && <div>Validation</div>}
 
       <Divider />
 
@@ -150,7 +161,7 @@ const Question: FunctionComponent<QuestionProps> = ({
               margin: '0',
               padding: 0,
             }}
-            name={[index, 'isRequired']}
+            name={[index, 'required']}
             valuePropName='checked'
           >
             <Switch />
@@ -162,11 +173,12 @@ const Question: FunctionComponent<QuestionProps> = ({
             content={
               <Form.Item
                 className='additional-fields'
-                name={[index, 'additional-fields']}
+                name={[index, 'additionalFields']}
                 style={{ marginBottom: 0 }}
               >
-                <Checkbox.Group>
+                <Checkbox.Group name='question-description'>
                   <Checkbox
+                    checked={isQuestionDescriptionShown}
                     value={'question-description'}
                     onChange={(v) => {
                       setVisible(false);
@@ -178,11 +190,12 @@ const Question: FunctionComponent<QuestionProps> = ({
                     Description
                   </Checkbox>
                   <Checkbox
+                    checked={isValidatorShown}
                     value={'response-validation'}
                     onChange={(v) => {
                       setVisible(false);
                       setTimeout(() => {
-                        setIsValidationRequired((prev) => !prev);
+                        setIsValidatorShown((prev) => !prev);
                       }, 300);
                     }}
                   >

@@ -1,5 +1,5 @@
 import useCurrentPermission from '@/hooks/useCurrentPermission';
-import { Input, Checkbox } from 'antd';
+import { Input, Checkbox, Form } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import './MyCheckbox.scss';
@@ -9,6 +9,7 @@ interface MyCheckboxProps {
   addNewCheckbox?: any;
   removeCheckbox?: any;
   isTop?: boolean;
+  initialValue?: any;
 }
 
 const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
@@ -16,11 +17,12 @@ const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
   addNewCheckbox,
   removeCheckbox,
   isTop,
+  initialValue,
 }) => {
   const permission = useCurrentPermission();
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(initialValue);
   const handleInputChange = (v: any) => {
-    setValue(v.target.value);
+    setValue({ content: v.target.value });
   };
 
   return (
@@ -31,6 +33,7 @@ const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
       ></Checkbox>
       <div className='checkbox-input'>
         <Input
+          value={value && value.content}
           onChange={handleInputChange}
           disabled={permission === 'edit' ? false : true}
         />
