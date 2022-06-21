@@ -9,6 +9,7 @@ import {
 	getFormAnalytic,
 } from "@/api/form";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { message } from "antd";
 
 export function useForms() {
@@ -70,8 +71,9 @@ export function useUpdateForm() {
 	});
 }
 
-export function useGetForm(id: any) {
-	return useQuery(["forms", "detail", `${id}`], getForm, {
+export function useGetForm() {
+	const { id } = useParams();
+	return useQuery(["forms", "detail", `${id}`], () => getForm(id), {
 		onError: (error: any) => {
 			console.log(error);
 			message.error("meaningful error message is comming soon");

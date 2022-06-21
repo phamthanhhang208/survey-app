@@ -21,6 +21,7 @@ export const updateForm = async ({ id, values }: { id: any; values: any }) => {
 };
 
 export const getForm = async (id: any) => {
+	//console.log(id);
 	const { data } = await axiosClient.get(`/forms/${id}`);
 	return data;
 };
