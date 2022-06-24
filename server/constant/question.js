@@ -14,11 +14,23 @@ const schemaQuestion = {
 		questionText: {
 			type: "string",
 		},
+		questionMedia: {
+			type: "object",
+			properties: {
+				url: {
+					type: "string",
+				},
+				filename: {
+					type: "string",
+				},
+			},
+		},
 		type: {
 			enum: [CHECKBOXES, MULTIPLECHOICE, SHORT, PARAGRAPH],
 		},
 		requried: {
-			type: "boolean",
+			//type: "boolean",
+			enum: ["true", "false"],
 		},
 		description: {
 			type: "string",

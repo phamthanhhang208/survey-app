@@ -17,7 +17,7 @@ const ImageSchema = new Schema({
 
 const questionSchema = new Schema({
 	questionText: String,
-	questionMedia: { ImageSchema },
+	questionMedia: { type: ImageSchema },
 	type: String,
 	requried: Boolean,
 	description: String,
@@ -28,7 +28,7 @@ const questionSchema = new Schema({
 		{
 			_id: false,
 			content: String,
-			media: { ImageSchema },
+			media: { type: ImageSchema },
 		},
 	],
 });

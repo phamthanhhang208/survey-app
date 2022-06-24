@@ -1,31 +1,43 @@
 const Form = require("../model/form");
 const Response = require("../model/response");
 const Question = require("../model/question");
-// add array of questions
-module.exports.addQuestions = async (req, res, next) => {
-	const form = await Form.findById(req.params.id);
-	const questions = await Question.insertMany(req.body);
-	//const questions = req.body;
+const { attachMediaToQuestion } = require("../helper/utils");
+const _ = require("lodash");
+const { cloudinary } = require("../cloudinary");
 
-	//form.questions.push(...questions);
-	// get new question's id
-	const questionsId = questions.map((q) => q._id);
-	//push to order array
-	form.questions.push(...questionsId);
-	//save form
-	await form.save();
+// add array of questions - maybe remove this
+// module.exports.addQuestions = async (req, res, next) => {
+// 	const form = await Form.findById(req.params.id);
+// 	const questions = await Question.insertMany(req.body.questions);
 
-	return res.status(200).send("added questions");
-};
+// 	// get new question's id
+// 	const questionsId = questions.map((q) => q._id);
+// 	//push to order array
+// 	form.questions.push(...questionsId);
+// 	//save form
+// 	await form.save();
+
+// 	return res.status(200).send("added questions");
+// };
 
 // add a question
 module.exports.addQuestion = async (req, res, next) => {
 	const form = await Form.findById(req.params.id);
-	const question = new Question(req.body);
-	//console.log(question);
+	let question = req.body;
+
+	if (req.files) {
+		const files = req.files;
+		for (const file of files) {
+			const { fieldname, path, filename } = file;
+			question = _.set(question, fieldname, {
+				url: path,
+				filename,
+			});
+		}
+	}
+
+	question = new Question(question);
 	form.questions.push(question);
-	//const questionId = form.questions[form.questions.length - 1]._id;
-	//form.order.push(questionId);
 	await question.save();
 	await form.save();
 
@@ -35,24 +47,54 @@ module.exports.addQuestion = async (req, res, next) => {
 // update a question
 
 module.exports.editQuestion = async (req, res, next) => {
-	// const questionId = req.params.questionId;
-	// const question = req.body;
-	// const form = await Form.findOneAndUpdate(
-	// 	{
-	// 		_id: req.params.id,
-	// 		"questions._id": questionId,
-	// 	},
-	// 	{
-	// 		$set: {
-	// 			"questions.$": question,
-	// 		},
-	// 	},
-	// 	{
-	// 		new: true,
-	// 	}
-	// );
 	const { questionId } = req.params;
-	const q = await Question.findByIdAndUpdate(questionId, req.body, {
+	const question = await Question.findById(questionId);
+	let editedQuestion = req.body;
+
+	if (req.files) {
+		const files = req.files;
+		for (const file of files) {
+			const { fieldname, path, filename } = file;
+			editedQuestion = _.set(editedQuestion, fieldname, {
+				url: path,
+				filename,
+			});
+		}
+	}
+	//delete old picture if needed
+	let deleteImg = [];
+
+	//get old images from answer
+	const oldAnswerImages = _.differenceWith(
+		question.answer,
+		editedQuestion.answer,
+		_.isEqual
+	)
+		.filter(({ media }) => media)
+		.map(({ media }) => media);
+
+	deleteImg = [...deleteImg, ...oldAnswerImages];
+
+	//get old question image
+	const isQuestionMediaChanged = _.isEqual(
+		editedQuestion.questionMedia,
+		question.questionMedia
+	);
+	if (!isQuestionMediaChanged && question.questionMedia !== undefined) {
+		deleteImg = [...deleteImg, question.questionMedia];
+		//remove question image in db
+		await question.updateOne({ $unset: { questionMedia: 1 } });
+	}
+
+	//delete from cloudinary
+
+	if (deleteImg) {
+		for (const img of deleteImg) {
+			await cloudinary.uploader.destroy(img.filename);
+		}
+	}
+
+	const q = await Question.findByIdAndUpdate(questionId, editedQuestion, {
 		new: true,
 	});
 
@@ -63,22 +105,9 @@ module.exports.editQuestion = async (req, res, next) => {
 
 module.exports.deleteQuestion = async (req, res, next) => {
 	const { id, questionId } = req.params;
-	//const form = await Form.findById(id);
 	await Question.findByIdAndDelete(questionId);
 	await Form.findByIdAndUpdate(id, { $pull: { questions: questionId } });
-
-	//delete from db
-	//form.questions(questionId).remove();
-	// remove from order
-	// const index = form.questions.indexOf(questionId);
-	// if (index > -1) {
-	// 	form.questions.splice(index, 1);
-	// }
-	// save form
-	//await form.save();
-	//delete all answers in response
 	await Response.updateMany({}, { $pull: { answers: { questionId } } });
-
 	return res.status(200).send("question deleted");
 };
 
@@ -89,4 +118,20 @@ module.exports.reorderQuestions = async (req, res, next) => {
 	form.questions = reorderList;
 	await form.save();
 	return res.status(200).send("reordered question");
+};
+
+// delete a image in question
+
+module.exports.editQuestionMedia = async (req, res, next) => {
+	const img = req.body;
+
+	// img = questionMedia || answer.$[].media = {_id,filepath,url}
+
+	const q = await Question.findByIdAndUpdate(
+		req.params.questionId,
+		{ $pull: img },
+		{ new: true }
+	);
+
+	return res.status(200).send(q);
 };

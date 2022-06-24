@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const question = require("../controller/question.controller");
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
 const {
 	validationQuestionList,
 	validateQuestionInput,
@@ -11,13 +14,20 @@ const {
 	validateQuesionId,
 } = require("../middleware/validateId");
 
+// router.post(
+// 	"/many",
+// 	validateFormId,
+// 	upload.any(),
+// 	validationQuestionList
+// 	question.addQuestions
+// );
 router.post(
-	"/many",
+	"/",
 	validateFormId,
-	validationQuestionList,
-	question.addQuestions
+	upload.any(),
+	validateQuestionInput,
+	question.addQuestion
 );
-router.post("/", validateFormId, validateQuestionInput, question.addQuestion);
 router.delete(
 	"/:questionId",
 	validateFormId,
@@ -27,6 +37,7 @@ router.delete(
 router.put(
 	"/:questionId",
 	validateFormId,
+	upload.any(),
 	validateQuesionId,
 	validateQuestionInput,
 	question.editQuestion

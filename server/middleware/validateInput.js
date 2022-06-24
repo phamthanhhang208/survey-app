@@ -12,7 +12,7 @@ exports.validateQuestionInput = (req, res, next) => {
 };
 
 exports.validationQuestionList = (req, res, next) => {
-	const isValid = validateQuestions(req.body);
+	const isValid = validateQuestions(req.body.questions);
 	if (!isValid) return next(validateQuestions.errors);
 	return next();
 };

@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+	require("dotenv").config();
+}
+
 const express = require("express");
 const mongoose = require("mongoose");
 const formRoute = require("./router/form.router");
@@ -20,6 +24,8 @@ db.once("open", () => {
 const app = express();
 app.use(cors());
 app.options("*", cors());
+
+//app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/forms", formRoute);
