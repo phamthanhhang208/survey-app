@@ -3,13 +3,11 @@ const Response = require("../model/response");
 const Question = require("../model/question");
 const DeleteMedia = require("../model/deleteMedia");
 const _ = require("lodash");
-//const { cloudinary } = require("../cloudinary");
 
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
 	const form = await Form.findById(req.params.id);
 	const { questions } = req.body;
-	//const questions = await Question.insertMany(req.body.questions);
 	let questionsWithFiles = { questions };
 
 	if (req.files) {
@@ -23,7 +21,6 @@ module.exports.addQuestions = async (req, res, next) => {
 		}
 	}
 
-	//console.log(questionsWithFiles.questions);
 	const newQuestions = await Question.insertMany(questionsWithFiles.questions);
 	// get new question's id
 	const questionsId = newQuestions.map((q) => q._id);
@@ -145,6 +142,8 @@ module.exports.editQuestionMedia = async (req, res, next) => {
 	const deleteItem = img;
 
 	// img = questionMedia || answer.$[].media = {_id,filepath,url}
+
+	await DeleteMedia.create(deleteItem);
 
 	const q = await Question.findByIdAndUpdate(
 		req.params.questionId,

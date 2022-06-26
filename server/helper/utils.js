@@ -17,25 +17,3 @@ exports.exportExcel = ({ fileName, header, rows }) => {
 
 	XLSX.writeFile(workbook, `${fileName}.xlsx`);
 };
-
-exports.attachMediaToQuestion = ({ files, question }) => {
-	const { answer } = question;
-	const questionImg = files.find((f) => f.fieldname === "questionMedia");
-	question.questionMedia = questionImg
-		? {
-				url: questionImg.path,
-				filename: questionImg.filename,
-		  }
-		: null;
-	for (let i = 0; i < answer.length; i++) {
-		const answerImg = files.find((f) => f.fieldname === `answer[${i}][media]`);
-		answer[i]["media"] = answerImg
-			? {
-					url: answerImg.path,
-					filename: answerImg.filename,
-			  }
-			: null;
-	}
-
-	return;
-};
