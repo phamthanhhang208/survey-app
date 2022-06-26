@@ -14,13 +14,14 @@ const {
 	validateQuesionId,
 } = require("../middleware/validateId");
 
-// router.post(
-// 	"/many",
-// 	validateFormId,
-// 	upload.any(),
-// 	validationQuestionList
-// 	question.addQuestions
-// );
+router.post(
+	"/many",
+	validateFormId,
+	upload.any(),
+	validationQuestionList,
+	question.addQuestions
+);
+
 router.post(
 	"/",
 	validateFormId,
