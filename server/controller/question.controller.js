@@ -3,6 +3,7 @@ const Response = require("../model/response");
 const Question = require("../model/question");
 const DeleteMedia = require("../model/deleteMedia");
 const _ = require("lodash");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
@@ -61,6 +62,7 @@ module.exports.addQuestion = async (req, res, next) => {
 module.exports.editQuestion = async (req, res, next) => {
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId);
+	const { _doc: questionContent } = question;
 	let editedQuestion = req.body;
 
 	//delete images if needed
@@ -79,7 +81,7 @@ module.exports.editQuestion = async (req, res, next) => {
 
 	//get old images from answer
 	const oldAnswerImages = _.differenceWith(
-		question.answer,
+		questionContent.answer,
 		editedQuestion.answer,
 		_.isEqual
 	)
@@ -88,23 +90,17 @@ module.exports.editQuestion = async (req, res, next) => {
 
 	deleteImg = [...deleteImg, ...oldAnswerImages];
 
+	console.log(editedQuestion.answer);
+
 	//get old question image
 	const isQuestionMediaChanged = _.isEqual(
 		editedQuestion.questionMedia,
-		question.questionMedia
+		questionContent.questionMedia
 	);
-	if (!isQuestionMediaChanged && question.questionMedia !== undefined) {
-		deleteImg = [...deleteImg, question.questionMedia];
+	if (!isQuestionMediaChanged && questionContent.questionMedia !== undefined) {
+		deleteImg = [...deleteImg, questionContent.questionMedia];
 		await question.updateOne({ $unset: { questionMedia: 1 } });
 	}
-
-	//delete from cloudinary
-
-	// if (deleteImg) {
-	// 	for (const img of deleteImg) {
-	// 		await cloudinary.uploader.destroy(img.filename);
-	// 	}
-	// }
 
 	// move to deleteImg collection
 	await DeleteMedia.insertMany(deleteImg);
@@ -116,10 +112,11 @@ module.exports.editQuestion = async (req, res, next) => {
 	return res.status(200).send(q);
 };
 
-// delete a question
+// delete a question - WIP - move image to be deleted to db
 
 module.exports.deleteQuestion = async (req, res, next) => {
 	const { id, questionId } = req.params;
+
 	await Question.findByIdAndDelete(questionId);
 	await Form.findByIdAndUpdate(id, { $pull: { questions: questionId } });
 	await Response.updateMany({}, { $pull: { answers: { questionId } } });
@@ -135,21 +132,28 @@ module.exports.reorderQuestions = async (req, res, next) => {
 	return res.status(200).send("reordered question");
 };
 
-// delete a image in question - WIP
-
-module.exports.editQuestionMedia = async (req, res, next) => {
+// delete a image in question
+module.exports.deleteQuestionMedia = async (req, res, next) => {
+	const { questionId } = req.params;
 	const img = req.body;
-	const deleteItem = img;
+	const { filename, url } = img;
 
-	// img = questionMedia || answer.$[].media = {_id,filepath,url}
+	const question = await Question.findById(questionId);
 
-	await DeleteMedia.create(deleteItem);
+	const { _doc: questionContent } = question;
 
-	const q = await Question.findByIdAndUpdate(
-		req.params.questionId,
-		{ $pull: deleteItem },
-		{ new: true }
-	);
+	if (_.findKey(questionContent, { filename, url })) {
+		await question.updateOne({ $unset: { questionMedia: 1 } }, { new: true });
+	} else {
+		await question.updateOne(
+			{
+				$pull: { answer: { "media.filename": filename } },
+			},
+			{ new: true }
+		);
+	}
 
-	return res.status(200).send(q);
+	await DeleteMedia.create(img);
+
+	return res.status(200).send(question);
 };

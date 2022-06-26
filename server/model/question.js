@@ -10,10 +10,13 @@ const questionValidateSchema = new Schema(
 	{ _id: false }
 );
 
-const ImageSchema = new Schema({
-	url: String,
-	filename: String,
-});
+const ImageSchema = new Schema(
+	{
+		url: String,
+		filename: String,
+	},
+	{ _id: false }
+);
 
 const questionSchema = new Schema({
 	questionText: String,

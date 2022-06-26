@@ -14,6 +14,8 @@ const {
 	validateQuesionId,
 } = require("../middleware/validateId");
 
+const { validateQuestionMedia } = require("../middleware/validateMedia");
+
 router.post(
 	"/many",
 	validateFormId,
@@ -41,7 +43,14 @@ router.put(
 	upload.any(),
 	validateQuesionId,
 	validateQuestionInput,
+	validateQuestionMedia,
 	question.editQuestion
+);
+
+router.delete(
+	"/:questionId/media/:mediaId",
+	validateQuestionMedia,
+	question.deleteQuestionMedia
 );
 
 router.use((err, req, res, next) => {

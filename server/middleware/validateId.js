@@ -23,8 +23,10 @@ exports.validateAllQuestionIds = async (req, res, next) => {
 	const ids = req.body;
 	const form = await Form.findById(id);
 	const questionIds = form.questions.map((q) => q.toString());
+	//check if there is enough question
 	if (ids.length !== questionIds.length)
 		return next(new Error("array does not equal"));
+	//check if every ids exist in form
 	const isOrderCorrect = ids.every((q) => questionIds.includes(q));
 	if (!isOrderCorrect) return next(new Error("wrong ids"));
 	return next();
@@ -33,11 +35,15 @@ exports.validateAllQuestionIds = async (req, res, next) => {
 // check if every response question id belong or exist in form
 exports.validateResponseQuestionId = async (req, res, next) => {
 	const { id } = req.params;
+	//check if form exist
 	const form = await Form.findById(id);
 	if (!form) return next(new Error("form not found"));
+
 	const answers = req.body.answers;
 	const ids = answers.map((a) => a.questionId);
 	const questionIds = form.questions.map((q) => q.toString());
+
+	//check if every answer question id exist in form
 	const isQuestionCorrect = ids.every((q) => questionIds.includes(q));
 	if (!isQuestionCorrect) return next(new Error("wrong ids"));
 	return next();
