@@ -8,7 +8,7 @@
     position: relative;
     background-color: $main-background-color;
 
-    .ant-layout-header {
+    & .ant-layout-header {
       min-height: 85px;
       background-color: $main-red-color;
       display: flex;
@@ -59,8 +59,7 @@
 
     .ant-layout-content {
       background-color: $main-background-color;
-      width: 60%;
-      margin: 2rem auto;
+      width: 100%;
 
     }
 

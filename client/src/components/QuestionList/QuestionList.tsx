@@ -1,4 +1,4 @@
-import Question from '@/components/Question/Question';
+import QuestionCreate from '@/components/Question/QuestionCreate';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, FormInstance } from 'antd';
@@ -28,7 +28,7 @@ const QuestionList: FunctionComponent<QuestionListProps> = ({ form }) => {
           <div className='question-list'>
             {questions.map((field, index) => (
               <div key={field.key}>
-                <Question
+                <QuestionCreate
                   field={field}
                   index={index}
                   fields={questions}
