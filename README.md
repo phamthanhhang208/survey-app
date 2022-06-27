@@ -37,7 +37,7 @@
 
 - Backend:
   - [ ] Add more validation for short answer
-  - [ ] Add image for question and answer
+  - [x] Add image for question and answer
   - [ ] Add error code and message
   - [ ] Refactor code for better error handling
   - [x] Add analytic API
