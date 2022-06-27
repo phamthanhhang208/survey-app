@@ -1,4 +1,5 @@
 //const ObjectId = require("mongoose").Types.ObjectId;
+const Question = require("../model/question");
 
 module.exports.validateQuestionMedia = async (req, res, next) => {
 	const { questionId } = req.params;

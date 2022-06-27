@@ -3,7 +3,6 @@ const Response = require("../model/response");
 const Question = require("../model/question");
 const DeleteMedia = require("../model/deleteMedia");
 const _ = require("lodash");
-const ObjectId = require("mongoose").Types.ObjectId;
 
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
@@ -116,10 +115,20 @@ module.exports.editQuestion = async (req, res, next) => {
 
 module.exports.deleteQuestion = async (req, res, next) => {
 	const { id, questionId } = req.params;
-
+	const deleteImgs = [];
+	const question = await Question.findById(questionId);
+	if (question.questionMedia) {
+		deleteImgs.push(questionMedia);
+	}
+	for (let answer of question.answer) {
+		if (answer.media) {
+			deleteImgs.push(answer.media);
+		}
+	}
 	await Question.findByIdAndDelete(questionId);
 	await Form.findByIdAndUpdate(id, { $pull: { questions: questionId } });
 	await Response.updateMany({}, { $pull: { answers: { questionId } } });
+	await DeleteMedia.insertMany(deleteImgs);
 	return res.status(200).send("question deleted");
 };
 

@@ -11,8 +11,9 @@ const questionRoute = require("./router/question.router");
 const responseRoute = require("./router/response.router");
 const deleteImages = require("./helper/schedule-clear-cloud");
 let port = process.env.PORT || 8080;
+//const dbs = "mongodb://localhost:27017/survey-app";
 
-mongoose.connect("mongodb://localhost:27017/survey-app", {
+mongoose.connect(process.env.DB, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
