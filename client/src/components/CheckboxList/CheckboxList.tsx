@@ -1,4 +1,5 @@
 import MyCheckbox from '@/components/MyCheckbox/MyCheckbox';
+import { Form, Input } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import { v4 } from 'uuid';
 import './CheckboxList.scss';
@@ -9,7 +10,7 @@ interface CheckboxListProps {
 
 const CheckboxList: FunctionComponent<CheckboxListProps> = ({ answer }) => {
   const [checkboxList, setCheckboxList] = useState(() =>
-    answer.map(() => v4())
+    answer?.length > 0 ? answer?.map(() => v4()) : [v4()]
   );
   const addNewCheckbox = () => {
     setCheckboxList((prev: any) => [...prev, v4()]);
@@ -28,15 +29,10 @@ const CheckboxList: FunctionComponent<CheckboxListProps> = ({ answer }) => {
 
   return (
     <div className='checkbox-list'>
-      {checkboxList.map((r: any, index: number) => (
-        <MyCheckbox
-          key={r}
-          addNewCheckbox={addNewCheckbox}
-          removeCheckbox={removeCheckbox}
-          index={r}
-          isTop={r === checkboxList[checkboxList.length - 1]}
-          initialValue={answer[index]}
-        />
+      {checkboxList?.map((r: any, index: number) => (
+        <Form.Item name={[r, 'checkboxCreate']} key={index}>
+          <Input></Input>
+        </Form.Item>
       ))}
     </div>
   );

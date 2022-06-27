@@ -20,38 +20,24 @@ const MyCheckbox: FunctionComponent<MyCheckboxProps> = ({
   initialValue,
 }) => {
   const permission = useCurrentPermission();
-  const [value, setValue] = useState(initialValue);
-  const handleInputChange = (v: any) => {
-    setValue({ content: v.target.value });
-  };
 
   return (
-    <div className='my-checkbox'>
-      <Checkbox
-        value={value}
-        disabled={permission === 'edit' ? true : false}
-      ></Checkbox>
-      <div className='checkbox-input'>
-        <Input
-          value={value && value.content}
-          onChange={handleInputChange}
-          disabled={permission === 'edit' ? false : true}
+    <Form.Item className='my-checkbox'>
+      <Input disabled={permission === 'edit' ? false : true} />
+      {isTop ? (
+        <PlusCircleOutlined
+          className='icon'
+          onClick={() => {
+            addNewCheckbox();
+          }}
         />
-        {isTop ? (
-          <PlusCircleOutlined
-            className='icon'
-            onClick={() => {
-              addNewCheckbox();
-            }}
-          />
-        ) : (
-          <MinusCircleOutlined
-            className='icon'
-            onClick={() => removeCheckbox(index)}
-          />
-        )}
-      </div>
-    </div>
+      ) : (
+        <MinusCircleOutlined
+          className='icon'
+          onClick={() => removeCheckbox(index)}
+        />
+      )}
+    </Form.Item>
   );
 };
 

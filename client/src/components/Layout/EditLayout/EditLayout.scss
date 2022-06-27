@@ -1,0 +1,40 @@
+@import '@/styles/globalStyles.scss';
+
+.edit-layout {
+  & .edit-layout-header {
+    background: white;
+    min-height: 50px;
+    justify-content: center;
+    display: flex;
+    gap: 5px;
+
+    .edit-items {
+      height: 55px;
+      display: flex;
+      width: 100px;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: black;
+
+      &:hover {
+        background: $main-red-color;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      & span {
+        transform: translateY(-4%);
+      }
+    }
+
+    .active {
+      background: $main-red-color;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+}
