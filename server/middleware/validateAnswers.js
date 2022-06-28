@@ -2,17 +2,18 @@ const Form = require("../model/form");
 const Question = require("../model/question");
 const { CHECKBOXES, MULTIPLECHOICE } = require("../constant/question");
 const { validateAnswerSchema } = require("../helper/validateAnswer");
-//const { isContain } = require("../helper/utils");
+const { isContain } = require("../helper/utils");
 const _ = require("lodash");
 
 exports.isAnswerExist = async (req, res, next) => {
 	const { answers } = req.body;
 	for (let i = 0; i < answers.length; i++) {
 		const question = await Question.findById(answers[i].questionId);
+		const { _doc: questionContent } = question;
 		if (question.type == CHECKBOXES || question.type == MULTIPLECHOICE) {
-			//check if answer exist in db
-			const result = _.find(question.answer, answers[i].answer);
-			//isContain(question.answer, answers[i].answer);
+			//check if answer array exist in db
+			const result = isContain(questionContent.answer, answers[i].answer);
+			//_.find(questionContent.answer, answers[i].answer);
 			if (!result) return next(new Error("answer does not exist"));
 			continue;
 		} else {

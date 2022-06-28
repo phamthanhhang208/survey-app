@@ -28,7 +28,7 @@ const schemaQuestion = {
 		type: {
 			enum: [CHECKBOXES, MULTIPLECHOICE, SHORT, PARAGRAPH],
 		},
-		requried: {
+		required: {
 			//type: "boolean",
 			enum: ["true", "false"],
 		},
@@ -43,7 +43,21 @@ const schemaQuestion = {
 					content: {
 						type: "string",
 					},
+					media: {
+						type: "object",
+						properties: {
+							url: {
+								type: "string",
+							},
+							filename: {
+								type: "string",
+							},
+						},
+						additionalProperties: false,
+					},
 				},
+				additionalProperties: false,
+				required: ["content"],
 			},
 		},
 
@@ -126,6 +140,7 @@ const schemaQuestion = {
 			},
 		},
 	],
+	required: ["questionText", "type", "required", "answer"],
 };
 
 module.exports = {

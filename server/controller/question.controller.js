@@ -3,10 +3,13 @@ const Response = require("../model/response");
 const Question = require("../model/question");
 const DeleteMedia = require("../model/deleteMedia");
 const _ = require("lodash");
+const { startSession } = require("mongoose");
 
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
-	const form = await Form.findById(req.params.id);
+	const session = await startSession();
+	session.startTransaction();
+	const form = await Form.findById(req.params.id).session(session);
 	const { questions } = req.body;
 	let questionsWithFiles = { questions };
 
@@ -21,20 +24,27 @@ module.exports.addQuestions = async (req, res, next) => {
 		}
 	}
 
-	const newQuestions = await Question.insertMany(questionsWithFiles.questions);
+	const newQuestions = await Question.insertMany(questionsWithFiles.questions, {
+		session,
+	});
 	// get new question's id
 	const questionsId = newQuestions.map((q) => q._id);
 	//push to order array
 	form.questions.push(...questionsId);
 	//save form
-	await form.save();
+	await form.save({ session });
+
+	await session.commitTransaction();
+	session.endSession();
 
 	return res.status(200).send("added questions");
 };
 
 // add a question
 module.exports.addQuestion = async (req, res, next) => {
-	const form = await Form.findById(req.params.id);
+	const session = await startSession();
+	session.startTransaction();
+	const form = await Form.findById(req.params.id).session(session);
 	let question = req.body;
 
 	if (req.files) {
@@ -50,8 +60,11 @@ module.exports.addQuestion = async (req, res, next) => {
 
 	question = new Question(question);
 	form.questions.push(question);
-	await question.save();
-	await form.save();
+	await question.save({ session });
+	await form.save({ session });
+
+	await session.commitTransaction();
+	session.endSession();
 
 	return res.status(200).send("added question");
 };
@@ -89,8 +102,6 @@ module.exports.editQuestion = async (req, res, next) => {
 
 	deleteImg = [...deleteImg, ...oldAnswerImages];
 
-	console.log(editedQuestion.answer);
-
 	//get old question image
 	const isQuestionMediaChanged = _.isEqual(
 		editedQuestion.questionMedia,
@@ -111,24 +122,34 @@ module.exports.editQuestion = async (req, res, next) => {
 	return res.status(200).send(q);
 };
 
-// delete a question - WIP - move image to be deleted to db
-
 module.exports.deleteQuestion = async (req, res, next) => {
 	const { id, questionId } = req.params;
 	const deleteImgs = [];
-	const question = await Question.findById(questionId);
+	const session = await startSession();
+	session.startTransaction();
+	const question = await Question.findById(questionId, null, { session });
 	if (question.questionMedia) {
-		deleteImgs.push(questionMedia);
+		deleteImgs.push(question.questionMedia);
 	}
 	for (let answer of question.answer) {
 		if (answer.media) {
 			deleteImgs.push(answer.media);
 		}
 	}
-	await Question.findByIdAndDelete(questionId);
-	await Form.findByIdAndUpdate(id, { $pull: { questions: questionId } });
-	await Response.updateMany({}, { $pull: { answers: { questionId } } });
-	await DeleteMedia.insertMany(deleteImgs);
+	await Question.findByIdAndDelete(questionId).session(session);
+	await Form.findByIdAndUpdate(
+		id,
+		{ $pull: { questions: questionId } },
+		{ session }
+	);
+	await Response.updateMany(
+		{},
+		{ $pull: { answers: { questionId } } },
+		{ session }
+	);
+	await DeleteMedia.insertMany(deleteImgs, null, { session });
+	await session.commitTransaction();
+	session.endSession();
 	return res.status(200).send("question deleted");
 };
 
@@ -164,5 +185,5 @@ module.exports.deleteQuestionMedia = async (req, res, next) => {
 
 	await DeleteMedia.create(img);
 
-	return res.status(200).send(question);
+	return res.status(200).send("deleted media");
 };

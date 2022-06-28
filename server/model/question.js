@@ -22,7 +22,7 @@ const questionSchema = new Schema({
 	questionText: String,
 	questionMedia: { type: ImageSchema },
 	type: String,
-	requried: Boolean,
+	required: Boolean,
 	description: String,
 	validator: {
 		type: questionValidateSchema,

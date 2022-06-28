@@ -20,7 +20,7 @@ const { isFormAcceptResponse } = require("../middleware/validateFormSetting");
 router.post(
 	"/",
 	validationResponseInput,
-	//validateResponseQuestionId,
+	validateResponseQuestionId,
 	isFormAcceptResponse,
 	isAnswerExist,
 	validateAnswer,

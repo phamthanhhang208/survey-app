@@ -17,6 +17,7 @@ const schemaAnswer = {
 			},
 		},
 	},
+	required: ["questionId", "answer"],
 };
 
 const schemaResponse = {
@@ -29,6 +30,7 @@ const schemaResponse = {
 			items: schemaAnswer,
 		},
 	},
+	required: ["answers"],
 };
 
 module.exports = {

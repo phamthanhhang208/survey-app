@@ -12,6 +12,7 @@ const responseRoute = require("./router/response.router");
 const deleteImages = require("./helper/schedule-clear-cloud");
 let port = process.env.PORT || 8080;
 //const dbs = "mongodb://localhost:27017/survey-app";
+//process.env.DB
 
 mongoose.connect(process.env.DB, {
 	useNewUrlParser: true,
@@ -28,7 +29,7 @@ const app = express();
 app.use(cors());
 app.options("*", cors());
 
-//app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/forms", formRoute);

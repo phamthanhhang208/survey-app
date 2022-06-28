@@ -43,12 +43,12 @@ router.put(
 	upload.any(),
 	validateQuesionId,
 	validateQuestionInput,
-	validateQuestionMedia,
+	//validateQuestionMedia,
 	question.editQuestion
 );
 
 router.delete(
-	"/:questionId/media/:mediaId",
+	"/:questionId/media",
 	validateQuestionMedia,
 	question.deleteQuestionMedia
 );
