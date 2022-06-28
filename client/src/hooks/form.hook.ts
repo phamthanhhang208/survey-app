@@ -56,10 +56,12 @@ export function useDeleteForm() {
 
 export function useUpdateForm() {
 	const queryClient = useQueryClient();
+	const { id } = useParams();
+
 	return useMutation(updateForm, {
-		onSuccess: (data: any) => {
+		onSuccess: () => {
 			message.info("Modified");
-			queryClient.invalidateQueries(["forms", "detail", data._id]);
+			queryClient.invalidateQueries(["forms", "detail", id]);
 		},
 		onError: (error: any) => {
 			console.log(error);
