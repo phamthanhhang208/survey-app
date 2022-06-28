@@ -1,1 +1,13 @@
-.submit-form-page {}
+.submit-form-page {
+	width: 60%;
+	margin: 20px auto;
+}
+
+.question-list {
+	display: flex;
+	position: relative;
+	width: 100%;
+	flex-direction: column;
+	gap: 5px;
+	justify-content: center;
+}
