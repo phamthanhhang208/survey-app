@@ -1,7 +1,9 @@
 import axiosClient from "./axiosClient";
 
 export const addResponse = async ({ id, values }: { id: any; values: any }) => {
-	const { data } = await axiosClient.post(`/forms/${id}/responses`, values);
+	const { data } = await axiosClient.post(`/forms/${id}/responses`, {
+		answers: values,
+	});
 	return data;
 };
 export const deleteResponse = async ({

@@ -1,21 +1,39 @@
 import React from "react";
 import "./SubmitFormPage.scss";
-import { Card, Typography, Divider, Form, Button } from "antd";
-import formDetail from "@/const/mockForm.json";
+import { Card, Typography, Divider, Form, Button, Spin } from "antd";
 import AnswerSubmit from "@/components/Answer/AnswerSubmit";
+import { useGetForm } from "@/hooks/form.hook";
+import { useAddResponse } from "@/hooks/response.hook";
+import { useParams } from "react-router-dom";
 
 const { Title } = Typography;
 
 const SubmitFormPage: React.FC = () => {
+	const { id } = useParams();
+	const { data: formDetail, isLoading } = useGetForm();
+	const { mutate: addResponse } = useAddResponse();
+
+	if (isLoading) {
+		return <Spin />;
+	}
+
 	const onFinish = (values: any) => {
-		//console.log("Success:", values);
-		const response = [];
-		for (const [questionId, answer] of Object.entries(values)) {
-			if (answer) {
-				response.push({ questionId, answer });
+		const answers = [];
+		for (const [questionId, response] of Object.entries(values)) {
+			const answer = [];
+			if (response) {
+				if (Array.isArray(response)) {
+					for (const content of response) {
+						answer.push({ content: content });
+					}
+				} else {
+					answer.push({ content: response });
+				}
+				answers.push({ questionId, answer });
 			}
 		}
-		console.log(response);
+		addResponse({ id, values: answers });
+		//console.log(answers);
 	};
 	return (
 		<>
