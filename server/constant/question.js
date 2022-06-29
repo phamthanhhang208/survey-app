@@ -37,6 +37,7 @@ const schemaQuestion = {
 		},
 		answer: {
 			type: "array",
+			uniqueItemProperties: ["content"],
 			items: {
 				type: "object",
 				properties: {
