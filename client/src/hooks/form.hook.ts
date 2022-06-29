@@ -100,11 +100,16 @@ export function useReorderedForm() {
 	});
 }
 
-export function useGetFormAnalytic(id: any) {
-	return useQuery(["forms", "detail", `${id}`], getFormAnalytic, {
-		onError: (error: any) => {
-			console.log(error);
-			message.error("meaningful error message is comming soon");
-		},
-	});
+export function useGetFormAnalytic() {
+	const { id } = useParams();
+	return useQuery(
+		["forms", "detail", id, "analytic"],
+		() => getFormAnalytic(id),
+		{
+			onError: (error: any) => {
+				console.log(error);
+				message.error("meaningful error message is comming soon");
+			},
+		}
+	);
 }

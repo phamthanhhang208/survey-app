@@ -71,13 +71,12 @@ module.exports.getAnalytics = async (req, res, next) => {
 	const analytic = await Response.aggregate(pipeline);
 
 	const result = questionsContext.map((question) => {
-		const { questionText, description, type, required, answer, _id } = question;
+		const { questionText, type, required, answer, _id } = question;
 		let obj = analytic.find((o) => o._id === question._id.toString());
 		if (!obj) {
 			obj = { records: 0, responses: [] };
 		}
-		return { _id, questionText, description, type, required, answer, ...obj };
+		return { _id, questionText, type, required, answer, ...obj };
 	});
-
 	return res.status(200).send(result);
 };

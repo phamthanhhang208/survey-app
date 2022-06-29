@@ -93,7 +93,9 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
 				</Button> */}
 			</Form>
 
-			<QuestionListView questions={formDetail?.questions} />
+			{formDetail.questions && (
+				<QuestionListView questions={formDetail?.questions} />
+			)}
 		</div>
 	);
 };
