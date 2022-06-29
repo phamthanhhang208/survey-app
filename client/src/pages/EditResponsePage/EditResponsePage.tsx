@@ -7,9 +7,10 @@ import ChartDisplay from "@/containers/ChartDisplay/ChartDisplay";
 const { TabPane } = Tabs;
 
 const EditResponsePage: React.FC = () => {
-	const { data: questions, isLoading } = useGetFormAnalytic();
+	const { data: questions, isLoading: isLoadingAnalytic } =
+		useGetFormAnalytic();
 
-	if (isLoading) {
+	if (isLoadingAnalytic) {
 		return <Spin />;
 	}
 
