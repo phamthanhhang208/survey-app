@@ -39,11 +39,11 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
         case 'multiple-choice':
           formData.append(
             'answer',
-            [
+            JSON.stringify([
               ...v?.multipleChoice.map((c: any) => {
                 return { content: c };
               }),
-            ].toString()
+            ])
           );
           break;
         case 'checkboxes':
@@ -58,7 +58,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
 
           break;
         case 'short-paragraph':
-          formData.append('answer', [{ content: '' }].toString());
+          formData.append('answer', JSON.stringify([{ content: '' }]));
           break;
         case 'paragraph':
           formData.append('answer', JSON.stringify([{ content: '' }]));
@@ -77,10 +77,10 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       const req = addQuestion({
         id: formDetail._id,
         values: {
-          questionText: 'test hard code',
-          type: 'paragraph',
+          questionText: 'test hard code checkboxes',
+          type: 'checkboxes',
           required: 'false',
-          answer: [{ content: 'met qua' }],
+          answer: [{ content: 'met qua' }, { content: 'met qua 2' }],
         },
       });
       setConfirmLoading(true);

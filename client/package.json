@@ -12,7 +12,7 @@
     "@types/node": "^16.11.38",
     "@types/react": "^18.0.10",
     "@types/react-dom": "^18.0.5",
-    "antd": "4.20.4",
+    "antd": "4.21.4",
     "axios": "^0.26.0",
     "chart.js": "^3.8.0",
     "dayjs": "^1.11.3",
