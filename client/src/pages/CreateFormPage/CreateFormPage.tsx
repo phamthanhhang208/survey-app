@@ -1,103 +1,172 @@
-import QuestionList from "@/components/QuestionList/QuestionList";
-import QuestionListView from "@/components/QuestionListView/QuestionListView";
-import { useGetForm } from "@/hooks/form.hook";
-import useCurrentPermission from "@/hooks/useCurrentPermission";
-import { Button, Divider, Form, Input, Spin } from "antd";
-import { FunctionComponent, useState } from "react";
-import "./CreateFormPage.scss";
-
-//mock
-//import formDetail from "@/const/mockForm.json";
+import QuestionModal from '@/components/Question/QuestionModal';
+import QuestionListView from '@/components/QuestionListView/QuestionListView';
+import { useGetForm } from '@/hooks/form.hook';
+import { useAddQuestion } from '@/hooks/question.hook';
+import useCurrentPermission from '@/hooks/useCurrentPermission';
+import { Button, Form, Input, Modal, Spin } from 'antd';
+import { FunctionComponent, useState } from 'react';
+import './CreateFormPage.scss';
 
 const { Item } = Form;
 
 interface CreateFormPageProps {}
 
 const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
-	const permission = useCurrentPermission();
-	const [form] = Form.useForm();
-	const [, reload] = useState(true);
-	const { data: formDetail, isLoading } = useGetForm();
+  const permission = useCurrentPermission();
+  const [form] = Form.useForm();
+  const { data: formDetail, isLoading } = useGetForm();
+  const { mutate: addQuestion } = useAddQuestion();
 
-	if (isLoading) {
-		return <Spin />;
-	}
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
-	const handleFinish = (v: any) => {
-		console.log(form.getFieldValue(["questions"]));
-	};
+  const showModal = () => {
+    setVisible(true);
+  };
 
-	const convertedQuestionsData = () => {
-		const res = formDetail?.questions.map((q: any) => {
-			return {
-				...q,
-				answers: [...q.answer],
-				additionalFields: [
-					q?.description && "question-description",
-					q?.validator && "response-validation",
-				],
-			};
-		});
+  const handleOk = () => {
+    form.submit();
+  };
 
-		res.forEach((element: any) => {
-			delete element.answer;
-		});
+  const handleSubmit = async (v: any) => {
+    try {
+      const formData = new FormData();
+      formData.append('questionText', v.questionText);
+      formData.append('type', v.type);
+      formData.append('required', v.required);
 
-		return res;
-	};
+      switch (v.type) {
+        case 'multiple-choice':
+          formData.append(
+            'answer',
+            [
+              ...v?.multipleChoice.map((c: any) => {
+                return { content: c };
+              }),
+            ].toString()
+          );
+          break;
+        case 'checkboxes':
+          formData.append(
+            'answer',
+            JSON.stringify([
+              ...v?.checkboxes.map((c: any) => {
+                return { content: c };
+              }),
+            ])
+          );
 
-	return (
-		<div className="create-form-page">
-			<Form
-				onFinish={handleFinish}
-				form={form}
-				layout={"vertical"}
-				className={"create-form"}
-				initialValues={{
-					//questions: [...convertedQuestionsData()],
-					title: formDetail?.title,
-					//formDescription: formDetail?.description || "",
-				}}
-			>
-				<div className="create-form-header">
-					<Item
-						label={"Form name:"}
-						rules={[
-							{ required: true, message: "Form name must not be empty." },
-						]}
-						name={"title"}
-					>
-						<Input
-							placeholder="Form name"
-							disabled={permission === "edit" ? false : true}
-						/>
-					</Item>
-					<Item label={"Description:"} name={"formDescription"}>
-						<Input.TextArea
-							placeholder="Description"
-							disabled={permission === "edit" ? false : true}
-						/>
-					</Item>
-				</div>
-				<Divider />
-				<div className="form-question-list">
-					<QuestionList form={form} />
-				</div>
+          break;
+        case 'short-paragraph':
+          formData.append('answer', [{ content: '' }].toString());
+          break;
+        case 'paragraph':
+          formData.append('answer', JSON.stringify([{ content: '' }]));
+          break;
 
-				{/* <Button
-					className="submit-btn"
-					type="primary"
-					onClick={() => form.submit()}
-				>
-					Submit
-				</Button> */}
-			</Form>
+        default:
+          break;
+      }
 
-			{formDetail.questions && (
-				<QuestionListView questions={formDetail?.questions} />
-			)}
-		</div>
-	);
+      const entries = formData.entries();
+
+      for (let entry of entries) {
+        console.log(entry[0], entry[1]);
+      }
+      // const req = addQuestion({ id: formDetail._id, values: formData });
+      const req = addQuestion({
+        id: formDetail._id,
+        values: {
+          questionText: 'test hard code',
+          type: 'paragraph',
+          required: 'false',
+          answer: [{ content: 'met qua' }],
+        },
+      });
+      setConfirmLoading(true);
+      const res = await req;
+      console.log(res);
+
+      form.resetFields();
+    } catch (error) {
+      console.log('go here');
+
+      console.log(error);
+    }
+    setVisible(false);
+    setConfirmLoading(false);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setVisible(false);
+  };
+
+  if (isLoading) {
+    return <Spin />;
+  }
+
+  const handleFinish = (v: any) => {
+    console.log(form.getFieldValue(['questions']));
+  };
+
+  return (
+    <div className='create-form-page'>
+      <Form
+        onFinish={handleFinish}
+        // form={form}
+        layout={'vertical'}
+        className={'create-form'}
+        initialValues={{
+          title: formDetail?.title,
+        }}
+      >
+        <div className='create-form-header'>
+          <Item
+            label={'Form name:'}
+            rules={[
+              { required: true, message: 'Form name must not be empty.' },
+            ]}
+            name={'title'}
+          >
+            <Input
+              placeholder='Form name'
+              disabled={permission === 'edit' ? false : true}
+            />
+          </Item>
+          <Item label={'Description:'} name={'formDescription'}>
+            <Input.TextArea
+              placeholder='Description'
+              disabled={permission === 'edit' ? false : true}
+            />
+          </Item>
+        </div>
+      </Form>
+
+      <div className='form-question-list'>
+        <Button type='primary' onClick={showModal}>
+          Add question
+        </Button>
+        <Modal
+          title='Title'
+          visible={visible}
+          onOk={handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={handleCancel}
+          destroyOnClose
+        >
+          <Form form={form} className='question' onFinish={handleSubmit}>
+            <QuestionModal />
+          </Form>
+        </Modal>
+      </div>
+
+      <QuestionListView
+        className={'question-list-view'}
+        questions={formDetail?.questions}
+      />
+    </div>
+  );
 };
 
 export default CreateFormPage;
