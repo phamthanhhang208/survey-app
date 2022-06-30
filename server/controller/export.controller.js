@@ -39,6 +39,6 @@ module.exports.exportsToExcel = async (req, res, next) => {
 		rows.push(row);
 	}
 
-	exportExcel({ fileName, header, rows });
-	res.status(200).send("ye");
+	//const file = exportExcel({ fileName, header, rows });
+	return res.status(200).send({ fileName, header, rows });
 };

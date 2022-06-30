@@ -26,7 +26,8 @@
     "react-scripts": "5.0.1",
     "sass": "^1.49.9",
     "typescript": "^4.7.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "PORT=3001 craco start",

@@ -1,7 +1,7 @@
-import { Form, Pagination, Divider, Spin } from "antd";
+import { Form, Pagination, Divider, Spin, Button } from "antd";
 import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
 import { useEffect, useState } from "react";
-import { useGetResponse } from "@/hooks/response.hook";
+import { useGetResponse, useDeleteResponse } from "@/hooks/response.hook";
 import { useParams } from "react-router-dom";
 
 const convertResponseData = (response: any) => {
@@ -28,6 +28,12 @@ export default function ViewResponse(props: any) {
 	};
 
 	const { data: response, isLoading } = useGetResponse(id, responseId);
+	const { mutate: deleteResponse } = useDeleteResponse(id, responseId);
+
+	const handleDeleteResponse = () => {
+		deleteResponse();
+		setResponseId(responses[responses.length - 1]);
+	};
 
 	useEffect(() => {
 		if (response) {
@@ -44,6 +50,7 @@ export default function ViewResponse(props: any) {
 				onChange={handleOnChange}
 				total={responses.length * 10}
 			/>
+			<Button onClick={handleDeleteResponse}>Delete Response</Button>
 			<Divider />
 			{isLoading ? (
 				<Spin />

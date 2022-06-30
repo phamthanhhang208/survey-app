@@ -41,3 +41,8 @@ export const getFormAnalytic = async (id: any) => {
 	const { data } = await axiosClient.get(`/forms/${id}/analytic`);
 	return data;
 };
+
+export const downloadFormAnalytic = async (id: any) => {
+	const { data } = await axiosClient.get(`/forms/${id}/download`);
+	return data;
+};
