@@ -1,5 +1,5 @@
 import { SHORT, PARAGRAPH, CHECKBOX, MULTIPLECHOICE } from "@/const/question";
-import { Checkbox, Radio, Input, Form } from "antd";
+import { Checkbox, Radio, Input, Form, Image } from "antd";
 
 const AnswerSubmit = (props: any) => {
 	const { type, answer, name, required } = props;
@@ -9,9 +9,11 @@ const AnswerSubmit = (props: any) => {
 			<Radio.Group>
 				{answer.map((a: any, idx: any) => {
 					return (
-						<Radio key={idx} value={a.content}>
-							{a.content}
-						</Radio>
+						<div key={idx}>
+							<Radio value={a.content}>{a.content}</Radio>
+							<br />
+							{a.media && <Image src={a.media.url} />}
+						</div>
 					);
 				})}
 			</Radio.Group>
@@ -22,9 +24,11 @@ const AnswerSubmit = (props: any) => {
 			<Checkbox.Group>
 				{answer.map((a: any, idx: any) => {
 					return (
-						<Checkbox key={idx} value={a.content}>
-							{a.content}
-						</Checkbox>
+						<div key={idx}>
+							<Checkbox value={a.content}>{a.content}</Checkbox>
+							<br />
+							{a.media && <Image src={a.media.url} />}
+						</div>
 					);
 				})}
 			</Checkbox.Group>

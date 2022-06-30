@@ -1,10 +1,11 @@
 import React from "react";
 import "./SubmitFormPage.scss";
 import { Card, Typography, Divider, Form, Button, Spin } from "antd";
-import AnswerSubmit from "@/components/Answer/AnswerSubmit";
+//import AnswerSubmit from "@/components/Answer/AnswerSubmit";
 import { useGetForm } from "@/hooks/form.hook";
 import { useAddResponse } from "@/hooks/response.hook";
 import { useParams } from "react-router-dom";
+import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
 
 const { Title } = Typography;
 
@@ -33,7 +34,7 @@ const SubmitFormPage: React.FC = () => {
 			}
 		}
 		addResponse({ id, values: answers });
-		//console.log(answers);
+		console.log(values);
 	};
 	return (
 		<>
@@ -52,16 +53,17 @@ const SubmitFormPage: React.FC = () => {
 				<Form layout="vertical" onFinish={onFinish}>
 					{formDetail.questions.map((q: any) => {
 						return (
-							<Card key={q._id} className="question-list">
-								<Form.Item label={q.questionText} required={q.required}>
-									<AnswerSubmit
-										name={q._id}
-										type={q.type}
-										answer={q.answer}
-										required={q.required}
-									/>
-								</Form.Item>
-							</Card>
+							<QuestionSubmit key={q._id} question={q} />
+							// <Card key={q._id} className="question-list">
+							// 	<Form.Item label={q.questionText} required={q.required}>
+							// 		<AnswerSubmit
+							// 			name={q._id}
+							// 			type={q.type}
+							// 			answer={q.answer}
+							// 			required={q.required}
+							// 		/>
+							// 	</Form.Item>
+							// </Card>
 						);
 					})}
 					<Form.Item>

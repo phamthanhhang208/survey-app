@@ -9,8 +9,8 @@ const ListDisplay = (props: any) => {
 			dataSource={dataset}
 			renderItem={(item: any) => (
 				<List.Item>
-					{dataset.content}
-					<div>{dataset.count}</div>
+					{item.content}
+					<p>count: {item.count}</p>
 				</List.Item>
 			)}
 		/>

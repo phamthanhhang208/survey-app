@@ -6,6 +6,7 @@ const {
 } = require("../helper/validateJson");
 
 exports.validateQuestionInput = (req, res, next) => {
+	//console.log(req.body);
 	const isValid = validateQuestion(req.body);
 	if (!isValid) return next(validateQuestion.errors);
 	return next();
@@ -24,6 +25,7 @@ exports.validateFormInput = (req, res, next) => {
 };
 
 exports.validationResponseInput = (req, res, next) => {
+	//console.log(req.body);
 	const isValid = validateResponse(req.body);
 	if (!isValid) return next(validateResponse.errors);
 	return next();

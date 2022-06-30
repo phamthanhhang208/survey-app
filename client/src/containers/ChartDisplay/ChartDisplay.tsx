@@ -22,7 +22,7 @@ const ChartDisplay = (props: any) => {
 	});
 
 	if (question.type === SHORT || question.type === PARAGRAPH) {
-		chart = <ListDisplay dataset={mergedResponseAndAnswer} />;
+		chart = <ListDisplay dataset={question.responses} />;
 	}
 	if (question.type === CHECKBOX) {
 		const labels = mergedResponseAndAnswer.map((m: any) => m.content);
