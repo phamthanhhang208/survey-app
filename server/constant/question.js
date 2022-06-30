@@ -1,7 +1,7 @@
 const CHECKBOXES = "checkboxes";
 const MULTIPLECHOICE = "multiple-choice";
 const SHORT = "short-paragraph";
-const PARAGRAPH = "paragrapgh";
+const PARAGRAPH = "paragraph";
 
 const checkBoxesValidationRules = ["maxChoices", "minChoices", "exactChoices"];
 const shortParagraphValidationRules = ["isNumber", "isCharacter", "maxLength"];

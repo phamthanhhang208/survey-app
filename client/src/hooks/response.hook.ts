@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { message } from "antd";
-import { getAllResponses, deleteResponse, addResponse } from "@/api/response";
+import {
+	getAllResponses,
+	deleteResponse,
+	addResponse,
+	getResponse,
+} from "@/api/response";
 import { useParams } from "react-router-dom";
 
 export function useGetAllResponses() {
@@ -50,4 +55,17 @@ export function useDeleteResponse() {
 			message.loading("loading");
 		},
 	});
+}
+
+export function useGetResponse(id: any, responseId: any) {
+	return useQuery(
+		["forms", "detail", id, "responses", responseId],
+		() => getResponse({ id: id, responseId: responseId }),
+		{
+			onError: (error: any) => {
+				console.log(error);
+				message.error("meaningful error message is comming soon");
+			},
+		}
+	);
 }
