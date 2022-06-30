@@ -1,6 +1,11 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 import { message } from "antd";
-import { addQuestion, addManyQuestions, deleteQuestion } from "@/api/question";
+import {
+	addQuestion,
+	addManyQuestions,
+	deleteQuestion,
+	getQuestion,
+} from "@/api/question";
 import { useParams } from "react-router-dom";
 
 export function useAddQuestion() {
@@ -58,4 +63,18 @@ export function useDeleteQuestion() {
 			message.loading("loading");
 		},
 	});
+}
+
+export function useGetQuestion(id: any, questionId: any) {
+	//const { id } = useParams();
+	return useQuery(
+		["forms", "detail", id, "questions", questionId],
+		() => getQuestion({ id: id, questionId: questionId }),
+		{
+			onError: (error: any) => {
+				console.log(error);
+				message.error("meaningful error message is comming soon");
+			},
+		}
+	);
 }

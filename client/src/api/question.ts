@@ -54,3 +54,16 @@ export const addManyQuestions = async ({
   );
   return data;
 };
+
+export const getQuestion = async ({
+	id,
+	questionId,
+}: {
+	id: any;
+	questionId: any;
+}) => {
+	const { data } = await axiosClient.get(
+		`/forms/${id}/questions/${questionId}`
+	);
+	return data;
+};

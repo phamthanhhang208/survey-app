@@ -187,3 +187,11 @@ module.exports.deleteQuestionMedia = async (req, res, next) => {
 
 	return res.status(200).send("deleted media");
 };
+
+// get question by id
+
+module.exports.getQuestion = async (req, res, next) => {
+	const { questionId } = req.params;
+	const question = await Question.findById(questionId);
+	return res.status(200).send(question);
+};

@@ -37,6 +37,14 @@ router.delete(
 	validateQuesionId,
 	question.deleteQuestion
 );
+
+router.get(
+	"/:questionId",
+	validateFormId,
+	validateQuesionId,
+	question.getQuestion
+);
+
 router.put(
 	"/:questionId",
 	validateFormId,

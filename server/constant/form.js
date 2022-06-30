@@ -8,8 +8,12 @@ const schemaForm = {
 		description: {
 			type: "string",
 		},
+		isAllowAnonymous: {
+			type: "boolean",
+		},
+		isAcceptResponse: { type: "boolean" },
 	},
-	required: ["title"],
+	//required: ["title"],
 };
 
 module.exports = {
