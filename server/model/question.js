@@ -30,7 +30,10 @@ const questionSchema = new Schema({
 	answer: [
 		{
 			_id: false,
-			content: String,
+			content: {
+				type: String,
+				default: "Other",
+			},
 			media: { type: ImageSchema },
 		},
 	],

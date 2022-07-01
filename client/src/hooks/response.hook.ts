@@ -38,13 +38,13 @@ export function useAddResponse() {
 	});
 }
 
-export function useDeleteResponse() {
+export function useDeleteResponse(id: any, responseId: any) {
 	const queryClient = useQueryClient();
-	const { id } = useParams();
 
-	return useMutation(deleteResponse, {
+	return useMutation(() => deleteResponse({ id: id, responseId: responseId }), {
 		onSuccess: () => {
 			message.success("Deleted response!");
+			queryClient.invalidateQueries(["forms", "detail", id]);
 			queryClient.invalidateQueries(["forms", "detail", id, "responses"]);
 		},
 		onError: (error: any) => {

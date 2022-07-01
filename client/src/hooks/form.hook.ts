@@ -7,6 +7,7 @@ import {
 	getForm,
 	reorderFormQuestions,
 	getFormAnalytic,
+	downloadFormAnalytic,
 } from "@/api/form";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -106,6 +107,21 @@ export function useGetFormAnalytic() {
 		["forms", "detail", id, "analytic"],
 		() => getFormAnalytic(id),
 		{
+			onError: (error: any) => {
+				console.log(error);
+				message.error("meaningful error message is comming soon");
+			},
+		}
+	);
+}
+
+export function useDownloadFormAnalytic() {
+	const { id } = useParams();
+	return useQuery(
+		["forms", "detail", id, "analytics", "download"],
+		() => downloadFormAnalytic(id),
+		{
+			enabled: false,
 			onError: (error: any) => {
 				console.log(error);
 				message.error("meaningful error message is comming soon");

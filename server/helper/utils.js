@@ -14,6 +14,5 @@ exports.exportExcel = ({ fileName, header, rows }) => {
 	XLSX.utils.book_append_sheet(workbook, worksheet, "Responses");
 	const max_width = rows.reduce((w, r) => Math.max(w, r.length), 10);
 	worksheet["!cols"] = [{ wch: max_width }];
-
 	XLSX.writeFile(workbook, `${fileName}.xlsx`);
 };

@@ -16,6 +16,7 @@ const schemaQuestion = {
 		},
 		questionMedia: {
 			type: "object",
+			required: ["url", "filename"],
 			properties: {
 				url: {
 					type: "string",
@@ -40,6 +41,7 @@ const schemaQuestion = {
 			uniqueItemProperties: ["content"],
 			items: {
 				type: "object",
+				required: ["content"],
 				properties: {
 					content: {
 						type: "string",
@@ -55,10 +57,10 @@ const schemaQuestion = {
 							},
 						},
 						additionalProperties: false,
+						required: ["url", "filename"],
 					},
 				},
 				additionalProperties: false,
-				required: ["content"],
 			},
 		},
 

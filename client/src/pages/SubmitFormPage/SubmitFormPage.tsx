@@ -34,7 +34,7 @@ const SubmitFormPage: React.FC = () => {
 			}
 		}
 		addResponse({ id, values: answers });
-		console.log(values);
+		//console.log(values);
 	};
 	return (
 		<>
@@ -52,19 +52,7 @@ const SubmitFormPage: React.FC = () => {
 				<Divider />
 				<Form layout="vertical" onFinish={onFinish}>
 					{formDetail.questions.map((q: any) => {
-						return (
-							<QuestionSubmit key={q._id} question={q} />
-							// <Card key={q._id} className="question-list">
-							// 	<Form.Item label={q.questionText} required={q.required}>
-							// 		<AnswerSubmit
-							// 			name={q._id}
-							// 			type={q.type}
-							// 			answer={q.answer}
-							// 			required={q.required}
-							// 		/>
-							// 	</Form.Item>
-							// </Card>
-						);
+						return <QuestionSubmit key={q._id} question={q} />;
 					})}
 					<Form.Item>
 						<Button type="primary" htmlType="submit">

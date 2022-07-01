@@ -14,6 +14,7 @@ const schemaAnswer = {
 						type: "string",
 					},
 				},
+				required: ["content"],
 			},
 		},
 	},

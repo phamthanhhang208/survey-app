@@ -1,9 +1,22 @@
 const Form = require("../model/form");
+const Question = require("../model/question");
 
+// create a new form and a question
 module.exports.createForm = async (req, res, next) => {
 	const form = new Form(req.body);
+	const demoQuestion = {
+		questionText: "Untitle question",
+		type: "multiple-choice",
+		required: "false",
+		answer: {
+			content: "Option 1",
+		},
+	};
+	const question = new Question(demoQuestion);
+	await question.save();
+	form.questions.push(question);
 	await form.save();
-	return res.status(200).send(form._id);
+	return res.status(201).send(form._id);
 };
 
 //get all form sorted by recent

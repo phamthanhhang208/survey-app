@@ -3,7 +3,7 @@ import AnswerSubmit from "../Answer/AnswerSubmit";
 import "./QuestionSubmit.scss";
 
 export default function QuestionSubmit(props: any) {
-	const { question } = props;
+	const { question, disabled = false } = props;
 	return (
 		<Card key={question._id} className="question-list">
 			<Form.Item label={question.questionText} required={question.required}>
@@ -13,6 +13,7 @@ export default function QuestionSubmit(props: any) {
 					type={question.type}
 					answer={question.answer}
 					required={question.required}
+					disabled={disabled}
 				/>
 			</Form.Item>
 		</Card>

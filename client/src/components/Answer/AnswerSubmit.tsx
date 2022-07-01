@@ -2,7 +2,7 @@ import { SHORT, PARAGRAPH, CHECKBOX, MULTIPLECHOICE } from "@/const/question";
 import { Checkbox, Radio, Input, Form, Image } from "antd";
 
 const AnswerSubmit = (props: any) => {
-	const { type, answer, name, required } = props;
+	const { type, answer, name, required, disabled } = props;
 	let element = null;
 	if (type === MULTIPLECHOICE) {
 		element = (
@@ -21,7 +21,7 @@ const AnswerSubmit = (props: any) => {
 	}
 	if (type === CHECKBOX) {
 		element = (
-			<Checkbox.Group>
+			<Checkbox.Group disabled={disabled}>
 				{answer.map((a: any, idx: any) => {
 					return (
 						<div key={idx}>

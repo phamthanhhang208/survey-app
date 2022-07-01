@@ -1,4 +1,4 @@
-const Form = require("../model/form");
+const AppError = require("../helper/AppError");
 const Question = require("../model/question");
 const { CHECKBOXES, MULTIPLECHOICE } = require("../constant/question");
 const { validateAnswerSchema } = require("../helper/validateAnswer");
@@ -14,7 +14,7 @@ exports.isAnswerExist = async (req, res, next) => {
 			//check if answer array exist in db
 			const result = isContain(questionContent.answer, answers[i].answer);
 			//_.find(questionContent.answer, answers[i].answer);
-			if (!result) return next(new Error("answer does not exist"));
+			if (!result) return next(new AppError(404, "The answer does not exist"));
 			continue;
 		} else {
 			continue;
@@ -30,13 +30,15 @@ exports.validateAnswer = async (req, res, next) => {
 		if (question.type == MULTIPLECHOICE) {
 			//console.log(answers[i].answer.length);
 			if (answers[i].answer.length !== 1)
-				return next(new Error("only 1 choice allowed"));
+				return next(new AppError(400, "only 1 choice allowed"));
 		}
 		const { validator } = question;
 		if (!validator) continue;
 		const isAnswerValid = validateAnswerSchema(validator, answers[i].answer);
 		if (!isAnswerValid) {
-			return next(new Error(validator.message || "answer is not valid"));
+			return next(
+				new AppError(400, validator.message || "answer is not valid")
+			);
 		} else {
 			continue;
 		}
