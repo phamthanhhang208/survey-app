@@ -7,7 +7,7 @@ module.exports.addResponseToForm = async (req, res) => {
 	form.responses.push(response);
 	await response.save();
 	await form.save();
-	return res.status(200).send("added response");
+	return res.status(201).send("added response");
 };
 
 module.exports.getResponses = async (req, res) => {

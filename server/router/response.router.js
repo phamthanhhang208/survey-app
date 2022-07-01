@@ -7,6 +7,7 @@ const { validationResponseInput } = require("../middleware/validateInput");
 
 const {
 	validateFormId,
+	validateResponseId,
 	validateResponseQuestionId,
 } = require("../middleware/validateId");
 
@@ -17,6 +18,8 @@ const {
 
 const { isFormAcceptResponse } = require("../middleware/validateFormSetting");
 
+const catchAsync = require("../helper/catchAsync");
+
 router.post(
 	"/",
 	validationResponseInput,
@@ -24,7 +27,7 @@ router.post(
 	isFormAcceptResponse,
 	isAnswerExist,
 	validateAnswer,
-	response.addResponseToForm
+	catchAsync(response.addResponseToForm)
 );
 
 //for testing
@@ -37,9 +40,19 @@ router.post(
 	form.dummyApi
 );
 
-router.get("/", validateFormId, response.getResponses);
-router.get("/:responseId", validateFormId, response.getResponse);
-router.delete("/:responseId", validateFormId, response.deleteResponse);
+router.get("/", validateFormId, catchAsync(response.getResponses));
+router.get(
+	"/:responseId",
+	validateFormId,
+	validateResponseId,
+	catchAsync(response.getResponse)
+);
+router.delete(
+	"/:responseId",
+	validateFormId,
+	validateResponseId,
+	catchAsync(response.deleteResponse)
+);
 
 router.use((err, req, res, next) => {
 	console.log(err);

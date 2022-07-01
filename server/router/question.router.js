@@ -14,14 +14,19 @@ const {
 	validateQuesionId,
 } = require("../middleware/validateId");
 
-const { validateQuestionMedia } = require("../middleware/validateMedia");
+const {
+	validateQuestionMedia,
+	validateAllQuestionMedias,
+} = require("../middleware/validateMedia");
+
+const catchAsync = require("../helper/catchAsync");
 
 router.post(
 	"/many",
 	validateFormId,
 	upload.any(),
 	validationQuestionList,
-	question.addQuestions
+	catchAsync(question.addQuestions)
 );
 
 router.post(
@@ -35,14 +40,14 @@ router.delete(
 	"/:questionId",
 	validateFormId,
 	validateQuesionId,
-	question.deleteQuestion
+	catchAsync(question.deleteQuestion)
 );
 
 router.get(
 	"/:questionId",
 	validateFormId,
 	validateQuesionId,
-	question.getQuestion
+	catchAsync(question.getQuestion)
 );
 
 router.put(
@@ -51,14 +56,14 @@ router.put(
 	upload.any(),
 	validateQuesionId,
 	validateQuestionInput,
-	//validateQuestionMedia,
-	question.editQuestion
+	validateAllQuestionMedias,
+	catchAsync(question.editQuestion)
 );
 
 router.delete(
 	"/:questionId/media",
 	validateQuestionMedia,
-	question.deleteQuestionMedia
+	catchAsync(question.deleteQuestionMedia)
 );
 
 router.use((err, req, res, next) => {

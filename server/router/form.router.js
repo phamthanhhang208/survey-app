@@ -5,28 +5,34 @@ const question = require("../controller/question.controller");
 const analytic = require("../controller/analytic.controller");
 const exportFile = require("../controller/export.controller");
 const { validateFormInput } = require("../middleware/validateInput");
+const catchAsync = require("../helper/catchAsync");
 
 const {
 	validateFormId,
 	validateAllQuestionIds,
 } = require("../middleware/validateId");
 
-router.post("/", validateFormInput, form.createForm);
-router.get("/", form.getAllForms);
-router.get("/:id", validateFormId, form.getForm);
-router.delete("/:id", validateFormId, form.deleteForm);
-router.put("/:id", validateFormId, validateFormInput, form.updateForm);
+router.post("/", validateFormInput, catchAsync(form.createForm));
+router.get("/", catchAsync(form.getAllForms));
+router.get("/:id", validateFormId, catchAsync(form.getForm));
+router.delete("/:id", validateFormId, catchAsync(form.deleteForm));
+router.put(
+	"/:id",
+	validateFormId,
+	validateFormInput,
+	catchAsync(form.updateForm)
+);
 
 router.patch(
 	"/:id",
 	validateFormId,
 	validateAllQuestionIds,
-	question.reorderQuestions
+	catchAsync(question.reorderQuestions)
 );
 
-router.get("/:id/analytic", analytic.getAnalytics);
+router.get("/:id/analytic", catchAsync(analytic.getAnalytics));
 
-router.get("/:id/download", exportFile.exportsToExcel);
+router.get("/:id/download", catchAsync(exportFile.exportsToExcel));
 
 router.use((err, req, res, next) => {
 	console.log(err);

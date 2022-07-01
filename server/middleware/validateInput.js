@@ -4,29 +4,40 @@ const {
 	validateQuestions,
 	validateResponse,
 } = require("../helper/validateJson");
+const AppError = require("../helper/AppError");
 
 exports.validateQuestionInput = (req, res, next) => {
-	//console.log(req.body);
 	const isValid = validateQuestion(req.body);
-	if (!isValid) return next(validateQuestion.errors);
+	if (!isValid) {
+		console.log(validateQuestion.errors);
+		return next(new AppError(400));
+	}
 	return next();
 };
 
 exports.validationQuestionList = (req, res, next) => {
 	const isValid = validateQuestions(req.body.questions);
-	if (!isValid) return next(validateQuestions.errors);
+	if (!isValid) {
+		console.log(validateQuestions.errors);
+		return next(new AppError(400));
+	}
 	return next();
 };
 
 exports.validateFormInput = (req, res, next) => {
 	const isValid = validateForm(req.body);
-	if (!isValid) return next(validateForm.errors);
+	if (!isValid) {
+		console.log(validateForm.errors);
+		return next(new AppError(400));
+	}
 	return next();
 };
 
 exports.validationResponseInput = (req, res, next) => {
-	//console.log(req.body);
 	const isValid = validateResponse(req.body);
-	if (!isValid) return next(validateResponse.errors);
+	if (!isValid) {
+		console.log(validateResponse.errors);
+		return next(new AppError(400));
+	}
 	return next();
 };
