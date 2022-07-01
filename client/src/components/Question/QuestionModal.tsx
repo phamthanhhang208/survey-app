@@ -1,16 +1,14 @@
+import CheckboxCreate from '@/components/CreateComponent/CheckboxCreate/CheckboxCreate';
+import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCreate';
+import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
 import { question as questionTypeList } from '@/const/question';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
+import { MoreOutlined } from '@ant-design/icons';
 import {
-  BorderOutlined,
-  CloseOutlined,
-  MoreOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
-import {
-  Button,
   Checkbox,
   Divider,
   Form,
+  FormInstance,
   Input,
   Popover,
   Select,
@@ -19,131 +17,26 @@ import {
 import { FunctionComponent, useState } from 'react';
 import './QuestionModal.scss';
 
-interface QuestionModal {}
+interface QuestionModal {
+  form: FormInstance<any>;
+}
 
-const QuestionCreate: FunctionComponent<QuestionModal> = () => {
+const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
   const permission = useCurrentPermission();
   const [isQuestionDescriptionShown, setIsQuestionDescriptionShown] =
     useState(false);
   const [isValidatorShown, setIsValidatorShown] = useState(false);
-  const [questionTypeState, setQuestionTypeState] = useState<string>('');
+  const [questionTypeState, setQuestionTypeState] = useState<string>(() => {
+    return form.getFieldValue('type');
+  });
   const [visible, setVisible] = useState(false);
 
   const dynamicQuestion = () => {
     switch (questionTypeState) {
       case 'checkboxes':
-        // return <CheckboxList />;
-        return (
-          <Form.Item name={'checkboxes'}>
-            <Form.List name={'checkboxes'}>
-              {(fields, { add, remove }, { errors }) => (
-                <>
-                  {fields.map((field, index) => (
-                    <Form.Item required={false} key={field.key}>
-                      <BorderOutlined
-                        style={{
-                          marginRight: '5px',
-                          fontSize: '1.2rem',
-                          color: '#d9d9d9',
-                        }}
-                      />
-                      <Form.Item
-                        {...field}
-                        validateTrigger={['onChange', 'onBlur']}
-                        rules={[
-                          {
-                            required: true,
-                            whitespace: true,
-                            message: 'Please input question answer.',
-                          },
-                        ]}
-                        noStyle
-                      >
-                        <Input style={{ width: '60%' }} />
-                      </Form.Item>
-                      <CloseOutlined
-                        style={{ marginLeft: '5px' }}
-                        className='dynamic-delete-button'
-                        onClick={() => remove(field.name)}
-                      />
-                    </Form.Item>
-                  ))}
-                  <Form.Item>
-                    <Button
-                      type='dashed'
-                      onClick={() => {
-                        add();
-                      }}
-                      style={{ width: '60%', marginTop: '20px' }}
-                      icon={<PlusOutlined />}
-                    >
-                      Add question
-                    </Button>
-                    <Form.ErrorList errors={errors} />
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Form.Item>
-        );
+        return <CheckboxCreate />;
       case 'multiple-choice':
-        return (
-          <Form.Item name={'multipleChoice'}>
-            <Form.List name={'multipleChoice'}>
-              {(fields, { add, remove }, { errors }) => (
-                <>
-                  {fields.map((field, index) => (
-                    <Form.Item required={false} key={field.key}>
-                      <div
-                        style={{
-                          display: 'inline-block',
-                          border: '1px solid #9d9d9d',
-                          height: '16px',
-                          width: '16px',
-                          borderRadius: '50%',
-                          transform: 'translateY(3px)',
-                          marginRight: '5px',
-                        }}
-                      />
-                      <Form.Item
-                        {...field}
-                        validateTrigger={['onChange', 'onBlur']}
-                        rules={[
-                          {
-                            required: true,
-                            whitespace: true,
-                            message: 'Please input question answer',
-                          },
-                        ]}
-                        noStyle
-                      >
-                        <Input style={{ width: '60%' }} />
-                      </Form.Item>
-                      <CloseOutlined
-                        style={{ marginLeft: '5px' }}
-                        className='dynamic-delete-button'
-                        onClick={() => remove(field.name)}
-                      />
-                    </Form.Item>
-                  ))}
-                  <Form.Item>
-                    <Button
-                      type='dashed'
-                      onClick={() => {
-                        add();
-                      }}
-                      style={{ width: '60%', marginTop: '20px' }}
-                      icon={<PlusOutlined />}
-                    >
-                      Add question
-                    </Button>
-                    <Form.ErrorList errors={errors} />
-                  </Form.Item>
-                </>
-              )}
-            </Form.List>
-          </Form.Item>
-        );
+        return <RadioCreate />;
       case 'short-paragraph':
         return (
           <Form.Item name={'shortParagraph'}>
@@ -154,14 +47,7 @@ const QuestionCreate: FunctionComponent<QuestionModal> = () => {
           </Form.Item>
         );
       case 'paragraph':
-        return (
-          <Form.Item name={'paragraph'}>
-            <Input.TextArea
-              disabled={permission === 'edit' ? true : false}
-              placeholder={'Answer'}
-            ></Input.TextArea>
-          </Form.Item>
-        );
+        return <ParagraphCreate />;
       default:
         break;
     }
@@ -176,7 +62,7 @@ const QuestionCreate: FunctionComponent<QuestionModal> = () => {
   };
 
   return (
-    <div>
+    <div className='question-modal'>
       <Form.Item
         name={'questionText'}
         label='Question'
@@ -184,13 +70,11 @@ const QuestionCreate: FunctionComponent<QuestionModal> = () => {
       >
         <Input placeholder='Question' />
       </Form.Item>
-
       {isQuestionDescriptionShown && (
         <Form.Item name={'description'} label='Description'>
           <Input.TextArea placeholder='Description' />
         </Form.Item>
       )}
-
       <Form.Item label='Type' name={'type'} rules={[{ required: true }]}>
         <Select
           placeholder={'Question type'}
@@ -205,13 +89,9 @@ const QuestionCreate: FunctionComponent<QuestionModal> = () => {
           })}
         </Select>
       </Form.Item>
-
       {dynamicQuestion()}
-
       {isValidatorShown && <div>Validation</div>}
-
       <Divider />
-
       <div className='question-functions'>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
           <Form.Item
