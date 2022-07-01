@@ -1,22 +1,20 @@
 import QuestionModal from '@/components/Question/QuestionModal';
 import QuestionListView from '@/components/QuestionListView/QuestionListView';
-import { useGetForm } from '@/hooks/form.hook';
+import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
 import { useAddQuestion } from '@/hooks/question.hook';
-import useCurrentPermission from '@/hooks/useCurrentPermission';
-import { Button, Form, Input, Modal, Spin } from 'antd';
-import { FunctionComponent, useState } from 'react';
+import { Button, Form, Input, Modal, Spin, Typography } from 'antd';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { HighlightOutlined } from '@ant-design/icons';
 import './CreateFormPage.scss';
-
-const { Item } = Form;
 
 interface CreateFormPageProps {}
 
 const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
-  const permission = useCurrentPermission();
-  const [form] = Form.useForm();
   const { data: formDetail, isLoading } = useGetForm();
+  const { mutate: updateForm } = useUpdateForm();
+  const [form] = Form.useForm();
+  const [formHeader] = Form.useForm();
   const { mutate: addQuestion } = useAddQuestion();
-
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -26,7 +24,6 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
 
   const handleOk = () => {
     form.submit();
-    console.log('first');
   };
 
   const handleSubmit = async (v: any) => {
@@ -114,60 +111,95 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
     return <Spin />;
   }
 
-  const handleFinish = (v: any) => {
-    console.log(form.getFieldValue(['questions']));
+  const handleUpdateFormHeader = (v: any) => {
+    console.log(formHeader.getFieldValue('title'));
+    console.log(formHeader.getFieldValue('description'));
+    console.log(formDetail);
+
+    const values = {
+      title: formHeader.getFieldValue('title'),
+      description: formHeader.getFieldValue('description'),
+    };
+
+    if (
+      formDetail.title !== values.title ||
+      formDetail?.description !== values.description
+    ) {
+      updateForm({ id: formDetail._id, values });
+    }
   };
 
   return (
     <div className='create-form-page'>
+      <Modal
+        title='Add question'
+        visible={visible}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+        destroyOnClose
+        width={700}
+      >
+        <Form
+          form={form}
+          className='question'
+          onFinish={handleSubmit}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+          labelAlign='left'
+          labelWrap
+        >
+          <QuestionModal form={form} />
+        </Form>
+      </Modal>
+
       <Form
-        onFinish={handleFinish}
-        // form={form}
-        layout={'vertical'}
-        className={'create-form'}
+        form={formHeader}
         initialValues={{
           title: formDetail?.title,
+          description: formDetail?.description,
         }}
+        className='create-form-header'
+        onFinish={handleUpdateFormHeader}
       >
-        <div className='create-form-header'>
-          <Item
-            label={'Form name:'}
-            rules={[
-              { required: true, message: 'Form name must not be empty.' },
-            ]}
-            name={'title'}
-          >
-            <Input
-              placeholder='Form name'
-              disabled={permission === 'edit' ? false : true}
-            />
-          </Item>
-          <Item label={'Description:'} name={'formDescription'}>
-            <Input.TextArea
-              placeholder='Description'
-              disabled={permission === 'edit' ? false : true}
-            />
-          </Item>
-        </div>
+        <Form.Item
+          name={'title'}
+          rules={[{ required: true, message: 'Title can not be empty' }]}
+        >
+          <Input
+            placeholder='Form title'
+            style={{
+              border: 'none',
+              fontSize: '1.9rem',
+              fontWeight: 400,
+              borderBottom: '0.5px solid grey',
+              padding: 0,
+            }}
+            onBlur={() => formHeader.submit()}
+            onPressEnter={() => {
+              formHeader.getFieldInstance('title').blur();
+            }}
+          />
+        </Form.Item>
+        <Form.Item name={'description'}>
+          <Input.TextArea
+            placeholder='Form description'
+            style={{
+              border: 'none',
+              fontSize: '0.96rem',
+              fontWeight: 300,
+              padding: 0,
+              borderBottom: '0.5px solid grey',
+            }}
+            onBlur={() => formHeader.submit()}
+          />
+        </Form.Item>
       </Form>
 
       <div className='form-question-list'>
         <Button type='primary' onClick={showModal}>
           Add question
         </Button>
-        <Modal
-          title='Add question'
-          visible={visible}
-          onOk={handleOk}
-          confirmLoading={confirmLoading}
-          onCancel={handleCancel}
-          destroyOnClose
-          width={700}
-        >
-          <Form form={form} className='question' onFinish={handleSubmit}>
-            <QuestionModal form={form} />
-          </Form>
-        </Modal>
       </div>
 
       <QuestionListView
