@@ -25,6 +25,10 @@ const EditResponsePage: React.FC = () => {
 		return <Spin />;
 	}
 
+	if (!formDetail) {
+		return <Spin />;
+	}
+
 	const handleOnClickDownload = async () => {
 		const { data: excelContent } = await refetch();
 		const { fileName, header, rows } = excelContent;
@@ -35,11 +39,11 @@ const EditResponsePage: React.FC = () => {
 		<div className="edit-response-page">
 			<Tabs centered>
 				<TabPane tab="Summary" key="1">
-					{formDetail.responses.length ? (
+					{formDetail?.responses.length ? (
 						<>
 							<Card>
 								<Typography.Title level={2}>
-									{formDetail.responses.length} responses
+									{formDetail?.responses.length} responses
 								</Typography.Title>
 								<Button
 									type="primary"
@@ -58,14 +62,13 @@ const EditResponsePage: React.FC = () => {
 					)}
 				</TabPane>
 				<TabPane tab="Response" key="2">
-					{formDetail.responses.length === 0 ? (
+					{formDetail?.responses.length === 0 ? (
 						<Empty />
 					) : isLoading ? (
 						<Spin />
 					) : (
 						<ViewResponse formDetail={formDetail} />
 					)}
-					{/* {isLoading ? <Spin /> : <ViewResponse formDetail={formDetail} />} */}
 				</TabPane>
 			</Tabs>
 		</div>
