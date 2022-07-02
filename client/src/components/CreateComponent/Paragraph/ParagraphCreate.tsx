@@ -9,12 +9,14 @@ const ParagraphCreate: FunctionComponent<ParagraphCreateProps> = () => {
   const permission = useCurrentPermission();
 
   return (
-    <Form.Item name={'paragraph'} className={'paragraph-create'}>
-      <Input.TextArea
-        disabled={permission === 'edit' ? true : false}
-        placeholder={'Answer'}
-      ></Input.TextArea>
-    </Form.Item>
+    <div>
+      <Form.Item name={['paragraph', 'content']} className={'paragraph-create'}>
+        <Input.TextArea
+          disabled={permission === 'edit' ? true : false}
+          placeholder={'Answer'}
+        ></Input.TextArea>
+      </Form.Item>
+    </div>
   );
 };
 

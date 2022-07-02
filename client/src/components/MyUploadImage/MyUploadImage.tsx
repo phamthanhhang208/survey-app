@@ -4,12 +4,11 @@ import { FunctionComponent, useState } from 'react';
 import './MyUploadImage.scss';
 
 interface MyUploadImageProps {
-  field: any;
+  field?: any;
 }
 
 const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
   const [uploadedFile, setUploadedFile] = useState<any>(null);
-
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const beforeImageUpload = (file: any) => {
@@ -22,12 +21,6 @@ const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
       message.error('Image must smaller than 2MB!');
     }
     return false;
-  };
-
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
   };
 
   return (
@@ -43,7 +36,6 @@ const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
         marginLeft: uploadedFile?.fileList?.length > 0 ? 34 : 0,
       }}
       className='my-upload-image'
-      getValueFromEvent={normFile}
     >
       <Upload
         maxCount={1}

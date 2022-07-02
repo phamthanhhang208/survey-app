@@ -202,6 +202,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       <QuestionListView
         className={'question-list-view'}
         questions={formDetail?.questions}
+        formId={formDetail._id}
       />
     </div>
   );
