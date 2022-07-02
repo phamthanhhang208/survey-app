@@ -1,180 +1,211 @@
-import QuestionModal from "@/components/Question/QuestionModal";
-import QuestionListView from "@/components/QuestionListView/QuestionListView";
-import { useGetForm } from "@/hooks/form.hook";
-import { useAddQuestion } from "@/hooks/question.hook";
-import useCurrentPermission from "@/hooks/useCurrentPermission";
-import { Button, Form, Input, Modal, Spin } from "antd";
-import { FunctionComponent, useState } from "react";
-import "./CreateFormPage.scss";
-
-const { Item } = Form;
+import QuestionModal from '@/components/Question/QuestionModal';
+import QuestionListView from '@/components/QuestionListView/QuestionListView';
+import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
+import { useAddQuestion } from '@/hooks/question.hook';
+import { Button, Form, Input, Modal, Spin } from 'antd';
+import { FunctionComponent, useState } from 'react';
+import './CreateFormPage.scss';
 
 interface CreateFormPageProps {}
 
 const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
-	const permission = useCurrentPermission();
-	const [form] = Form.useForm();
-	const { data: formDetail, isLoading } = useGetForm();
-	const { mutate: addQuestion } = useAddQuestion();
+  const { data: formDetail, isLoading } = useGetForm();
+  const { mutate: updateForm } = useUpdateForm();
+  const [form] = Form.useForm();
+  const [formHeader] = Form.useForm();
+  const { mutate: addQuestion } = useAddQuestion();
+  const [visible, setVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
-	const [visible, setVisible] = useState(false);
-	const [confirmLoading, setConfirmLoading] = useState(false);
+  const showModal = () => {
+    setVisible(true);
+  };
 
-	const showModal = () => {
-		setVisible(true);
-	};
+  const handleOk = () => {
+    form.submit();
+  };
 
-	const handleOk = () => {
-		form.submit();
-	};
+  const handleSubmit = async (v: any) => {
+    try {
+      const formData = new FormData();
+      formData.append('questionText', v.questionText);
+      formData.append('type', v.type);
+      formData.append('required', v.required);
 
-	const handleSubmit = async (v: any) => {
-		try {
-			const formData = new FormData();
-			formData.append("questionText", v.questionText);
-			formData.append("type", v.type);
-			formData.append("required", v.required);
+      console.log(v);
 
-			switch (v.type) {
-				case "multiple-choice":
-					const arrMultipleChoice = [
-						...v?.multipleChoice.map((c: any) => {
-							return { content: c };
-						}),
-					];
+      switch (v.type) {
+        case 'multiple-choice':
+          const arrMultipleChoice = [
+            ...v?.multipleChoice.map((c: any) => {
+              return { content: c.content, media: c.media?.fileList[0] };
+            }),
+          ];
 
-					for (let i = 0; i < arrMultipleChoice.length; i++) {
-						formData.append(
-							`answer[${i}][content]`,
-							arrMultipleChoice[i].content
-						);
-					}
+          // return console.log(arrMultipleChoice);
+          for (let i = 0; i < arrMultipleChoice.length; i++) {
+            formData.append(
+              `answer[${i}][content]`,
+              arrMultipleChoice[i].content
+            );
+            if (arrMultipleChoice[i].media) {
+              formData.append(
+                `answer[${i}][media]`,
+                arrMultipleChoice[i].media.originFileObj,
+                arrMultipleChoice[i].media.uid
+              );
+            }
+          }
 
-					break;
-				case "checkboxes":
-					const arrCheckbox = [
-						...v?.checkboxes.map((c: any) => {
-							return { content: c };
-						}),
-					];
+          break;
+        case 'checkboxes':
+          const arrCheckbox = [
+            ...v?.checkboxes.map((c: any) => {
+              return { content: c.content, media: c.media?.fileList[0] };
+            }),
+          ];
 
-					for (let i = 0; i < arrCheckbox.length; i++) {
-						formData.append(`answer[${i}][content]`, arrCheckbox[i].content);
-					}
+          for (let i = 0; i < arrCheckbox.length; i++) {
+            formData.append(`answer[${i}][content]`, arrCheckbox[i].content);
 
-					break;
-				case "paragraph":
-				case "short-paragraph":
-					formData.append("answer[0][content]", "");
-					break;
-				// case "paragraph":
-				// 	formData.append("answer", JSON.stringify([{ content: "" }]));
-				// 	break;
+            if (arrCheckbox[i].media) {
+              formData.append(
+                `answer[${i}][media]`,
+                arrCheckbox[i].media.originFileObj,
+                arrCheckbox[i].media.uid
+              );
+            }
+          }
 
-				default:
-					break;
-			}
+          break;
+        case 'paragraph':
+        case 'short-paragraph':
+          formData.append('answer[0][content]', '');
+          break;
 
-			// const entries = formData.entries();
+        default:
+          break;
+      }
 
-			// for (let entry of entries) {
-			//   console.log(entry[0], entry[1]);
-			// }
-			console.log(formData.getAll("answer"));
-			const req = addQuestion({ id: formDetail._id, values: formData });
-			// const req = addQuestion({
-			// 	id: formDetail._id,
-			// 	values: {
-			// 		questionText: "test hard code",
-			// 		type: "paragraph",
-			// 		required: "false",
-			// 		answer: [{ content: "met qua" }],
-			// 	},
-			// });
-			setConfirmLoading(true);
-			const res = await req;
-			console.log(res);
+      const req = addQuestion({ id: formDetail._id, values: formData });
 
-			form.resetFields();
-		} catch (error) {
-			console.log("go here");
+      setConfirmLoading(true);
+      const res = await req;
+      console.log(res);
 
-			console.log(error);
-		}
-		setVisible(false);
-		setConfirmLoading(false);
-	};
+      form.resetFields();
+    } catch (error) {
+      console.log(error);
+    }
+    setVisible(false);
+    setConfirmLoading(false);
+  };
 
-	const handleCancel = () => {
-		console.log("Clicked cancel button");
-		setVisible(false);
-	};
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setVisible(false);
+  };
 
-	if (isLoading) {
-		return <Spin />;
-	}
+  if (isLoading) {
+    return <Spin />;
+  }
 
-	const handleFinish = (v: any) => {
-		console.log(form.getFieldValue(["questions"]));
-	};
+  const handleUpdateFormHeader = (v: any) => {
+    const values = {
+      title: formHeader.getFieldValue('title'),
+      description: formHeader.getFieldValue('description'),
+    };
 
-	return (
-		<div className="create-form-page">
-			<Form
-				onFinish={handleFinish}
-				// form={form}
-				layout={"vertical"}
-				className={"create-form"}
-				initialValues={{
-					title: formDetail?.title,
-				}}
-			>
-				<div className="create-form-header">
-					<Item
-						label={"Form name:"}
-						rules={[
-							{ required: true, message: "Form name must not be empty." },
-						]}
-						name={"title"}
-					>
-						<Input
-							placeholder="Form name"
-							disabled={permission === "edit" ? false : true}
-						/>
-					</Item>
-					<Item label={"Description:"} name={"formDescription"}>
-						<Input.TextArea
-							placeholder="Description"
-							disabled={permission === "edit" ? false : true}
-						/>
-					</Item>
-				</div>
-			</Form>
+    if (
+      formDetail.title !== values.title ||
+      formDetail?.description !== values.description
+    ) {
+      updateForm({ id: formDetail._id, values });
+    }
+  };
 
-			<div className="form-question-list">
-				<Button type="primary" onClick={showModal}>
-					Add question
-				</Button>
-				<Modal
-					title="Title"
-					visible={visible}
-					onOk={handleOk}
-					confirmLoading={confirmLoading}
-					onCancel={handleCancel}
-					destroyOnClose
-				>
-					<Form form={form} className="question" onFinish={handleSubmit}>
-						<QuestionModal />
-					</Form>
-				</Modal>
-			</div>
+  return (
+    <div className='create-form-page'>
+      <Modal
+        title='Add question'
+        visible={visible}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+        destroyOnClose
+        width={700}
+        bodyStyle={{ paddingBottom: 10 }}
+      >
+        <Form
+          form={form}
+          className='question'
+          onFinish={handleSubmit}
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+          labelAlign='left'
+          labelWrap
+        >
+          <QuestionModal form={form} />
+        </Form>
+      </Modal>
 
-			<QuestionListView
-				className={"question-list-view"}
-				questions={formDetail?.questions}
-			/>
-		</div>
-	);
+      <Form
+        form={formHeader}
+        initialValues={{
+          title: formDetail?.title,
+          description: formDetail?.description,
+        }}
+        className='create-form-header'
+        onFinish={handleUpdateFormHeader}
+      >
+        <Form.Item
+          name={'title'}
+          rules={[{ required: true, message: 'Title can not be empty' }]}
+        >
+          <Input
+            placeholder='Form title'
+            style={{
+              border: 'none',
+              fontSize: '1.9rem',
+              fontWeight: 400,
+              borderBottom: '0.5px solid grey',
+              padding: 0,
+            }}
+            onBlur={() => formHeader.submit()}
+            onPressEnter={() => {
+              formHeader.getFieldInstance('title').blur();
+            }}
+          />
+        </Form.Item>
+        <Form.Item name={'description'}>
+          <Input.TextArea
+            autoSize
+            placeholder='Form description'
+            style={{
+              border: 'none',
+              fontSize: '0.96rem',
+              fontWeight: 300,
+              padding: 0,
+              borderBottom: '0.5px solid grey',
+            }}
+            onBlur={() => formHeader.submit()}
+          />
+        </Form.Item>
+      </Form>
+
+      <div className='create-question-fields'>
+        <Button type='primary' onClick={showModal}>
+          Add question
+        </Button>
+      </div>
+
+      <QuestionListView
+        className={'question-list-view'}
+        questions={formDetail?.questions}
+        formId={formDetail._id}
+      />
+    </div>
+  );
 };
 
 export default CreateFormPage;

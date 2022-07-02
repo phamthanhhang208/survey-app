@@ -1,0 +1,15 @@
+.question-view-card {
+  .view-card-functions {
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+
+    svg:hover {
+      transform: scale(1.2);
+      cursor: pointer;
+      transition-duration: 200ms;
+    }
+  }
+}

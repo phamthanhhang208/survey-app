@@ -1,0 +1,27 @@
+@import '@/styles/globalStyles.scss';
+
+.my-upload-image {
+  .upload-button {
+    font-size: 1.2rem;
+    color: $main-black-color;
+    position: relative;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-radius: 50%;
+    transition: 0.12s ease-in-out;
+    transform: translateY(-4px);
+  }
+
+  .upload-button:hover {
+    background: $secondary-gray-color;
+
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    z-index: 2;
+  }
+}

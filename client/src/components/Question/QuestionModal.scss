@@ -1,84 +1,32 @@
 @import '@/styles/globalStyles.scss';
 
-.question {
-  background-color: white;
-  padding: 20px 20px 10px 20px;
-
-  .ant-divider-horizontal {
-    margin: 0;
-    margin-bottom: 10px;
-  }
-
+.question-modal {
   .question-functions {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
+  }
 
-    svg {
-      font-size: 20px;
+  .dynamic-questions {
+    width: 100%;
+    position: relative;
+
+    .ant-row .ant-form-item {
+      width: 100%;
     }
 
-    .ant-form-item-label {
-      padding: 0;
-      font-weight: 400;
+    .dynamic-question-item {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
 
-    }
-
-    .ant-form-item-label label {
-      font-size: 14px;
-      margin-right: 5px;
-    }
-
-    .question .question-functions svg {
-      font-size: 22px;
-    }
-
-    .ant-divider-vertical {
-      border-left: 1.2px solid $divider-color;
-      height: 1.3rem;
-    }
-
-    .additional-fields {
-      .ant-checkbox-group {
-        display: flex;
-        flex-direction: column;
+      .dynamic-delete-button {
+        transform: translateY(10px);
       }
     }
-  }
-
-}
-
-.ant-popover-title {
-  color: $main-blue-color;
-  font-weight: bold;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.ant-popover-inner-content {
-  padding: 10px 20px;
-
-  .more-fields {
-    p {
-      padding: 10px 20px;
-
-    }
-
-    p:hover {
-      background-color: red;
-      cursor: pointer;
-    }
-  }
-
-  .ant-checkbox-wrapper+.ant-checkbox-wrapper {
-    margin-left: 0;
-  }
-
-  .ant-checkbox-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
   }
 }

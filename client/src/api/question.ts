@@ -1,18 +1,10 @@
 import axiosClient from './axiosClient';
 
 export const addQuestion = async ({ id, values }: { id: any; values: any }) => {
-  try {
-    const res = await axiosClient.post(`/forms/${id}/questions`, values);
-
-    console.log(res);
-    return res;
-  } catch (error) {
-    console.log('first');
-    /**
-     * Handle error
-     */
-  }
+  const res = await axiosClient.post(`/forms/${id}/questions`, values);
+  return res;
 };
+
 export const deleteQuestion = async ({
   id,
   questionId,
@@ -56,14 +48,14 @@ export const addManyQuestions = async ({
 };
 
 export const getQuestion = async ({
-	id,
-	questionId,
+  id,
+  questionId,
 }: {
-	id: any;
-	questionId: any;
+  id: any;
+  questionId: any;
 }) => {
-	const { data } = await axiosClient.get(
-		`/forms/${id}/questions/${questionId}`
-	);
-	return data;
+  const { data } = await axiosClient.get(
+    `/forms/${id}/questions/${questionId}`
+  );
+  return data;
 };
