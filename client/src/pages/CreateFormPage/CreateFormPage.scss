@@ -4,8 +4,16 @@
   width: 60%;
   margin: 20px auto;
 
-  .form-question-list {
+  .create-question-fields {
     margin: 20px 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2px;
+
+    button {
+      border-radius: 5px;
+    }
   }
 
   .create-form-header {

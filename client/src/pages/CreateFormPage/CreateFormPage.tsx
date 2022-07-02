@@ -111,10 +111,6 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   }
 
   const handleUpdateFormHeader = (v: any) => {
-    console.log(formHeader.getFieldValue('title'));
-    console.log(formHeader.getFieldValue('description'));
-    console.log(formDetail);
-
     const values = {
       title: formHeader.getFieldValue('title'),
       description: formHeader.getFieldValue('description'),
@@ -197,7 +193,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
         </Form.Item>
       </Form>
 
-      <div className='form-question-list'>
+      <div className='create-question-fields'>
         <Button type='primary' onClick={showModal}>
           Add question
         </Button>
