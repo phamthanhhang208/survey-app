@@ -1,4 +1,32 @@
 @import '@/styles/globalStyles.scss';
 
 .question-modal {
+  .question-functions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dynamic-questions {
+    width: 100%;
+    position: relative;
+
+    .ant-row .ant-form-item {
+      width: 100%;
+    }
+
+    .dynamic-question-item {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .dynamic-delete-button {
+        transform: translateY(10px);
+      }
+    }
+  }
 }

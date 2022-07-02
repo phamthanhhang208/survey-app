@@ -2,9 +2,8 @@ import QuestionModal from '@/components/Question/QuestionModal';
 import QuestionListView from '@/components/QuestionListView/QuestionListView';
 import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
 import { useAddQuestion } from '@/hooks/question.hook';
-import { Button, Form, Input, Modal, Spin, Typography } from 'antd';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { HighlightOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal, Spin } from 'antd';
+import { FunctionComponent, useState } from 'react';
 import './CreateFormPage.scss';
 
 interface CreateFormPageProps {}
@@ -139,6 +138,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
         onCancel={handleCancel}
         destroyOnClose
         width={700}
+        bodyStyle={{ paddingBottom: 10 }}
       >
         <Form
           form={form}
@@ -183,6 +183,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
         </Form.Item>
         <Form.Item name={'description'}>
           <Input.TextArea
+            autoSize
             placeholder='Form description'
             style={{
               border: 'none',

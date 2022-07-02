@@ -1,3 +1,4 @@
+import MyUploadImage from '@/components/MyUploadImage/MyUploadImage';
 import {
   BorderOutlined,
   CloseOutlined,
@@ -30,15 +31,17 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = () => {
           <>
             {fields.map((field, index) => {
               return (
-                <div key={field.key}>
+                <div key={field.key} className={'dynamic-question-item'}>
                   <BorderOutlined
                     style={{
                       marginRight: '5px',
                       fontSize: '1.2rem',
                       color: '#d9d9d9',
+                      transform: 'translateY(5px)',
                     }}
                   />
                   <Form.Item
+                    style={{ marginBottom: 0, width: 420 }}
                     name={[field.name, 'content']}
                     validateTrigger={['onChange', 'onBlur']}
                     rules={[
@@ -47,29 +50,19 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = () => {
                         message: 'Please input question answer',
                       },
                     ]}
-                    noStyle
                   >
-                    <Input style={{ width: '60%' }} />
+                    <Input style={{ width: '100%' }} />
                   </Form.Item>
-                  <Form.Item
-                    name={[field.name, 'media']}
-                    label='Attachment'
-                    valuePropName='file'
-                  >
-                    <Upload
-                      maxCount={1}
-                      listType='picture'
-                      beforeUpload={beforeImageUpload}
-                      accept='image/*'
-                    >
-                      <Button icon={<UploadOutlined />}>Images</Button>
-                    </Upload>
-                  </Form.Item>
-                  <CloseOutlined
-                    style={{ marginLeft: '5px' }}
-                    className='dynamic-delete-button'
-                    onClick={() => remove(field.name)}
-                  />
+
+                  <MyUploadImage field={field} />
+
+                  {fields?.length > 1 && (
+                    <CloseOutlined
+                      style={{ marginLeft: '5px' }}
+                      className='dynamic-delete-button'
+                      onClick={() => remove(field.name)}
+                    />
+                  )}
                 </div>
               );
             })}

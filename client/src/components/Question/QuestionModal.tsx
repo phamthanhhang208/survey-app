@@ -70,15 +70,18 @@ const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
       >
         <Input placeholder='Question' />
       </Form.Item>
+
       {isQuestionDescriptionShown && (
         <Form.Item name={'description'} label='Description'>
           <Input.TextArea placeholder='Description' />
         </Form.Item>
       )}
+
       <Form.Item label='Type' name={'type'} rules={[{ required: true }]}>
         <Select
           placeholder={'Question type'}
           onChange={handleQuestionTypeChange}
+          allowClear
         >
           {questionTypeList.map((q) => {
             return (
@@ -89,69 +92,77 @@ const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
           })}
         </Select>
       </Form.Item>
-      {dynamicQuestion()}
+
+      <div className='dynamic-questions'>{dynamicQuestion()}</div>
+
       {isValidatorShown && <div>Validation</div>}
-      <Divider />
+
+      <Divider style={{ marginBottom: 10 }} />
+
       <div className='question-functions'>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <Form.Item
-            label={'Required'}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              margin: '0',
-              padding: 0,
-            }}
-            initialValue={false}
-            name={'required'}
-            valuePropName='checked'
-          >
-            <Switch />
-          </Form.Item>
-          <Popover
-            visible={visible}
-            title='Show'
-            onVisibleChange={handleVisibleChange}
-            content={
-              <Form.Item
-                className='additional-fields'
-                name={'additionalFields'}
-                style={{ marginBottom: 0 }}
-              >
-                <Checkbox.Group name='question-description'>
-                  <Checkbox
-                    checked={isQuestionDescriptionShown}
-                    value={'question-description'}
-                    onChange={(v) => {
-                      setVisible(false);
-                      setTimeout(() => {
-                        setIsQuestionDescriptionShown((prev) => !prev);
-                      }, 300);
-                    }}
-                  >
-                    Description
-                  </Checkbox>
-                  <Checkbox
-                    checked={isValidatorShown}
-                    value={'response-validation'}
-                    onChange={(v) => {
-                      setVisible(false);
-                      setTimeout(() => {
-                        setIsValidatorShown((prev) => !prev);
-                      }, 300);
-                    }}
-                  >
-                    Response validation
-                  </Checkbox>
-                </Checkbox.Group>
-              </Form.Item>
-            }
-            trigger='click'
-            placement='bottom'
-          >
-            <MoreOutlined style={{ fontWeight: '900' }} />
-          </Popover>
-        </div>
+        <Form.Item
+          label={'Required'}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            margin: '0',
+            padding: 0,
+          }}
+          initialValue={false}
+          name={'required'}
+          valuePropName='checked'
+          labelCol={{ span: 15, offset: 0 }}
+          wrapperCol={{ span: 8, offset: 0 }}
+        >
+          <Switch />
+        </Form.Item>
+
+        <Popover
+          visible={visible}
+          title='Show'
+          onVisibleChange={handleVisibleChange}
+          content={
+            <Form.Item
+              className='additional-fields'
+              name={'additionalFields'}
+              style={{ marginBottom: 0 }}
+            >
+              <Checkbox.Group name='question-description'>
+                <Checkbox
+                  checked={isQuestionDescriptionShown}
+                  value={'question-description'}
+                  onChange={(v) => {
+                    setVisible(false);
+                    setTimeout(() => {
+                      setIsQuestionDescriptionShown((prev) => !prev);
+                    }, 300);
+                  }}
+                >
+                  Description
+                </Checkbox>
+                <Checkbox
+                  checked={isValidatorShown}
+                  value={'response-validation'}
+                  onChange={(v) => {
+                    setVisible(false);
+                    setTimeout(() => {
+                      setIsValidatorShown((prev) => !prev);
+                    }, 300);
+                  }}
+                  style={{
+                    marginLeft: 0,
+                  }}
+                >
+                  Response validation
+                </Checkbox>
+              </Checkbox.Group>
+            </Form.Item>
+          }
+          trigger='click'
+          placement='bottom'
+        >
+          <MoreOutlined style={{ fontWeight: '900', fontSize: '1.2rem' }} />
+        </Popover>
       </div>
     </div>
   );
