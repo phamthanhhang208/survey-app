@@ -30,11 +30,13 @@ module.exports.deleteResponse = async (req, res) => {
 
 module.exports.deleteAllResponses = async (req, res) => {
 	const { id } = req.params;
-	const { responses } = await Form.findById(id);
+	const form = await Form.findById(id);
+	const { responses } = form;
 	await Response.deleteMany({
 		_id: {
 			$in: responses,
 		},
 	});
+	await form.updateOne({ $pull: { responses: { $in: responses } } });
 	return res.status(200).send("deleted all");
 };

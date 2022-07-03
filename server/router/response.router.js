@@ -54,6 +54,8 @@ router.delete(
 	catchAsync(response.deleteResponse)
 );
 
+router.delete("/", validateFormId, catchAsync(response.deleteAllResponses));
+
 router.use((err, req, res, next) => {
 	console.log(err);
 	const { statusCode = 500, message = "Oops,something went wrong" } = err;

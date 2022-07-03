@@ -6,6 +6,7 @@ import { useGetForm } from "@/hooks/form.hook";
 import { useAddResponse } from "@/hooks/response.hook";
 import { useParams } from "react-router-dom";
 import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
+import { validateMessage } from "@/utills/validateMessage";
 
 const { Title } = Typography;
 
@@ -44,13 +45,17 @@ const SubmitFormPage: React.FC = () => {
 						<Typography>
 							<Title>{formDetail.title}</Title>
 						</Typography>
-						{/* {formDetail.description && (
-						<Card.Meta description={formDetail.description} />
-					)} */}
+						{formDetail?.description && (
+							<Card.Meta description={formDetail?.description} />
+						)}
 					</Card>
 				</div>
 				<Divider />
-				<Form layout="vertical" onFinish={onFinish}>
+				<Form
+					layout="vertical"
+					onFinish={onFinish}
+					validateMessages={validateMessage}
+				>
 					{formDetail.questions.map((q: any) => {
 						return <QuestionSubmit key={q._id} question={q} />;
 					})}

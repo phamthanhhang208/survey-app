@@ -5,6 +5,7 @@ import {
 	deleteResponse,
 	addResponse,
 	getResponse,
+	deleteAllResponses,
 } from "@/api/response";
 import { useParams } from "react-router-dom";
 
@@ -68,4 +69,24 @@ export function useGetResponse(id: any, responseId: any) {
 			},
 		}
 	);
+}
+
+export function useDeleteAllResponses() {
+	const queryClient = useQueryClient();
+	const { id } = useParams();
+
+	return useMutation(() => deleteAllResponses(id), {
+		onSuccess: () => {
+			message.success("Deleted all responses!");
+			queryClient.invalidateQueries(["forms", "detail", id]);
+			queryClient.invalidateQueries(["forms", "detail", id, "responses"]);
+		},
+		onError: (error: any) => {
+			console.log(error);
+			message.error(error.response?.data);
+		},
+		onMutate: () => {
+			message.loading("loading");
+		},
+	});
 }
