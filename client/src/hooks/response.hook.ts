@@ -13,7 +13,7 @@ export function useGetAllResponses() {
 	return useQuery(["forms", "detail", id, "responses"], getAllResponses, {
 		onError: (error: any) => {
 			console.log(error);
-			message.error("meaningful error message is comming soon");
+			message.error(error.response?.data);
 		},
 	});
 }
@@ -29,8 +29,8 @@ export function useAddResponse() {
 			//maybe navigate to else where in the future
 		},
 		onError: (error: any) => {
-			console.log(error);
-			message.error(error);
+			//console.log({ ...error });
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -49,7 +49,7 @@ export function useDeleteResponse(id: any, responseId: any) {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -64,7 +64,7 @@ export function useGetResponse(id: any, responseId: any) {
 		{
 			onError: (error: any) => {
 				console.log(error);
-				message.error("meaningful error message is comming soon");
+				message.error(error.response?.data);
 			},
 		}
 	);

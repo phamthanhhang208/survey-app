@@ -19,7 +19,7 @@ export function useAddQuestion() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -38,7 +38,7 @@ export function useAddManyQuestions() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -57,7 +57,7 @@ export function useDeleteQuestion() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -73,7 +73,7 @@ export function useGetQuestion(id: any, questionId: any) {
 		{
 			onError: (error: any) => {
 				console.log(error);
-				message.error("meaningful error message is comming soon");
+				message.error(error.response?.data);
 			},
 		}
 	);

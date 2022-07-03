@@ -17,7 +17,7 @@ export function useForms() {
 	return useQuery("forms", getFormList, {
 		onError: (error: any) => {
 			console.log(error);
-			message.error("meaningful error message is comming soon");
+			message.error(error.response?.data);
 		},
 	});
 }
@@ -32,7 +32,7 @@ export function useCreateForm() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error("meaningful error message is comming soon");
+			message.error(error.response?.data);
 		},
 	});
 }
@@ -47,7 +47,7 @@ export function useDeleteForm() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -66,7 +66,7 @@ export function useUpdateForm() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -79,7 +79,7 @@ export function useGetForm() {
 	return useQuery(["forms", "detail", `${id}`], () => getForm(id), {
 		onError: (error: any) => {
 			console.log(error);
-			message.error("meaningful error message is comming soon");
+			message.error(error.response?.data);
 		},
 	});
 }
@@ -93,7 +93,7 @@ export function useReorderedForm() {
 		},
 		onError: (error: any) => {
 			console.log(error);
-			message.error(error);
+			message.error(error.response?.data);
 		},
 		onMutate: () => {
 			message.loading("loading");
@@ -109,7 +109,8 @@ export function useGetFormAnalytic() {
 		{
 			onError: (error: any) => {
 				console.log(error);
-				message.error("meaningful error message is comming soon");
+				//message.error("meaningful error message is comming soon");
+				message.error(error.response?.data);
 			},
 		}
 	);
@@ -124,7 +125,7 @@ export function useDownloadFormAnalytic() {
 			enabled: false,
 			onError: (error: any) => {
 				console.log(error);
-				message.error("meaningful error message is comming soon");
+				message.error(error.response?.data);
 			},
 		}
 	);
