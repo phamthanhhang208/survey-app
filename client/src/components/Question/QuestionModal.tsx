@@ -3,16 +3,19 @@ import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCre
 import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
 import { question as questionTypeList } from '@/const/question';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
-import { MoreOutlined } from '@ant-design/icons';
+import { MoreOutlined, PictureOutlined } from '@ant-design/icons';
 import {
   Checkbox,
   Divider,
   Form,
   FormInstance,
   Input,
+  message,
   Popover,
   Select,
   Switch,
+  Tooltip,
+  Upload,
 } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import './QuestionModal.scss';
@@ -29,7 +32,24 @@ const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
   const [questionTypeState, setQuestionTypeState] = useState<string>(() => {
     return form.getFieldValue('type');
   });
+  const [isQuestionMediaShown, setIsQuestionMediaShown] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  //question image
+  const [uploadedFile, setUploadedFile] = useState<any>(null);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  const beforeImageUpload = (file: any) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return false;
+  };
 
   const dynamicQuestion = () => {
     switch (questionTypeState) {
@@ -76,6 +96,42 @@ const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
           <Input.TextArea placeholder='Description' />
         </Form.Item>
       )}
+
+      {isQuestionMediaShown ? (
+        <Form.Item name='questionImage' label='Image' valuePropName='file'>
+          <Upload
+            maxCount={1}
+            listType={'picture-card'}
+            beforeUpload={beforeImageUpload}
+            accept='image/*'
+            onChange={(v) => {
+              setUploadedFile(v);
+            }}
+          >
+            {uploadedFile?.fileList?.length > 0 ? null : (
+              <Tooltip
+                visible={tooltipVisible}
+                title={'Upload image'}
+                placement='bottom'
+                destroyTooltipOnHide
+                mouseEnterDelay={0.05}
+                overlayInnerStyle={{
+                  fontSize: '0.6rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <PictureOutlined
+                  className='upload-button'
+                  onMouseEnter={() => setTooltipVisible(true)}
+                  onMouseLeave={() => setTooltipVisible(false)}
+                />
+              </Tooltip>
+            )}
+          </Upload>
+        </Form.Item>
+      ) : null}
 
       <Form.Item label='Type' name={'type'} rules={[{ required: true }]}>
         <Select
@@ -125,9 +181,12 @@ const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
             <Form.Item
               className='additional-fields'
               name={'additionalFields'}
-              style={{ marginBottom: 0 }}
+              style={{ marginBottom: 0, width: 200 }}
             >
-              <Checkbox.Group name='question-description'>
+              <Checkbox.Group
+                name='question-description'
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
                 <Checkbox
                   checked={isQuestionDescriptionShown}
                   value={'question-description'}
@@ -139,6 +198,20 @@ const QuestionCreate: FunctionComponent<QuestionModal> = ({ form }) => {
                   }}
                 >
                   Description
+                </Checkbox>
+                <Checkbox
+                  style={{
+                    marginLeft: 0,
+                  }}
+                  checked={isQuestionMediaShown}
+                  onChange={(v) => {
+                    setVisible(false);
+                    setTimeout(() => {
+                      setIsQuestionMediaShown((prev) => !prev);
+                    }, 300);
+                  }}
+                >
+                  Image
                 </Checkbox>
                 <Checkbox
                   checked={isValidatorShown}

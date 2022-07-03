@@ -32,7 +32,17 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       formData.append('type', v.type);
       formData.append('required', v.required);
 
-      console.log(v);
+      if (v?.description) {
+        formData.append('description', v?.description);
+      }
+
+      if (v?.questionImage) {
+        formData.append(
+          'questionMedia',
+          v.questionImage.fileList[0].originFileObj,
+          v.questionImage.fileList[0].uid
+        );
+      }
 
       switch (v.type) {
         case 'multiple-choice':

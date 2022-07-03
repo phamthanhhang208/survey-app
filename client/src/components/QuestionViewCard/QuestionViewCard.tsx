@@ -6,7 +6,7 @@ import {
   DeleteOutlined,
   EditOutlined,
 } from '@ant-design/icons';
-import { Card, Divider, Popconfirm, Tooltip, Typography } from 'antd';
+import { Card, Divider, Image, Popconfirm, Tooltip, Typography } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import './QuestionViewCard.scss';
 
@@ -41,6 +41,9 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
       <Typography.Title level={4}> {question.questionText}</Typography.Title>
       {question.description && <Card.Meta description={question.description} />}
       <br />
+      {question?.questionMedia?.url ? (
+        <Image src={question?.questionMedia?.url} />
+      ) : null}
       <AnswerView answer={question.answer} type={question.type} />
 
       {isActive ? (
