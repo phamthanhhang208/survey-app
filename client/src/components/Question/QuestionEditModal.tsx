@@ -2,6 +2,7 @@ import CheckboxCreate from '@/components/CreateComponent/CheckboxCreate/Checkbox
 import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCreate';
 import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
 import { question as questionTypeList } from '@/const/question';
+import { useGetQuestion } from '@/hooks/question.hook';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { MoreOutlined, PictureOutlined } from '@ant-design/icons';
 import {
@@ -17,14 +18,21 @@ import {
   Tooltip,
   Upload,
 } from 'antd';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import './QuestionModal.scss';
 
-interface QuestionModalProps {
+interface QuestionEditModalProps {
   form: FormInstance<any>;
+  formId?: any;
+  questionId?: any;
 }
 
-const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
+const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
+  form,
+  formId,
+  questionId,
+}) => {
+  const { data: getQuestion } = useGetQuestion(formId, questionId);
   const permission = useCurrentPermission();
   const [isQuestionDescriptionShown, setIsQuestionDescriptionShown] =
     useState(false);
@@ -34,6 +42,31 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
   });
   const [isQuestionMediaShown, setIsQuestionMediaShown] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  console.log(getQuestion);
+  //fill in the data
+  useEffect(() => {
+    form.setFieldsValue({ questionText: getQuestion?.questionText });
+    form.setFieldsValue({ type: getQuestion?.type });
+    if (getQuestion?.description) {
+      setIsQuestionDescriptionShown(true);
+      form.setFieldsValue({ description: getQuestion?.description });
+      form.setFieldsValue({ additionalFields: ['question-description'] });
+    }
+
+    switch (getQuestion?.type) {
+      case 'checkboxes':
+        form.setFieldsValue({ checkboxes: getQuestion?.answer });
+        break;
+
+      case 'multiple-choice':
+        form.setFieldsValue({ multipleChoice: getQuestion?.answer });
+        break;
+
+      default:
+        break;
+    }
+  }, [form, getQuestion]);
 
   //question image
   const [uploadedFile, setUploadedFile] = useState<any>(null);
@@ -241,4 +274,4 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
   );
 };
 
-export default QuestionModal;
+export default QuestionEditModal;
