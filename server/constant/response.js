@@ -7,14 +7,15 @@ const schemaAnswer = {
 		},
 		answer: {
 			type: "array",
+			minItems: 1,
 			items: {
 				type: "object",
+				required: ["content"],
 				properties: {
 					content: {
 						type: "string",
 					},
 				},
-				required: ["content"],
 			},
 		},
 	},

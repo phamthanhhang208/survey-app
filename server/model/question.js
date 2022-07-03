@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const questionValidateSchema = new Schema(
 	{
 		type: String,
-		length: Number,
+		min: Number,
+		max: Number,
+		pattern: String,
 		message: String,
 	},
 	{ _id: false }
@@ -32,7 +34,7 @@ const questionSchema = new Schema({
 			_id: false,
 			content: {
 				type: String,
-				default: "Other",
+				default: "",
 			},
 			media: { type: ImageSchema },
 		},
