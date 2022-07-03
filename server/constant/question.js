@@ -113,13 +113,6 @@ const schemaQuestion = {
 				message: {
 					type: "string",
 				},
-				// type: {},
-				// length: {
-				// 	type: "number",
-				// },
-				// message: {
-				// 	type: "string",
-				// },
 			},
 		},
 	},
@@ -140,7 +133,6 @@ const schemaQuestion = {
 								enum: ["array"],
 							},
 							//type: { enum: checkBoxesValidationRules },
-							//...checkBoxesValidationRules,
 						},
 						anyOf: [
 							{
@@ -166,7 +158,6 @@ const schemaQuestion = {
 						type: "object",
 						properties: {
 							//type: { enum: shortParagraphValidationRules },
-							//...shortParagraphValidationRules,
 							type: {
 								enum: ["string", "number"],
 							},
@@ -190,7 +181,6 @@ const schemaQuestion = {
 						type: "object",
 						properties: {
 							//type: { enum: paragraphQuestionValidationRules },
-							//...paragraphQuestionValidationRules,
 							type: {
 								enum: ["string"],
 							},
