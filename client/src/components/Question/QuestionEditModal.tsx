@@ -17,6 +17,8 @@ import {
   Switch,
   Tooltip,
   Upload,
+  UploadFile,
+  UploadProps,
 } from 'antd';
 import { FunctionComponent, useEffect, useState } from 'react';
 import './QuestionModal.scss';
@@ -37,21 +39,41 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   const [isQuestionDescriptionShown, setIsQuestionDescriptionShown] =
     useState(false);
   const [isValidatorShown, setIsValidatorShown] = useState(false);
-  const [questionTypeState, setQuestionTypeState] = useState<string>(() => {
-    return form.getFieldValue('type');
-  });
+  const [questionTypeState, setQuestionTypeState] = useState<string>();
   const [isQuestionMediaShown, setIsQuestionMediaShown] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
   console.log(getQuestion);
   //fill in the data
   useEffect(() => {
     form.setFieldsValue({ questionText: getQuestion?.questionText });
     form.setFieldsValue({ type: getQuestion?.type });
+    setQuestionTypeState(getQuestion?.type);
     if (getQuestion?.description) {
       setIsQuestionDescriptionShown(true);
       form.setFieldsValue({ description: getQuestion?.description });
       form.setFieldsValue({ additionalFields: ['question-description'] });
+    }
+
+    if (getQuestion?.questionMedia) {
+      setIsQuestionMediaShown(true);
+      form.setFieldsValue({ questionImage: getQuestion?.questionMedia });
+      setFileList([
+        {
+          uid: '1',
+          name: 'upload',
+          status: 'done',
+          url: getQuestion?.questionMedia?.url,
+        },
+      ]);
+    }
+
+    if (getQuestion?.required) {
+      form.setFieldsValue({ required: true });
     }
 
     switch (getQuestion?.type) {
@@ -69,7 +91,6 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   }, [form, getQuestion]);
 
   //question image
-  const [uploadedFile, setUploadedFile] = useState<any>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const beforeImageUpload = (file: any) => {
@@ -137,11 +158,10 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
             listType={'picture-card'}
             beforeUpload={beforeImageUpload}
             accept='image/*'
-            onChange={(v) => {
-              setUploadedFile(v);
-            }}
+            fileList={fileList}
+            onChange={handleChange}
           >
-            {uploadedFile?.fileList?.length > 0 ? null : (
+            {fileList?.length > 0 ? null : (
               <Tooltip
                 visible={tooltipVisible}
                 title={'Upload image'}
