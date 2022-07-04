@@ -36,7 +36,6 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   questionId,
 }) => {
   const { data: getQuestion } = useGetQuestion(formId, questionId);
-  const permission = useCurrentPermission();
   const [isQuestionDescriptionShown, setIsQuestionDescriptionShown] =
     useState(false);
   const [isValidatorShown, setIsValidatorShown] = useState(false);
@@ -48,7 +47,7 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
-  console.log(getQuestion);
+
   //fill in the data
   useEffect(() => {
     form.setFieldsValue({ questionText: getQuestion?.questionText });
