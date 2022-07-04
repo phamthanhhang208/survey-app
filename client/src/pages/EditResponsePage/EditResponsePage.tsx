@@ -16,7 +16,7 @@ import {
 	useDownloadFormAnalytic,
 } from "@/hooks/form.hook";
 import { useDeleteAllResponses } from "@/hooks/response.hook";
-import { DownloadOutlined, UserOutlined } from "@ant-design/icons";
+import { DownloadOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./EditResponsePage.scss";
 import ChartDisplay from "@/containers/ChartDisplay/ChartDisplay";
 import ViewResponse from "@/containers/ViewResponse/ViewResponse";
@@ -86,7 +86,7 @@ const EditResponsePage: React.FC = () => {
 				{
 					label: "Delete all responses",
 					key: "delete-responses",
-					icon: <UserOutlined />,
+					icon: <DeleteOutlined />,
 				},
 			]}
 		/>

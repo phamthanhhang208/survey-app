@@ -25,7 +25,7 @@ router.post(
 	validationResponseInput,
 	validateResponseQuestionId,
 	isFormAcceptResponse,
-	isAnswerExist,
+	catchAsync(isAnswerExist),
 	validateAnswer,
 	catchAsync(response.addResponseToForm)
 );
