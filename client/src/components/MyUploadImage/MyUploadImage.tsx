@@ -1,16 +1,31 @@
 import { PictureOutlined } from '@ant-design/icons';
 import { Form, message, Tooltip, Upload, UploadFile, UploadProps } from 'antd';
 import { FunctionComponent, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import './MyUploadImage.scss';
 
 interface MyUploadImageProps {
   field?: any;
+  initialMedia?: any;
 }
 
-const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
-  const [uploadedFile, setUploadedFile] = useState<any>(null);
+const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({
+  field,
+  initialMedia = undefined,
+}) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>(() =>
+    initialMedia
+      ? [
+          {
+            uid: String(uuidv4()),
+            name: 'upload',
+            status: 'done',
+            url: initialMedia?.media.url,
+          },
+        ]
+      : []
+  );
 
   const beforeImageUpload = (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';

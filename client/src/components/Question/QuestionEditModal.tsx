@@ -53,14 +53,17 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
     form.setFieldsValue({ questionText: getQuestion?.questionText });
     form.setFieldsValue({ type: getQuestion?.type });
     setQuestionTypeState(getQuestion?.type);
+    const additionalFields = [];
+
     if (getQuestion?.description) {
       setIsQuestionDescriptionShown(true);
       form.setFieldsValue({ description: getQuestion?.description });
-      form.setFieldsValue({ additionalFields: ['question-description'] });
+      additionalFields.push('question-description');
     }
 
     if (getQuestion?.questionMedia) {
       setIsQuestionMediaShown(true);
+      additionalFields.push('question-media');
       form.setFieldsValue({ questionImage: getQuestion?.questionMedia });
       setFileList([
         {
@@ -71,6 +74,8 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
         },
       ]);
     }
+
+    form.setFieldsValue({ additionalFields: [...additionalFields] });
 
     if (getQuestion?.required) {
       form.setFieldsValue({ required: true });
@@ -108,9 +113,9 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   const dynamicQuestion = () => {
     switch (questionTypeState) {
       case 'checkboxes':
-        return <CheckboxCreate />;
+        return <CheckboxCreate form={form} />;
       case 'multiple-choice':
-        return <RadioCreate />;
+        return <RadioCreate form={form} />;
       case 'short-paragraph':
         return (
           <Form.Item name={'shortParagraph'}>
@@ -253,6 +258,7 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
                   Description
                 </Checkbox>
                 <Checkbox
+                  value={'question-media'}
                   style={{
                     marginLeft: 0,
                   }}

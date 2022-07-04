@@ -4,9 +4,11 @@ import { Button, Form, Input } from 'antd';
 import { FunctionComponent } from 'react';
 import './RadioCreate.scss';
 
-interface RadioCreateProps {}
+interface RadioCreateProps {
+  form?: any;
+}
 
-const RadioCreate: FunctionComponent<RadioCreateProps> = () => {
+const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
   return (
     <Form.Item name={'multipleChoice'}>
       <Form.List name={'multipleChoice'} initialValue={['']}>
@@ -37,7 +39,12 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = () => {
                   <Input style={{ width: '100%' }} />
                 </Form.Item>
 
-                <MyUploadImage field={field} />
+                <MyUploadImage
+                  field={field}
+                  initialMedia={
+                    form && form.getFieldValue('multipleChoice')[index]
+                  }
+                />
                 {fields?.length > 1 && (
                   <CloseOutlined
                     style={{ marginLeft: '5px' }}

@@ -4,9 +4,11 @@ import { Button, Form, Input } from 'antd';
 import { FunctionComponent } from 'react';
 import './CheckboxCreate.scss';
 
-interface CheckboxCreateProps {}
+interface CheckboxCreateProps {
+  form?: any;
+}
 
-const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = () => {
+const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
   return (
     <Form.Item name={'checkboxes'}>
       <Form.List name={'checkboxes'} initialValue={['']}>
@@ -37,7 +39,12 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = () => {
                     <Input style={{ width: '100%' }} />
                   </Form.Item>
 
-                  <MyUploadImage field={field} />
+                  <MyUploadImage
+                    field={field}
+                    initialMedia={
+                      form && form.getFieldValue('checkboxes')[index]
+                    }
+                  />
 
                   {fields?.length > 1 && (
                     <CloseOutlined
