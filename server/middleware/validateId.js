@@ -2,6 +2,7 @@ const Form = require("../model/form");
 const Question = require("../model/question");
 const AppError = require("../helper/AppError");
 const ObjectId = require("mongoose").Types.ObjectId;
+const Response = require("../model/response");
 
 //validate form id
 exports.validateFormId = async (req, res, next) => {
@@ -66,7 +67,7 @@ exports.validateResponseId = async (req, res, next) => {
 	const { responseId, id } = req.params;
 	if (!ObjectId.isValid(responseId))
 		return next(new AppError(404, "Invalid Response"));
-	const response = Response.findById(response);
+	const response = await Response.findById(responseId);
 	//const formResponse = Form.findOne({_id: id, responses:responseId})
 	if (!response) return next(new AppError(404, "Invalid Response"));
 	return next();

@@ -35,3 +35,8 @@ export const getAllResponses = async (id: any) => {
 	const { data } = await axiosClient.get(`/forms/${id}/responses`);
 	return data;
 };
+
+export const deleteAllResponses = async (id: any) => {
+	const { data } = await axiosClient.delete(`/forms/${id}/responses`);
+	return data;
+};

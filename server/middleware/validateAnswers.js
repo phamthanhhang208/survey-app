@@ -42,7 +42,7 @@ exports.validateAnswer = async (req, res, next) => {
 		const { validator } = question;
 		// check if every question have enough answer
 		const isAnswerLengthCorrect = validatorAnswer(answers[i].answer, {
-			...(validator.type === "array" ? validator._doc : defaultValidator),
+			...(validator?.type === "array" ? validator?._doc : defaultValidator),
 		});
 		if (!isAnswerLengthCorrect) {
 			return next(

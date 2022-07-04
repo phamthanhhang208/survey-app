@@ -4,6 +4,7 @@ const Question = require("../model/question");
 const DeleteMedia = require("../model/deleteMedia");
 const _ = require("lodash");
 const { startSession } = require("mongoose");
+const { cloudinary } = require("../cloudinary");
 
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
@@ -230,4 +231,28 @@ module.exports.getQuestion = async (req, res, next) => {
 	const { questionId } = req.params;
 	const question = await Question.findById(questionId);
 	return res.status(200).send(question);
+};
+
+// duplicate question
+
+module.exports.duplicateQuestion = async (req, res, next) => {
+	const { id, questionId } = req.params;
+	const form = await Form.findById(id);
+	const question = await Question.findById(questionId);
+	let duplicatedQuestion = question._doc;
+	delete duplicatedQuestion._id;
+	for (let answer of duplicatedQuestion.answer) {
+		if (answer.media) {
+			const dupFile = await cloudinary.uploader.upload(answer.media.url);
+			answer.media = {
+				url: dupFile.url,
+				filename: `survey-app/${dupFile.public_id}`,
+			};
+		}
+	}
+	const q = new Question(duplicatedQuestion);
+	await q.save({ new: true });
+	form.questions.push(q);
+	await form.save({ new: true });
+	return res.status(201).send(q);
 };

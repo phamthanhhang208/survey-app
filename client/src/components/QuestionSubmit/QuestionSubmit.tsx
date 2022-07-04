@@ -14,6 +14,7 @@ export default function QuestionSubmit(props: any) {
 					answer={question.answer}
 					required={question.required}
 					disabled={disabled}
+					validator={question.validator}
 				/>
 			</Form.Item>
 		</Card>

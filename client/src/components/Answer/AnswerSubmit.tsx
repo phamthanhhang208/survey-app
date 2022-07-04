@@ -1,8 +1,31 @@
 import { SHORT, PARAGRAPH, CHECKBOX, MULTIPLECHOICE } from "@/const/question";
 import { Checkbox, Radio, Input, Form, Image } from "antd";
+import { useState, useEffect } from "react";
 
 const AnswerSubmit = (props: any) => {
-	const { type, answer, name, required, disabled } = props;
+	const { type, answer, name, required, disabled, validator } = props;
+	const [rules, setRules] = useState([
+		{ required: required, message: "This question is required" },
+	]);
+
+	useEffect(() => {
+		if (validator) {
+			if (validator.type === "number") {
+				setRules((r) => [
+					...r,
+					{
+						transform: (value: any) => {
+							return +value;
+						},
+						...validator,
+					},
+				]);
+			} else {
+				setRules((r) => [...r, { ...validator }]);
+			}
+		}
+	}, [validator]);
+
 	let element = null;
 	if (type === MULTIPLECHOICE) {
 		element = (
@@ -44,10 +67,7 @@ const AnswerSubmit = (props: any) => {
 	}
 
 	return (
-		<Form.Item
-			name={name}
-			rules={[{ required: required, message: "This question is required" }]}
-		>
+		<Form.Item name={name} rules={rules}>
 			{element}
 		</Form.Item>
 	);

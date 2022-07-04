@@ -25,7 +25,7 @@ router.post(
 	validationResponseInput,
 	validateResponseQuestionId,
 	isFormAcceptResponse,
-	isAnswerExist,
+	catchAsync(isAnswerExist),
 	validateAnswer,
 	catchAsync(response.addResponseToForm)
 );
@@ -53,6 +53,8 @@ router.delete(
 	validateResponseId,
 	catchAsync(response.deleteResponse)
 );
+
+router.delete("/", validateFormId, catchAsync(response.deleteAllResponses));
 
 router.use((err, req, res, next) => {
 	console.log(err);
