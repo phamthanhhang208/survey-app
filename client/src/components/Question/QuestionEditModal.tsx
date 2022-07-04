@@ -1,6 +1,7 @@
 import CheckboxCreate from '@/components/CreateComponent/CheckboxCreate/CheckboxCreate';
 import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCreate';
 import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
+import ShortParagraphCreate from '@/components/CreateComponent/ShortParapraph/ShortParagraphCreate';
 import { question as questionTypeList } from '@/const/question';
 import { useGetQuestion } from '@/hooks/question.hook';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
@@ -117,14 +118,7 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
       case 'multiple-choice':
         return <RadioCreate form={form} />;
       case 'short-paragraph':
-        return (
-          <Form.Item name={'shortParagraph'}>
-            <Input
-              disabled={permission === 'edit' ? true : false}
-              placeholder={'Answer'}
-            ></Input>
-          </Form.Item>
-        );
+        return <ShortParagraphCreate />;
       case 'paragraph':
         return <ParagraphCreate />;
       default:
