@@ -6,6 +6,7 @@ import {
 	deleteQuestion,
 	getQuestion,
 	editQuestion,
+	duplicateQuestion,
 } from "@/api/question";
 import { useParams } from "react-router-dom";
 
@@ -80,8 +81,9 @@ export function useGetQuestion(id: any, questionId: any) {
 	);
 }
 
-export function useEditQuestion(id: any, questionId: any) {
+export function useEditQuestion() {
 	const queryClient = useQueryClient();
+	const { id } = useParams();
 	return useMutation(editQuestion, {
 		onSuccess: () => {
 			message.success("Modified question!");
@@ -91,9 +93,29 @@ export function useEditQuestion(id: any, questionId: any) {
 				"detail",
 				id,
 				"questions",
-				questionId,
+				//questionId,
 			]);
 		},
+		onError: (error: any) => {
+			console.log(error);
+			message.error(error.response?.data);
+		},
+	});
+}
+
+export function useDuplicateQuestion() {
+	const queryClient = useQueryClient();
+	const { id } = useParams();
+	return useMutation(duplicateQuestion, {
+		onSuccess: () => {
+			message.success("Added question!");
+			queryClient.invalidateQueries(["forms", "detail", id]);
+			queryClient.invalidateQueries(["forms", "detail", id, "questions"]);
+		},
+		onMutate: () => {
+			message.loading("Loading...");
+		},
+
 		onError: (error: any) => {
 			console.log(error);
 			message.error(error.response?.data);
