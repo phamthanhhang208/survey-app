@@ -1,6 +1,6 @@
 import AnswerView from '@/components/Answer/AnswerView';
 import QuestionEditModal from '@/components/Question/QuestionEditModal';
-import { useDeleteQuestion } from '@/hooks/question.hook';
+import { useDeleteQuestion, useEditQuestion } from '@/hooks/question.hook';
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
   Card,
@@ -37,6 +37,7 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   //modal related things
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const { mutate: editQuestion } = useEditQuestion(formId);
   const [form] = Form.useForm();
 
   const showModal = () => {
@@ -48,7 +49,134 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   };
 
   const handleSubmit = async (v: any) => {
-    console.log('form', v);
+    console.log(v);
+    try {
+      const formData = new FormData();
+      formData.append('questionText', v.questionText);
+      formData.append('type', v.type);
+      formData.append('required', v.required);
+
+      if (v?.description) {
+        formData.append('description', v?.description);
+      }
+
+      if (v?.questionImage) {
+        //change image
+        if (v.questionImage?.fileList?.length > 0) {
+          console.log('media changed');
+          formData.append(
+            'questionMedia',
+            v.questionImage.fileList[0].originFileObj,
+            v.questionImage.fileList[0].uid
+          );
+        }
+        // question media unchanged
+        else if (v.questionImage?.url && v.questionImage?.filename) {
+          console.log('media unchanged');
+          formData.append(
+            'questionMedia',
+            JSON.stringify({
+              url: v.questionImage.url,
+              filename: v.questionImage.filename,
+            })
+          );
+        } else {
+          console.log('media deleted');
+        }
+      }
+
+      switch (v.type) {
+        case 'multiple-choice':
+          //unchanged
+          console.log(v?.multipleChoice);
+          //changed
+          //deleted
+          const arrMultipleChoice = [
+            ...v?.multipleChoice.map((c: any) => {
+              if (c?.media?.filename && c?.media?.url) {
+                return { content: c.content, media: c?.media };
+              }
+              if (c?.media?.fileList?.length > 0) {
+                return { content: c.content, media: c.media?.fileList[0] };
+              }
+              return { content: c.content };
+            }),
+          ];
+
+          console.log('after converted', arrMultipleChoice);
+
+          // return console.log(arrMultipleChoice);
+          for (let i = 0; i < arrMultipleChoice.length; i++) {
+            formData.append(
+              `answer[${i}][content]`,
+              arrMultipleChoice[i].content
+            );
+            if (arrMultipleChoice[i].media) {
+              //unchangechanged
+              if (
+                arrMultipleChoice[i].media?.url &&
+                arrMultipleChoice[i].media?.filename
+              ) {
+                formData.append(
+                  `answer[${i}][media]`,
+                  JSON.stringify(arrMultipleChoice[i].media)
+                );
+              } else {
+                formData.append(
+                  `answer[${i}][media]`,
+                  arrMultipleChoice[i].media.originFileObj,
+                  arrMultipleChoice[i].media.uid
+                );
+              }
+            }
+          }
+
+          break;
+        case 'checkboxes':
+          const arrCheckbox = [
+            ...v?.checkboxes.map((c: any) => {
+              return { content: c.content, media: c.media?.fileList[0] };
+            }),
+          ];
+
+          for (let i = 0; i < arrCheckbox.length; i++) {
+            formData.append(`answer[${i}][content]`, arrCheckbox[i].content);
+
+            if (arrCheckbox[i].media) {
+              formData.append(
+                `answer[${i}][media]`,
+                arrCheckbox[i].media.originFileObj,
+                arrCheckbox[i].media.uid
+              );
+            }
+          }
+
+          break;
+        case 'paragraph':
+        case 'short-paragraph':
+          formData.append('answer[0][content]', '');
+          break;
+
+        default:
+          break;
+      }
+
+      const req = editQuestion({
+        id: formId,
+        questionId: v?.questionId,
+        values: formData,
+      });
+
+      setConfirmLoading(true);
+      const res = await req;
+      console.log(res);
+
+      // form.resetFields();
+    } catch (error) {
+      console.log(error);
+    }
+    setVisible(false);
+    setConfirmLoading(false);
   };
 
   const handleCancel = () => {
