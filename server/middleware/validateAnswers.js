@@ -50,25 +50,16 @@ exports.validateAnswer = async (req, res, next) => {
 				validateAnswerType(
 					answers[i].answer,
 					defaultValidator,
-					"This question require 1 answer only",
-					next
+					next,
+					"This question require 1 answer only"
 				);
 				if (!validator) break;
-				validateAnswerType(
-					answers[i].answer[0].content,
-					validator._doc,
-					"The answer is not valid",
-					next
-				);
+				validateAnswerType(answers[i].answer[0].content, validator._doc, next);
 				break;
 			case CHECKBOXES:
 				if (!validator) break;
-				validateAnswerType(
-					answers[i].answer,
-					validator._doc,
-					"The answer is not valid",
-					next
-				);
+				validateAnswerType(answers[i].answer, validator._doc, next);
+				break;
 		}
 
 		// check if every question have enough answer
@@ -118,7 +109,12 @@ exports.validateAnswer = async (req, res, next) => {
 	next();
 };
 
-const validateAnswerType = (answer, validator, message, next) => {
+const validateAnswerType = (
+	answer,
+	validator,
+	next,
+	message = "The answer is not valid"
+) => {
 	const isAnswerValid = validatorAnswer(answer, {
 		...validator,
 	});
