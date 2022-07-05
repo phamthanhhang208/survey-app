@@ -5,6 +5,7 @@ const DeleteMedia = require("../model/deleteMedia");
 const _ = require("lodash");
 const { startSession } = require("mongoose");
 const { cloudinary } = require("../cloudinary");
+const { ObjectId } = require("mongodb");
 
 // add array of questions
 module.exports.addQuestions = async (req, res, next) => {
@@ -252,7 +253,9 @@ module.exports.duplicateQuestion = async (req, res, next) => {
 	}
 	const q = new Question(duplicatedQuestion);
 	await q.save({ new: true });
-	form.questions.push(q);
+	const idx = form.questions.indexOf(ObjectId(questionId));
+	form.questions.splice(idx + 1, 0, q);
+	//form.questions.push(q);
 	await form.save({ new: true });
 	return res.status(201).send(q);
 };

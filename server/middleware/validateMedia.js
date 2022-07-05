@@ -59,10 +59,10 @@ module.exports.validateAllQuestionMedias = async (req, res, next) => {
 				$and: [
 					{ _id: questionId },
 					{
-						"questionMedia.filename": answer.media.filename,
+						"answer.media.filename": answer.media.filename,
 					},
 					{
-						"questionMedia.url": answer.media.url,
+						"answer.media.url": answer.media.url,
 					},
 				],
 			});

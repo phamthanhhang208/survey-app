@@ -1,6 +1,10 @@
 import AnswerView from '@/components/Answer/AnswerView';
 import QuestionEditModal from '@/components/Question/QuestionEditModal';
-import { useDeleteQuestion, useEditQuestion } from '@/hooks/question.hook';
+import {
+  useDeleteQuestion,
+  useEditQuestion,
+  useDuplicateQuestion,
+} from '@/hooks/question.hook';
 import { CopyOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
   Card,
@@ -25,6 +29,7 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   formId,
 }) => {
   const { mutate: deleteQuestion } = useDeleteQuestion();
+  const { mutate: duplicateQuestion } = useDuplicateQuestion();
 
   const handleCardDelete = (id: any) => {
     deleteQuestion({ id: formId, questionId: id });
@@ -37,15 +42,11 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   //modal related things
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const { mutate: editQuestion } = useEditQuestion(formId);
+  const { mutate: editQuestion } = useEditQuestion();
   const [form] = Form.useForm();
 
   const showModal = () => {
     setVisible(true);
-  };
-
-  const handleOk = () => {
-    form.submit();
   };
 
   const handleSubmit = async (v: any) => {
@@ -184,6 +185,14 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
     setVisible(false);
   };
 
+  const handleOk = () => {
+    form.submit();
+  };
+
+  const handleCardDuplicate = (id: any) => {
+    duplicateQuestion({ id: formId, questionId: id });
+  };
+
   return (
     <div>
       <Card className={'question-view-card'}>
@@ -230,7 +239,8 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
             <Tooltip title={'Duplicate'}>
               <CopyOutlined
                 onClick={() => {
-                  console.log('copy', question._id);
+                  //console.log("copy", question._id);
+                  handleCardDuplicate(question._id);
                 }}
               />
             </Tooltip>
@@ -239,7 +249,7 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
             </Tooltip>
             <Tooltip title={'Delete'}>
               <Popconfirm
-                title='Are you sure to delete this task?'
+                title='Are you sure to delete this question?'
                 onConfirm={() => handleCardDelete(question._id)}
                 okText='Yes'
                 cancelText='No'

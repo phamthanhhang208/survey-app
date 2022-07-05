@@ -55,9 +55,10 @@ export default function ViewResponse(props: any) {
 	useEffect(() => {
 		if (response) {
 			//console.log(convertResponseData(response));
+			form.resetFields();
 			form.setFieldsValue(convertResponseData(response));
 		}
-	}, [response, form]);
+	}, [response, form, responseId]);
 
 	return (
 		<>

@@ -15,6 +15,7 @@ const AnswerSubmit = (props: any) => {
 					...r,
 					{
 						transform: (value: any) => {
+							if (!value) return;
 							return +value;
 						},
 						...validator,
@@ -59,11 +60,11 @@ const AnswerSubmit = (props: any) => {
 	}
 
 	if (type === SHORT) {
-		element = <Input.TextArea autoSize={{ maxRows: 1 }} />;
+		element = <Input.TextArea autoSize={{ maxRows: 1 }} allowClear />;
 	}
 
 	if (type === PARAGRAPH) {
-		element = <Input.TextArea autoSize />;
+		element = <Input.TextArea autoSize allowClear />;
 	}
 
 	return (

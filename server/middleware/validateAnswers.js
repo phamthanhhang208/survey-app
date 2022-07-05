@@ -8,7 +8,7 @@ const {
 } = require("../constant/question");
 const { validatorAnswer } = require("../helper/validateAnswer");
 const { isContain } = require("../helper/utils");
-const _ = require("lodash");
+//const _ = require("lodash");
 
 const defaultValidator = {
 	type: "array",
@@ -40,35 +40,87 @@ exports.validateAnswer = async (req, res, next) => {
 		const question = await Question.findById(answers[i].questionId);
 		// get question validator
 		const { validator } = question;
+
+		switch (question.type) {
+			default:
+				break;
+			case PARAGRAPH:
+			case SHORT:
+			case MULTIPLECHOICE:
+				validateAnswerType(
+					answers[i].answer,
+					defaultValidator,
+					next,
+					"This question require 1 answer only"
+				);
+				if (!validator) break;
+				validateAnswerType(answers[i].answer[0].content, validator._doc, next);
+				break;
+			case CHECKBOXES:
+				if (!validator) break;
+				validateAnswerType(answers[i].answer, validator._doc, next);
+				break;
+		}
+
 		// check if every question have enough answer
-		const isAnswerLengthCorrect = validatorAnswer(answers[i].answer, {
-			...(validator?.type === "array" ? validator?._doc : defaultValidator),
-		});
-		if (!isAnswerLengthCorrect) {
-			return next(
-				new AppError(
-					400,
-					validator?.message || "This question require 1 answer only"
-				)
-			);
-		}
+		// if (
+		// 	question.type === SHORT ||
+		// 	question.type === PARAGRAPH ||
+		// 	question.type === MULTIPLECHOICE
+		// ) {
+		// 	const isAnswerLengthCorrect = validatorAnswer(answers[i].answer, {
+		// 		...defaultValidator,
+		// 	});
+		// 	if (!isAnswerLengthCorrect) {
+		// 		return next(new AppError(400, "This question require 1 answer only"));
+		// 	}
+		// }
 		//skip if there is no validator
-		if (!validator) continue;
+		//if (!validator) continue;
 		// validate answer if there is validator
-		if (question.type === SHORT || question.type === PARAGRAPH) {
-			for (const answer of answers[i].answer) {
-				const isAnswerValid = validatorAnswer(answer.content, {
-					...validator._doc,
-				});
-				if (!isAnswerValid) {
-					return next(
-						new AppError(400, validator.message || "answer is not valid")
-					);
-				} else {
-					continue;
-				}
-			}
-		}
+		// if (question.type === CHECKBOXES) {
+		// 	const isAnswerLengthCorrect = validatorAnswer(answers[i].answer, {
+		// 		...validator._doc,
+		// 	});
+		// 	if (!isAnswerLengthCorrect) {
+		// 		return next(
+		// 			new AppError(
+		// 				400,
+		// 				validator?.message || "This question require 1 answer only"
+		// 			)
+		// 		);
+		// 	}
+		// }
+		// if (question.type === SHORT || question.type === PARAGRAPH) {
+		// 	for (const answer of answers[i].answer) {
+		// 		const isAnswerValid = validatorAnswer(answer.content, {
+		// 			...validator._doc,
+		// 		});
+		// 		if (!isAnswerValid) {
+		// 			return next(
+		// 				new AppError(400, validator?.message || "answer is not valid")
+		// 			);
+		// 		} else {
+		// 			continue;
+		// 		}
+		// 	}
+		// }
 	}
 	next();
+};
+
+const validateAnswerType = (
+	answer,
+	validator,
+	next,
+	message = "The answer is not valid"
+) => {
+	const isAnswerValid = validatorAnswer(answer, {
+		...validator,
+	});
+	if (!isAnswerValid) {
+		return next(new AppError(400, validator?.message || message));
+	} else {
+		return;
+	}
 };
