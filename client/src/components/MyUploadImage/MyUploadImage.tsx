@@ -1,15 +1,31 @@
 import { PictureOutlined } from '@ant-design/icons';
-import { Form, message, Tooltip, Upload } from 'antd';
+import { Form, message, Tooltip, Upload, UploadFile, UploadProps } from 'antd';
 import { FunctionComponent, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import './MyUploadImage.scss';
 
 interface MyUploadImageProps {
   field?: any;
+  initialMedia?: any;
 }
 
-const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
-  const [uploadedFile, setUploadedFile] = useState<any>(null);
+const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({
+  field,
+  initialMedia = undefined,
+}) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>(() =>
+    initialMedia
+      ? [
+          {
+            uid: String(uuidv4()),
+            name: 'upload',
+            status: 'done',
+            url: initialMedia?.media.url,
+          },
+        ]
+      : []
+  );
 
   const beforeImageUpload = (file: any) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -23,6 +39,10 @@ const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
     return false;
   };
 
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
+
   return (
     <Form.Item
       name={[field.name, 'media']}
@@ -32,23 +52,20 @@ const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({ field }) => {
         alignItems: 'center',
         marginBottom: 0,
         width: 'fit-content',
-        order: uploadedFile?.fileList?.length > 0 ? 1 : 0,
-        marginLeft: uploadedFile?.fileList?.length > 0 ? 34 : 0,
+        order: fileList?.length > 0 ? 1 : 0,
+        marginLeft: fileList?.length > 0 ? 34 : 0,
       }}
       className='my-upload-image'
     >
       <Upload
         maxCount={1}
-        listType={
-          uploadedFile?.fileList?.length > 0 ? 'picture-card' : 'picture'
-        }
+        listType={fileList?.length > 0 ? 'picture-card' : 'picture'}
         beforeUpload={beforeImageUpload}
         accept='image/*'
-        onChange={(v) => {
-          setUploadedFile(v);
-        }}
+        fileList={fileList}
+        onChange={handleChange}
       >
-        {uploadedFile?.fileList?.length > 0 ? null : (
+        {fileList?.length > 0 ? null : (
           <Tooltip
             visible={tooltipVisible}
             title={'Upload image'}

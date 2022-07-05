@@ -1,6 +1,7 @@
 import CheckboxCreate from '@/components/CreateComponent/CheckboxCreate/CheckboxCreate';
 import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCreate';
 import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
+import ShortParagraphCreate from '@/components/CreateComponent/ShortParapraph/ShortParagraphCreate';
 import { question as questionTypeList } from '@/const/question';
 import { useGetQuestion } from '@/hooks/question.hook';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
@@ -17,6 +18,8 @@ import {
   Switch,
   Tooltip,
   Upload,
+  UploadFile,
+  UploadProps,
 } from 'antd';
 import { FunctionComponent, useEffect, useState } from 'react';
 import './QuestionModal.scss';
@@ -33,25 +36,49 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   questionId,
 }) => {
   const { data: getQuestion } = useGetQuestion(formId, questionId);
-  const permission = useCurrentPermission();
   const [isQuestionDescriptionShown, setIsQuestionDescriptionShown] =
     useState(false);
   const [isValidatorShown, setIsValidatorShown] = useState(false);
-  const [questionTypeState, setQuestionTypeState] = useState<string>(() => {
-    return form.getFieldValue('type');
-  });
+  const [questionTypeState, setQuestionTypeState] = useState<string>();
   const [isQuestionMediaShown, setIsQuestionMediaShown] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  console.log(getQuestion);
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
+
   //fill in the data
   useEffect(() => {
     form.setFieldsValue({ questionText: getQuestion?.questionText });
     form.setFieldsValue({ type: getQuestion?.type });
+    setQuestionTypeState(getQuestion?.type);
+    const additionalFields = [];
+
     if (getQuestion?.description) {
       setIsQuestionDescriptionShown(true);
       form.setFieldsValue({ description: getQuestion?.description });
-      form.setFieldsValue({ additionalFields: ['question-description'] });
+      additionalFields.push('question-description');
+    }
+
+    if (getQuestion?.questionMedia) {
+      setIsQuestionMediaShown(true);
+      additionalFields.push('question-media');
+      form.setFieldsValue({ questionImage: getQuestion?.questionMedia });
+      setFileList([
+        {
+          uid: '1',
+          name: 'upload',
+          status: 'done',
+          url: getQuestion?.questionMedia?.url,
+        },
+      ]);
+    }
+
+    form.setFieldsValue({ additionalFields: [...additionalFields] });
+
+    if (getQuestion?.required) {
+      form.setFieldsValue({ required: true });
     }
 
     switch (getQuestion?.type) {
@@ -69,7 +96,6 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   }, [form, getQuestion]);
 
   //question image
-  const [uploadedFile, setUploadedFile] = useState<any>(null);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const beforeImageUpload = (file: any) => {
@@ -87,18 +113,11 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   const dynamicQuestion = () => {
     switch (questionTypeState) {
       case 'checkboxes':
-        return <CheckboxCreate />;
+        return <CheckboxCreate form={form} />;
       case 'multiple-choice':
-        return <RadioCreate />;
+        return <RadioCreate form={form} />;
       case 'short-paragraph':
-        return (
-          <Form.Item name={'shortParagraph'}>
-            <Input
-              disabled={permission === 'edit' ? true : false}
-              placeholder={'Answer'}
-            ></Input>
-          </Form.Item>
-        );
+        return <ShortParagraphCreate />;
       case 'paragraph':
         return <ParagraphCreate />;
       default:
@@ -137,11 +156,10 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
             listType={'picture-card'}
             beforeUpload={beforeImageUpload}
             accept='image/*'
-            onChange={(v) => {
-              setUploadedFile(v);
-            }}
+            fileList={fileList}
+            onChange={handleChange}
           >
-            {uploadedFile?.fileList?.length > 0 ? null : (
+            {fileList?.length > 0 ? null : (
               <Tooltip
                 visible={tooltipVisible}
                 title={'Upload image'}
@@ -233,6 +251,7 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
                   Description
                 </Checkbox>
                 <Checkbox
+                  value={'question-media'}
                   style={{
                     marginLeft: 0,
                   }}
