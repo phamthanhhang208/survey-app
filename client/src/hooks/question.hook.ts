@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient, useQuery } from 'react-query';
 import { message } from 'antd';
 import {
-	addQuestion,
-	addManyQuestions,
-	deleteQuestion,
-	getQuestion,
-	editQuestion,
-	duplicateQuestion,
-} from "@/api/question";
-import { useParams } from "react-router-dom";
+  addQuestion,
+  addManyQuestions,
+  deleteQuestion,
+  getQuestion,
+  editQuestion,
+  duplicateQuestion,
+} from '@/api/question';
+import { useParams } from 'react-router-dom';
 
 export function useAddQuestion() {
   const queryClient = useQueryClient();
@@ -81,60 +81,44 @@ export function useGetQuestion(id: any, questionId: any) {
   );
 }
 
-<<<<<<< HEAD
-export function useEditQuestion(id: any) {
+export function useEditQuestion() {
   const queryClient = useQueryClient();
+  const { id } = useParams();
   return useMutation(editQuestion, {
     onSuccess: () => {
       message.success('Modified question!');
       queryClient.invalidateQueries(['forms', 'detail', id]);
-      queryClient.invalidateQueries(['forms', 'detail', id, 'questions']);
+      queryClient.invalidateQueries([
+        'forms',
+        'detail',
+        id,
+        'questions',
+        //questionId,
+      ]);
     },
     onError: (error: any) => {
       console.log(error);
       message.error(error.response?.data);
     },
   });
-=======
-export function useEditQuestion() {
-	const queryClient = useQueryClient();
-	const { id } = useParams();
-	return useMutation(editQuestion, {
-		onSuccess: () => {
-			message.success("Modified question!");
-			queryClient.invalidateQueries(["forms", "detail", id]);
-			queryClient.invalidateQueries([
-				"forms",
-				"detail",
-				id,
-				"questions",
-				//questionId,
-			]);
-		},
-		onError: (error: any) => {
-			console.log(error);
-			message.error(error.response?.data);
-		},
-	});
->>>>>>> 84eba671d162bccdb22daf501ef38822bdcb6c10
 }
 
 export function useDuplicateQuestion() {
-	const queryClient = useQueryClient();
-	const { id } = useParams();
-	return useMutation(duplicateQuestion, {
-		onSuccess: () => {
-			message.success("Added question!");
-			queryClient.invalidateQueries(["forms", "detail", id]);
-			queryClient.invalidateQueries(["forms", "detail", id, "questions"]);
-		},
-		onMutate: () => {
-			message.loading("Loading...");
-		},
+  const queryClient = useQueryClient();
+  const { id } = useParams();
+  return useMutation(duplicateQuestion, {
+    onSuccess: () => {
+      message.success('Added question!');
+      queryClient.invalidateQueries(['forms', 'detail', id]);
+      queryClient.invalidateQueries(['forms', 'detail', id, 'questions']);
+    },
+    onMutate: () => {
+      message.loading('Loading...');
+    },
 
-		onError: (error: any) => {
-			console.log(error);
-			message.error(error.response?.data);
-		},
-	});
+    onError: (error: any) => {
+      console.log(error);
+      message.error(error.response?.data);
+    },
+  });
 }
