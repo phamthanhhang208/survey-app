@@ -71,8 +71,6 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
         }
         // question media unchanged
         if (v.questionImage?.url && v.questionImage?.filename) {
-          console.log('media unchanged');
-
           formData.append('questionMedia[url]', v.questionImage.url);
           formData.append('questionMedia[filename]', v.questionImage.filename);
         }
@@ -243,7 +241,6 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
             <Tooltip title={'Duplicate'}>
               <CopyOutlined
                 onClick={() => {
-                  //console.log("copy", question._id);
                   handleCardDuplicate(question._id);
                 }}
               />

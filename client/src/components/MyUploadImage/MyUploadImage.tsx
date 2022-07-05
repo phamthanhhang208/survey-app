@@ -13,7 +13,6 @@ const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({
   field,
   initialQuestion = undefined,
 }) => {
-  console.log(initialQuestion);
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const id = useId();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
