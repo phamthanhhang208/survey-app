@@ -41,7 +41,7 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
 
                 <MyUploadImage
                   field={field}
-                  initialMedia={
+                  initialQuestion={
                     form && form.getFieldValue('multipleChoice')[index]
                   }
                 />
