@@ -41,7 +41,7 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
 
                   <MyUploadImage
                     field={field}
-                    initialMedia={
+                    initialQuestion={
                       form && form.getFieldValue('checkboxes')[index]
                     }
                   />

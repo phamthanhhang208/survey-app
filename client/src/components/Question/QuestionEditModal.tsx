@@ -52,6 +52,7 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
   useEffect(() => {
     form.setFieldsValue({ questionText: getQuestion?.questionText });
     form.setFieldsValue({ type: getQuestion?.type });
+    form.setFieldsValue({ questionId: questionId });
     setQuestionTypeState(getQuestion?.type);
     const additionalFields = [];
 
@@ -93,7 +94,7 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
       default:
         break;
     }
-  }, [form, getQuestion]);
+  }, [form, getQuestion, questionId]);
 
   //question image
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -135,6 +136,9 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
 
   return (
     <div className='question-modal'>
+      <Form.Item name='questionId' hidden>
+        <Input />
+      </Form.Item>
       <Form.Item
         name={'questionText'}
         label='Question'
