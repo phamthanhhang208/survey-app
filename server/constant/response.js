@@ -8,8 +8,10 @@ const schemaAnswer = {
 		answer: {
 			type: "array",
 			minItems: 1,
+			uniqueItemProperties: ["content"],
 			items: {
 				type: "object",
+				additionalProperties: false,
 				required: ["content"],
 				properties: {
 					content: {

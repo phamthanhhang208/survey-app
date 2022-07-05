@@ -5,6 +5,7 @@ import {
 	addManyQuestions,
 	deleteQuestion,
 	getQuestion,
+	editQuestion,
 } from "@/api/question";
 import { useParams } from "react-router-dom";
 
@@ -77,4 +78,25 @@ export function useGetQuestion(id: any, questionId: any) {
 			},
 		}
 	);
+}
+
+export function useEditQuestion(id: any, questionId: any) {
+	const queryClient = useQueryClient();
+	return useMutation(editQuestion, {
+		onSuccess: () => {
+			message.success("Modified question!");
+			queryClient.invalidateQueries(["forms", "detail", id]);
+			queryClient.invalidateQueries([
+				"forms",
+				"detail",
+				id,
+				"questions",
+				questionId,
+			]);
+		},
+		onError: (error: any) => {
+			console.log(error);
+			message.error(error.response?.data);
+		},
+	});
 }

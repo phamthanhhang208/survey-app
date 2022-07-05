@@ -40,3 +40,19 @@ export const deleteAllResponses = async (id: any) => {
 	const { data } = await axiosClient.delete(`/forms/${id}/responses`);
 	return data;
 };
+
+export const editQuestion = async ({
+	id,
+	responseId,
+	values,
+}: {
+	id: any;
+	responseId: any;
+	values: any;
+}) => {
+	const { data } = await axiosClient.put(
+		`/forms/${id}/responses/${responseId}`,
+		{ ...values }
+	);
+	return data;
+};
