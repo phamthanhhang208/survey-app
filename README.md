@@ -36,9 +36,9 @@
 ### To Do:
 
 - Backend:
-  - [ ] Add more validation for short answer
+  - [-] Add more validation for short answer
   - [x] Add image for question and answer
-  - [ ] Add error code and message
-  - [ ] Refactor code for better error handling
+  - [x] Add error code and message
+  - [x] Refactor code for better error handling
   - [x] Add analytic API
   - [x] Export to Excel

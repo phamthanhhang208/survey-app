@@ -55,6 +55,7 @@ const SubmitFormPage: React.FC = () => {
 					layout="vertical"
 					onFinish={onFinish}
 					validateMessages={validateMessage}
+					scrollToFirstError
 				>
 					{formDetail.questions.map((q: any) => {
 						return <QuestionSubmit key={q._id} question={q} />;
