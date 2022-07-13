@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const questionValidateSchema = new Schema(
 	{
 		type: String,
+		operations: String,
 		min: Number,
 		max: Number,
 		pattern: String,

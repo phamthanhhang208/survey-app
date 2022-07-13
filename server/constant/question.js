@@ -3,27 +3,10 @@ const MULTIPLECHOICE = "multiple-choice";
 const SHORT = "short-paragraph";
 const PARAGRAPH = "paragraph";
 
-// const checkBoxesValidationRules = ["maxChoices", "minChoices", "exactChoices"];
-// const shortParagraphValidationRules = ["isNumber", "isCharacter", "maxLength"];
-// const paragraphQuestionValidationRules = ["minLength", "maxLength"];
-
-const validator = {
-	max: {
-		type: "number",
-	},
-	min: {
-		type: "number",
-	},
-	message: {
-		type: "string",
-	},
-};
-
 const checkBoxesValidationRules = {
 	type: {
 		enum: ["array"],
 	},
-	...validator,
 };
 
 const shortParagraphValidationRules = {
@@ -33,14 +16,12 @@ const shortParagraphValidationRules = {
 	pattern: {
 		type: "string",
 	},
-	...validator,
 };
 
 const paragraphQuestionValidationRules = {
 	type: {
 		enum: ["string"],
 	},
-	...validator,
 };
 
 const schemaQuestion = {
@@ -104,6 +85,11 @@ const schemaQuestion = {
 			required: ["type"],
 			properties: {
 				type: {},
+				operations: {
+					type: {
+						enum: ["max", "min", "inBetween", "pattern"],
+					},
+				},
 				max: {
 					type: "number",
 				},
@@ -129,9 +115,10 @@ const schemaQuestion = {
 					validator: {
 						type: "object",
 						properties: {
-							type: {
-								enum: ["array"],
-							},
+							...checkBoxesValidationRules,
+							// type: {
+							// 	enum: ["array"],
+							// },
 							//type: { enum: checkBoxesValidationRules },
 						},
 						anyOf: [
@@ -158,12 +145,13 @@ const schemaQuestion = {
 						type: "object",
 						properties: {
 							//type: { enum: shortParagraphValidationRules },
-							type: {
-								enum: ["string", "number"],
-							},
-							pattern: {
-								type: "string",
-							},
+							...shortParagraphValidationRules,
+							// type: {
+							// 	enum: ["string", "number"],
+							// },
+							// pattern: {
+							// 	type: "string",
+							// },
 						},
 					},
 				},
@@ -181,9 +169,10 @@ const schemaQuestion = {
 						type: "object",
 						properties: {
 							//type: { enum: paragraphQuestionValidationRules },
-							type: {
-								enum: ["string"],
-							},
+							...paragraphQuestionValidationRules,
+							// type: {
+							// 	enum: ["string"],
+							// },
 						},
 					},
 				},
