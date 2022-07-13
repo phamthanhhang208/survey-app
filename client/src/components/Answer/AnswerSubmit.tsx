@@ -15,7 +15,7 @@ const AnswerSubmit = (props: any) => {
 					...r,
 					{
 						transform: (value: any) => {
-							if (!value) return;
+							if (value.length === 0) return;
 							return +value;
 						},
 						...validator,
