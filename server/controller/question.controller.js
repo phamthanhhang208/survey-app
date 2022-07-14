@@ -244,10 +244,12 @@ module.exports.duplicateQuestion = async (req, res, next) => {
 	delete duplicatedQuestion._id;
 	for (let answer of duplicatedQuestion.answer) {
 		if (answer.media) {
-			const dupFile = await cloudinary.uploader.upload(answer.media.url);
+			const dupFile = await cloudinary.uploader.upload(answer.media.url, {
+				folder: "survey-app",
+			});
 			answer.media = {
 				url: dupFile.url,
-				filename: `survey-app/${dupFile.public_id}`,
+				filename: `${dupFile.public_id}`,
 			};
 		}
 	}

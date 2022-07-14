@@ -1,5 +1,7 @@
 const Form = require("../model/form");
 const Question = require("../model/question");
+const DeleteMedia = require("../model/deleteMedia");
+const { startSession } = require("mongoose");
 
 // create a new form and a question
 module.exports.createForm = async (req, res, next) => {
@@ -33,9 +35,39 @@ module.exports.getForm = async (req, res, next) => {
 };
 
 module.exports.deleteForm = async (req, res) => {
-	const { id } = req.params;
-	await Form.findByIdAndDelete(id);
-	return res.status(200).send("form deleted");
+	try {
+		const session = await startSession();
+		session.startTransaction();
+
+		const { id } = req.params;
+
+		//delete form media
+		const deleteImgs = [];
+		const { questions } = await Form.findById(id, null, { session }).populate(
+			"questions"
+		);
+
+		for (const question of questions) {
+			if (question.questionMedia) {
+				deleteImgs.push(question.questionMedia);
+			}
+			for (let answer of question.answer) {
+				if (answer.media) {
+					deleteImgs.push(answer.media);
+				}
+			}
+		}
+		await DeleteMedia.insertMany(deleteImgs, null, { session });
+		await Form.findByIdAndDelete(id).session(session);
+		await session.commitTransaction();
+		session.endSession();
+		return res.status(200).send("form deleted");
+	} catch (error) {
+		await session.abortTransaction();
+		session.endSession();
+		console.log(error);
+		next(error);
+	}
 };
 
 module.exports.updateForm = async (req, res, next) => {

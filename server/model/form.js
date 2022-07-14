@@ -45,7 +45,7 @@ formSchema.post("findByIdAndDelete", async function (doc) {
 		});
 		await Question.deleteMany({
 			_id: {
-				$in: doc.questions,
+				$in: doc.responses,
 			},
 		});
 	}

@@ -86,9 +86,7 @@ const schemaQuestion = {
 			properties: {
 				type: {},
 				operations: {
-					type: {
-						enum: ["max", "min", "inBetween", "pattern"],
-					},
+					enum: ["max", "min", "inBetween", "pattern"],
 				},
 				max: {
 					type: "number",
@@ -119,7 +117,6 @@ const schemaQuestion = {
 							// type: {
 							// 	enum: ["array"],
 							// },
-							//type: { enum: checkBoxesValidationRules },
 						},
 						anyOf: [
 							{
@@ -144,7 +141,6 @@ const schemaQuestion = {
 					validator: {
 						type: "object",
 						properties: {
-							//type: { enum: shortParagraphValidationRules },
 							...shortParagraphValidationRules,
 							// type: {
 							// 	enum: ["string", "number"],
@@ -168,7 +164,6 @@ const schemaQuestion = {
 					validator: {
 						type: "object",
 						properties: {
-							//type: { enum: paragraphQuestionValidationRules },
 							...paragraphQuestionValidationRules,
 							// type: {
 							// 	enum: ["string"],

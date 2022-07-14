@@ -98,7 +98,7 @@ export default function QuestionForm(props: any) {
 						</Select>
 					</Form.Item>
 					{type && <Answer type={type} />}
-					{type && <Validator type={type} resetField={resetField} />}
+					{/* {type && <Validator type={type} resetField={resetField} />} */}
 					<Form.Item>
 						<Space>
 							<Button type="primary" htmlType="submit">
