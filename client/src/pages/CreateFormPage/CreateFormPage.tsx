@@ -16,8 +16,10 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   const { mutate: addQuestion } = useAddQuestion();
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [isDestroyOnClose, setIsDestroyOnClose] = useState(false);
 
   const showModal = () => {
+    setIsDestroyOnClose(false);
     setVisible(true);
   };
 
@@ -26,11 +28,21 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   };
 
   const handleSubmit = async (v: any) => {
+    setIsDestroyOnClose(true);
+
     try {
       const formData = new FormData();
       formData.append('questionText', v.questionText);
       formData.append('type', v.type);
       formData.append('required', v.required);
+
+      if (v?.validator) {
+        Object.entries(v?.validator).forEach(([key, value]) => {
+          if (value) {
+            formData.append(`validator[${key}]`, value as any);
+          }
+        });
+      }
 
       if (v?.description) {
         formData.append('description', v?.description);
@@ -107,6 +119,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
     } catch (error) {
       console.log(error);
     }
+    Modal.destroyAll();
     setVisible(false);
     setConfirmLoading(false);
   };
@@ -142,7 +155,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        destroyOnClose
+        destroyOnClose={isDestroyOnClose}
         width={700}
         bodyStyle={{ paddingBottom: 10 }}
       >
@@ -154,6 +167,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
           wrapperCol={{ span: 20 }}
           labelAlign='left'
           labelWrap
+          preserve={false}
         >
           <QuestionModal form={form} />
         </Form>

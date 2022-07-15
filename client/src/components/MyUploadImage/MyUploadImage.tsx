@@ -1,7 +1,6 @@
 import { PictureOutlined } from '@ant-design/icons';
 import { Form, message, Tooltip, Upload, UploadFile, UploadProps } from 'antd';
 import { FunctionComponent, useEffect, useId, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import './MyUploadImage.scss';
 
 interface MyUploadImageProps {
