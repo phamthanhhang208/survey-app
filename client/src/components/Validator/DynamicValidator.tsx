@@ -1,12 +1,11 @@
 import {
-  question,
+  MULTIPLECHOICE,
   questionOperators,
   questionValidation,
 } from '@/const/question';
-import { Form, Input, Select } from 'antd';
+import { Form, FormInstance, Input, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import DynamicValidatorInput from './DynamicValidatorInput';
-import { MULTIPLECHOICE } from '@/const/question';
 
 const { Option } = Select;
 
@@ -14,7 +13,7 @@ interface DynamicValidatorProps {
   questionType:
     | keyof typeof questionValidation
     | keyof typeof questionOperators;
-  form: any;
+  form: FormInstance;
 }
 
 const DynamicValidator = ({ questionType, form }: DynamicValidatorProps) => {
@@ -29,18 +28,22 @@ const DynamicValidator = ({ questionType, form }: DynamicValidatorProps) => {
     form.setFieldsValue({
       validator: { type: questionValidation[questionType][0]?.value },
     });
-    form.setFieldsValue({ validator: { operations: null } });
+
+    if (!form.getFieldValue(['validator', 'operations'])) {
+      form.setFieldsValue({ validator: { operations: null } });
+    }
+
     const value = form.getFieldValue(['validator', 'type']);
 
-    console.log(value);
-    console.log(questionOperators[questionType][value]);
-
     setOperations(questionOperators[questionType][value]);
-    form.setFieldsValue({
-      validator: {
-        operations: questionOperators[questionType][value][0].type,
-      },
-    });
+
+    if (!form.getFieldValue(['validator', 'operations'])) {
+      form.setFieldsValue({
+        validator: {
+          operations: questionOperators[questionType][value][0].type,
+        },
+      });
+    }
   }, [questionType, form]);
 
   const handleChange = (value: any) => {

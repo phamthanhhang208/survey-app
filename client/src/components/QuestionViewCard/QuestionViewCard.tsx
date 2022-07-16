@@ -56,6 +56,14 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
       formData.append('type', v.type);
       formData.append('required', v.required);
 
+      if (v?.validator) {
+        Object.entries(v?.validator).forEach(([key, value]) => {
+          if (value) {
+            formData.append(`validator[${key}]`, value as any);
+          }
+        });
+      }
+
       if (v?.description) {
         formData.append('description', v?.description);
       }
