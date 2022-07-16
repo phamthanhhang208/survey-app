@@ -1,9 +1,11 @@
 import CheckboxCreate from '@/components/CreateComponent/CheckboxCreate/CheckboxCreate';
 import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCreate';
 import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
-import { question as questionTypeList } from '@/const/question';
+import DynamicValidator from '@/components/Validator/DynamicValidator';
+import { MULTIPLECHOICE, question as questionTypeList } from '@/const/question';
 import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { MoreOutlined, PictureOutlined } from '@ant-design/icons';
+
 import {
   Checkbox,
   Divider,
@@ -74,6 +76,16 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
   };
 
   const handleQuestionTypeChange = (v: any) => {
+    if (v === MULTIPLECHOICE) {
+      setIsValidatorShown(false);
+      const prev = form.getFieldValue('additionalFields');
+      form.setFieldsValue({
+        additionalFields: prev.filter(
+          (el: any) => el !== 'response-validation'
+        ),
+      });
+    }
+
     setQuestionTypeState(v);
   };
 
@@ -151,7 +163,9 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
 
       <div className='dynamic-questions'>{dynamicQuestion()}</div>
 
-      {isValidatorShown && <div>Validation</div>}
+      {isValidatorShown && (
+        <DynamicValidator questionType={questionTypeState as any} form={form} />
+      )}
 
       <Divider style={{ marginBottom: 10 }} />
 
@@ -184,7 +198,6 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
               style={{ marginBottom: 0, width: 200 }}
             >
               <Checkbox.Group
-                name='question-description'
                 style={{ display: 'flex', flexDirection: 'column' }}
               >
                 <Checkbox
@@ -213,21 +226,23 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
                 >
                   Image
                 </Checkbox>
-                <Checkbox
-                  checked={isValidatorShown}
-                  value={'response-validation'}
-                  onChange={(v) => {
-                    setVisible(false);
-                    setTimeout(() => {
-                      setIsValidatorShown((prev) => !prev);
-                    }, 300);
-                  }}
-                  style={{
-                    marginLeft: 0,
-                  }}
-                >
-                  Response validation
-                </Checkbox>
+                {questionTypeState === MULTIPLECHOICE ? null : (
+                  <Checkbox
+                    checked={isValidatorShown}
+                    value={'response-validation'}
+                    onChange={(v) => {
+                      setVisible(false);
+                      setTimeout(() => {
+                        setIsValidatorShown((prev) => !prev);
+                      }, 300);
+                    }}
+                    style={{
+                      marginLeft: 0,
+                    }}
+                  >
+                    Response validation
+                  </Checkbox>
+                )}
               </Checkbox.Group>
             </Form.Item>
           }
