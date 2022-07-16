@@ -2,9 +2,9 @@ import CheckboxCreate from '@/components/CreateComponent/CheckboxCreate/Checkbox
 import ParagraphCreate from '@/components/CreateComponent/Paragraph/ParagraphCreate';
 import RadioCreate from '@/components/CreateComponent/RadioCreate/RadioCreate';
 import ShortParagraphCreate from '@/components/CreateComponent/ShortParapraph/ShortParagraphCreate';
+import DynamicValidator from '@/components/Validator/DynamicValidator';
 import { question as questionTypeList } from '@/const/question';
 import { useGetQuestion } from '@/hooks/question.hook';
-import useCurrentPermission from '@/hooks/useCurrentPermission';
 import { MoreOutlined, PictureOutlined } from '@ant-design/icons';
 import {
   Checkbox,
@@ -50,11 +50,21 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
 
   //fill in the data
   useEffect(() => {
+    console.log(getQuestion);
     form.setFieldsValue({ questionText: getQuestion?.questionText });
     form.setFieldsValue({ type: getQuestion?.type });
     form.setFieldsValue({ questionId: questionId });
     setQuestionTypeState(getQuestion?.type);
     const additionalFields = [];
+
+    if (getQuestion?.validator) {
+      setIsValidatorShown(true);
+      additionalFields.push('response-validation');
+
+      for (const [key, value] of Object.entries(getQuestion?.validator)) {
+        form.setFieldsValue({ validator: { [key]: value } });
+      }
+    }
 
     if (getQuestion?.description) {
       setIsQuestionDescriptionShown(true);
@@ -206,7 +216,9 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
 
       <div className='dynamic-questions'>{dynamicQuestion()}</div>
 
-      {isValidatorShown && <div>Validation</div>}
+      {isValidatorShown && (
+        <DynamicValidator questionType={questionTypeState as any} form={form} />
+      )}
 
       <Divider style={{ marginBottom: 10 }} />
 
@@ -239,7 +251,6 @@ const QuestionEditModal: FunctionComponent<QuestionEditModalProps> = ({
               style={{ marginBottom: 0, width: 200 }}
             >
               <Checkbox.Group
-                name='question-description'
                 style={{ display: 'flex', flexDirection: 'column' }}
               >
                 <Checkbox
