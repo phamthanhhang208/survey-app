@@ -22,11 +22,15 @@ import './QuestionViewCard.scss';
 interface QuestionViewCardProps {
   question: any;
   formId: any;
+  ref?: any;
+  provided?: any;
 }
 
 const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   question,
   formId,
+  ref,
+  provided,
 }) => {
   const { mutate: deleteQuestion } = useDeleteQuestion();
   const { mutate: duplicateQuestion } = useDuplicateQuestion();
@@ -204,7 +208,11 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   };
 
   return (
-    <div>
+    <div
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      ref={provided.innerRef}
+    >
       <Card className={'question-view-card'}>
         <Typography.Title level={4}> {question.questionText}</Typography.Title>
         {question.description && (
