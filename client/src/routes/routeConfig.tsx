@@ -4,6 +4,7 @@ import CreateFormPage from '@/pages/CreateFormPage/CreateFormPage';
 import EditResponsePage from '@/pages/EditResponsePage/EditResponsePage';
 import SubmitFormPage from '@/pages/SubmitFormPage/SubmitFormPage';
 import EditSettingPage from '@/pages/EditSettingPage/EditSettingPage';
+import SignInPage from '@/pages/SignInPage/SignInPage';
 
 export interface RouterInterface {
   path?: string;
@@ -46,6 +47,12 @@ export const routerConfig: Array<RouterInterface> = [
   {
     path: routePaths.EDIT,
     component: CreateFormPage,
+    needAuthor: true,
+    grantPermission: [],
+  },
+  {
+    path: routePaths.SIGN_IN,
+    component: SignInPage,
     needAuthor: true,
     grantPermission: [],
   },

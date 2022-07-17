@@ -5,4 +5,5 @@ export const routePaths = {
   CREATOR_VIEW_FORM: '/forms/:id/viewform',
   CREATOR_EDIT_SETTING: '/forms/:id/edit-setting',
   USER_SUBMIT: '/forms/:id',
+  SIGN_IN: '/sign-in',
 };
