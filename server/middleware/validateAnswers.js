@@ -8,7 +8,6 @@ const {
 } = require("../constant/question");
 const { validatorAnswer } = require("../helper/validateAnswer");
 const { isContain } = require("../helper/utils");
-//const _ = require("lodash");
 
 const defaultValidator = {
 	type: "array",
@@ -61,50 +60,6 @@ exports.validateAnswer = async (req, res, next) => {
 				validateAnswerType(answers[i].answer, validator._doc, next);
 				break;
 		}
-
-		// check if every question have enough answer
-		// if (
-		// 	question.type === SHORT ||
-		// 	question.type === PARAGRAPH ||
-		// 	question.type === MULTIPLECHOICE
-		// ) {
-		// 	const isAnswerLengthCorrect = validatorAnswer(answers[i].answer, {
-		// 		...defaultValidator,
-		// 	});
-		// 	if (!isAnswerLengthCorrect) {
-		// 		return next(new AppError(400, "This question require 1 answer only"));
-		// 	}
-		// }
-		//skip if there is no validator
-		//if (!validator) continue;
-		// validate answer if there is validator
-		// if (question.type === CHECKBOXES) {
-		// 	const isAnswerLengthCorrect = validatorAnswer(answers[i].answer, {
-		// 		...validator._doc,
-		// 	});
-		// 	if (!isAnswerLengthCorrect) {
-		// 		return next(
-		// 			new AppError(
-		// 				400,
-		// 				validator?.message || "This question require 1 answer only"
-		// 			)
-		// 		);
-		// 	}
-		// }
-		// if (question.type === SHORT || question.type === PARAGRAPH) {
-		// 	for (const answer of answers[i].answer) {
-		// 		const isAnswerValid = validatorAnswer(answer.content, {
-		// 			...validator._doc,
-		// 		});
-		// 		if (!isAnswerValid) {
-		// 			return next(
-		// 				new AppError(400, validator?.message || "answer is not valid")
-		// 			);
-		// 		} else {
-		// 			continue;
-		// 		}
-		// 	}
-		// }
 	}
 	next();
 };

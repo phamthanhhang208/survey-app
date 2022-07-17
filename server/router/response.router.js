@@ -16,12 +16,19 @@ const {
 	validateAnswer,
 } = require("../middleware/validateAnswers");
 
+const { checkAuth, checkRole } = require("../auth");
+
+const { isAuthor } = require("../middleware/validateAuthorize");
+
 const { isFormAcceptResponse } = require("../middleware/validateFormSetting");
 
 const catchAsync = require("../helper/catchAsync");
 
 router.post(
 	"/",
+	checkAuth,
+	checkRole(["teacher", "student"]),
+	validateFormId,
 	validationResponseInput,
 	validateResponseQuestionId,
 	isFormAcceptResponse,
@@ -34,27 +41,48 @@ router.post(
 router.post(
 	"/test",
 	validationResponseInput,
+	validateFormId,
 	validateResponseQuestionId,
 	isAnswerExist,
 	validateAnswer,
 	form.dummyApi
 );
 
-router.get("/", validateFormId, catchAsync(response.getResponses));
+router.get(
+	"/",
+	checkAuth,
+	checkRole(),
+	validateFormId,
+	isAuthor,
+	catchAsync(response.getResponses)
+);
 router.get(
 	"/:responseId",
+	checkAuth,
+	checkRole(),
 	validateFormId,
+	isAuthor,
 	validateResponseId,
 	catchAsync(response.getResponse)
 );
 router.delete(
 	"/:responseId",
+	checkAuth,
+	checkRole(),
 	validateFormId,
+	isAuthor,
 	validateResponseId,
 	catchAsync(response.deleteResponse)
 );
 
-router.delete("/", validateFormId, catchAsync(response.deleteAllResponses));
+router.delete(
+	"/",
+	checkAuth,
+	checkRole(),
+	validateFormId,
+	isAuthor,
+	catchAsync(response.deleteAllResponses)
+);
 
 router.use((err, req, res, next) => {
 	console.log(err);

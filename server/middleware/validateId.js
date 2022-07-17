@@ -11,12 +11,13 @@ exports.validateFormId = async (req, res, next) => {
 	const form = await Form.findById(id);
 	if (!form)
 		return next(new AppError(404, "The form is not found or does not exist"));
+	req.form = form;
 	return next();
 };
 
 // for edit and delete question
 exports.validateQuesionId = async (req, res, next) => {
-	const { id, questionId } = req.params;
+	const { questionId } = req.params;
 	if (!ObjectId.isValid(questionId))
 		return next(new AppError(404, "Invalid Question"));
 	//const question = await Form.findOne({ _id: id, questions: questionId });
@@ -28,10 +29,10 @@ exports.validateQuesionId = async (req, res, next) => {
 
 //check if reorder form question id is correct
 exports.validateAllQuestionIds = async (req, res, next) => {
-	const { id } = req.params;
+	//const { id } = req.params;
 	const ids = req.body;
-	const form = await Form.findById(id);
-	const questionIds = form.questions.map((q) => q.toString());
+	//const form = await Form.findById(id);
+	const questionIds = req.form.questions.map((q) => q.toString());
 	//check if there is enough question
 	if (ids.length !== questionIds.length)
 		return next(new AppError(404, "Question is not found or does not exist"));
@@ -44,15 +45,15 @@ exports.validateAllQuestionIds = async (req, res, next) => {
 
 // check if every response question id belong or exist in form
 exports.validateResponseQuestionId = async (req, res, next) => {
-	const { id } = req.params;
+	//const { id } = req.params;
 	if (!ObjectId.isValid(id)) return next(new AppError(404, "Invalid Form"));
 	//check if form exist
-	const form = await Form.findById(id);
-	if (!form) return next(new Error("form not found"));
+	// const form = await Form.findById(id);
+	// if (!form) return next(new Error("form not found"));
 
 	const answers = req.body.answers;
 	const ids = answers.map((a) => a.questionId);
-	const questionIds = form.questions.map((q) => q.toString());
+	const questionIds = req.form.questions.map((q) => q.toString());
 
 	//check if every answer question id exist in form
 	const isQuestionCorrect = ids.every((q) => questionIds.includes(q));
@@ -69,6 +70,7 @@ exports.validateResponseId = async (req, res, next) => {
 		return next(new AppError(404, "Invalid Response"));
 	const response = await Response.findById(responseId);
 	//const formResponse = Form.findOne({_id: id, responses:responseId})
+	//const formResponse = req.form.responses.includes(responseId)
 	if (!response) return next(new AppError(404, "Invalid Response"));
 	return next();
 };

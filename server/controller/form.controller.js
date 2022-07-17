@@ -17,14 +17,17 @@ module.exports.createForm = async (req, res, next) => {
 	const question = new Question(demoQuestion);
 	await question.save();
 	form.questions.push(question);
+	form.author = req.user.email;
 	await form.save();
 	return res.status(201).send(form._id);
 };
 
 //get all form sorted by recent
 module.exports.getAllForms = async (req, res, next) => {
-	const form = await Form.find({}).sort({ updatedAt: -1 });
-	return res.status(200).send(form);
+	const forms = await Form.find({ author: req.user.email }).sort({
+		updatedAt: -1,
+	});
+	return res.status(200).send(forms);
 };
 
 //get form and sorted questions
@@ -34,7 +37,7 @@ module.exports.getForm = async (req, res, next) => {
 	return res.status(200).send(form);
 };
 
-module.exports.deleteForm = async (req, res) => {
+module.exports.deleteForm = async (req, res, next) => {
 	try {
 		const session = await startSession();
 		session.startTransaction();
@@ -77,6 +80,7 @@ module.exports.updateForm = async (req, res, next) => {
 };
 
 module.exports.dummyApi = async (req, res) => {
+	console.log(req.user);
 	//console.log(req.body);
 	return res.status(200).send("this shall pass");
 };

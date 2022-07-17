@@ -6,6 +6,10 @@ const responseSchema = new Schema(
 	{
 		createdAt: Number,
 		updatedAt: Number,
+		user: {
+			type: String,
+			default: "student.name232312@example.com",
+		},
 		answers: [
 			{
 				_id: false,

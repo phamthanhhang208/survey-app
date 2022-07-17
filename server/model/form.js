@@ -8,6 +8,10 @@ const formSchema = new Schema(
 		createdAt: Number,
 		updatedAt: Number,
 		description: String,
+		author: {
+			type: String,
+			default: "teacher.name4477@example.com",
+		},
 		questions: [
 			{
 				type: Schema.Types.ObjectId,
