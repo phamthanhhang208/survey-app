@@ -21,17 +21,21 @@ const ChartDisplay = (props: any) => {
 		};
 	});
 
+	const chartData = Array.from(
+		new Set([...mergedResponseAndAnswer, ...question.responses])
+	);
+
 	if (question.type === SHORT || question.type === PARAGRAPH) {
 		chart = <ListDisplay dataset={question.responses} />;
 	}
 	if (question.type === CHECKBOX) {
-		const labels = mergedResponseAndAnswer.map((m: any) => m.content);
-		const dataset = mergedResponseAndAnswer.map((m: any) => m.count);
+		const labels = chartData.map((m: any) => m.content);
+		const dataset = chartData.map((m: any) => m.count);
 		chart = <BarChartDisplay labels={labels} dataset={dataset} />;
 	}
 	if (question.type === MULTIPLECHOICE) {
-		const labels = mergedResponseAndAnswer.map((m: any) => m.content);
-		const dataset = mergedResponseAndAnswer.map((m: any) => m.count);
+		const labels = chartData.map((m: any) => m.content);
+		const dataset = chartData.map((m: any) => m.count);
 		chart = <PieChartDisplay labels={labels} dataset={dataset} />;
 	}
 	return (

@@ -76,16 +76,20 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
   };
 
   const handleQuestionTypeChange = (v: any) => {
-    if (v === MULTIPLECHOICE) {
-      setIsValidatorShown(false);
-      const prev = form.getFieldValue('additionalFields');
-      form.setFieldsValue({
-        additionalFields: prev.filter(
-          (el: any) => el !== 'response-validation'
-        ),
-      });
-    }
-
+    // if (v === MULTIPLECHOICE) {
+    //   setIsValidatorShown(false);
+    //   const prev = form.getFieldValue('additionalFields');
+    //   form.setFieldsValue({
+    //     additionalFields: prev.filter(
+    //       (el: any) => el !== 'response-validation'
+    //     ),
+    //   });
+    // }
+    setIsValidatorShown(false);
+    const prev = form.getFieldValue('additionalFields');
+    form.setFieldsValue({
+      additionalFields: prev?.filter((el: any) => el !== 'response-validation'),
+    });
     setQuestionTypeState(v);
   };
 

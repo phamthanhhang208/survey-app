@@ -22,11 +22,15 @@ import './QuestionViewCard.scss';
 interface QuestionViewCardProps {
   question: any;
   formId: any;
+  ref?: any;
+  provided?: any;
 }
 
 const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   question,
   formId,
+  ref,
+  provided,
 }) => {
   const { mutate: deleteQuestion } = useDeleteQuestion();
   const { mutate: duplicateQuestion } = useDuplicateQuestion();
@@ -55,6 +59,14 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
       formData.append('questionText', v.questionText);
       formData.append('type', v.type);
       formData.append('required', v.required);
+
+      if (v?.validator) {
+        Object.entries(v?.validator).forEach(([key, value]) => {
+          if (value) {
+            formData.append(`validator[${key}]`, value as any);
+          }
+        });
+      }
 
       if (v?.description) {
         formData.append('description', v?.description);
@@ -196,7 +208,11 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
   };
 
   return (
-    <div>
+    <div
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      ref={provided.innerRef}
+    >
       <Card className={'question-view-card'}>
         <Typography.Title level={4}> {question.questionText}</Typography.Title>
         {question.description && (
