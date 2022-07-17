@@ -88,7 +88,7 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
     setIsValidatorShown(false);
     const prev = form.getFieldValue('additionalFields');
     form.setFieldsValue({
-      additionalFields: prev.filter((el: any) => el !== 'response-validation'),
+      additionalFields: prev?.filter((el: any) => el !== 'response-validation'),
     });
     setQuestionTypeState(v);
   };
