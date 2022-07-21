@@ -1,7 +1,7 @@
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { routerConfig } from '@/routes/routeConfig';
-import EditLayout from '@/components/Layout/EditLayout/EditLayout';
+import EditLayout from '@/layouts/EditLayout/EditLayout';
 
 export default function MyRoutes() {
   return (
