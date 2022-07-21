@@ -1,5 +1,5 @@
 import '@/App.scss';
-import AppLayout from '@/components/Layout/AppLayout';
+import AppLayout from '@/layouts/AppLayout';
 import MyRoutes from '@/routes/MyRoutes';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
