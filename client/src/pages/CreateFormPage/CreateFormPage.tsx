@@ -2,7 +2,8 @@ import QuestionModal from '@/components/Question/QuestionModal';
 import QuestionListView from '@/components/QuestionListView/QuestionListView';
 import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
 import { useAddQuestion } from '@/hooks/question.hook';
-import { Button, Form, Input, Modal, Spin } from 'antd';
+import { VerticalAlignTopOutlined } from '@ant-design/icons';
+import { BackTop, Button, Form, Input, Modal, Spin } from 'antd';
 import { FunctionComponent, useState } from 'react';
 import './CreateFormPage.scss';
 
@@ -149,6 +150,10 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
 
   return (
     <div className='create-form-page'>
+      <BackTop className='back-top-icon'>
+        <VerticalAlignTopOutlined />
+      </BackTop>
+
       <Modal
         title='Add question'
         visible={visible}
