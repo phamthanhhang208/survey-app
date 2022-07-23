@@ -214,7 +214,11 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
       ref={provided.innerRef}
     >
       <Card className={'question-view-card'}>
-        <Typography.Title level={4}> {question.questionText}</Typography.Title>
+        <Typography.Title level={4}>
+          {question.questionText}{' '}
+          {question?.required && <span style={{ color: '#AA1D2A' }}>*</span>}
+        </Typography.Title>
+
         {question.description && (
           <Card.Meta description={question.description} />
         )}

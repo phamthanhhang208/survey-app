@@ -1,22 +1,23 @@
 import MyUploadImage from '@/components/MyUploadImage/MyUploadImage';
 import { BorderOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { FunctionComponent } from 'react';
+import { Button, Form, FormInstance, Input } from 'antd';
+import { FunctionComponent, useState } from 'react';
 import './CheckboxCreate.scss';
 
 interface CheckboxCreateProps {
-  form?: any;
+  form?: FormInstance;
 }
 
 const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
+  const [errorIndex, setErrorIndex] = useState<number>();
   return (
     <Form.Item name={'checkboxes'}>
       <Form.List name={'checkboxes'} initialValue={['']}>
         {(fields, { add, remove }, { errors }) => (
           <>
-            {fields.map((field, index) => {
+            {fields.map(({ key, name, ...restField }) => {
               return (
-                <div key={field.key} className={'dynamic-question-item'}>
+                <div key={key} className={'dynamic-question-item'}>
                   <BorderOutlined
                     style={{
                       marginRight: '5px',
@@ -26,13 +27,32 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                     }}
                   />
                   <Form.Item
+                    {...restField}
                     style={{ marginBottom: 0, width: 420 }}
-                    name={[field.name, 'content']}
+                    name={[name, 'content']}
                     validateTrigger={['onChange', 'onBlur']}
                     rules={[
                       {
                         required: true,
                         message: 'Please input question answer',
+                      },
+                      {
+                        validator: (_, v) => {
+                          const answerArray = form?.getFieldValue([
+                            'checkboxes',
+                          ]);
+
+                          for (let i = 0; i < answerArray?.length; i++) {
+                            if (i !== name && answerArray[i]?.content === v) {
+                              setErrorIndex(name);
+                              return Promise.reject(
+                                new Error('Answers can not be duplicated.')
+                              );
+                            }
+                          }
+                          setErrorIndex(undefined);
+                          return Promise.resolve();
+                        },
                       },
                     ]}
                   >
@@ -40,9 +60,9 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                   </Form.Item>
 
                   <MyUploadImage
-                    field={field}
+                    name={name}
                     initialQuestion={
-                      form && form.getFieldValue('checkboxes')[index]
+                      form && form.getFieldValue('checkboxes')[name]
                     }
                   />
 
@@ -50,7 +70,48 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                     <CloseOutlined
                       style={{ marginLeft: '5px' }}
                       className='dynamic-delete-button'
-                      onClick={() => remove(field.name)}
+                      onClick={() => {
+                        remove(name);
+
+                        errorIndex &&
+                          form
+                            ?.getFieldInstance([
+                              'checkboxes',
+                              errorIndex,
+                              'content',
+                            ])
+                            .focus();
+
+                        errorIndex &&
+                          form
+                            ?.getFieldInstance([
+                              'checkboxes',
+                              errorIndex,
+                              'content',
+                            ])
+                            .blur();
+                        setTimeout(() => {
+                          errorIndex &&
+                            form
+                              ?.getFieldInstance([
+                                'checkboxes',
+                                errorIndex - 1,
+                                'content',
+                              ])
+                              .focus();
+
+                          errorIndex &&
+                            form
+                              ?.getFieldInstance([
+                                'checkboxes',
+                                errorIndex - 1,
+                                'content',
+                              ])
+                              .blur();
+
+                          setErrorIndex(undefined);
+                        }, 0);
+                      }}
                     />
                   )}
                 </div>
@@ -58,6 +119,7 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
             })}
             <Form.Item>
               <Button
+                disabled={errorIndex ? true : false}
                 type='dashed'
                 onClick={() => {
                   add();

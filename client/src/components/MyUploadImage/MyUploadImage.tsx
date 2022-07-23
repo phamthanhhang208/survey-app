@@ -4,12 +4,12 @@ import { FunctionComponent, useEffect, useId, useState } from 'react';
 import './MyUploadImage.scss';
 
 interface MyUploadImageProps {
-  field?: any;
+  name?: any;
   initialQuestion?: any;
 }
 
 const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({
-  field,
+  name,
   initialQuestion = undefined,
 }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -47,7 +47,7 @@ const MyUploadImage: FunctionComponent<MyUploadImageProps> = ({
 
   return (
     <Form.Item
-      name={[field.name, 'media']}
+      name={[name, 'media']}
       valuePropName='file'
       style={{
         display: 'flex',

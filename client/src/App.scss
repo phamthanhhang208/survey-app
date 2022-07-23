@@ -4,3 +4,17 @@
 body {
   background-color: $main-background-color;
 }
+
+.back-top-icon {
+  background-color: $main-red-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+
+  &:hover {
+    color: white;
+  }
+}
