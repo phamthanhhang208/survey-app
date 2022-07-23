@@ -95,7 +95,7 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
         label='Question'
         rules={[{ required: true }]}
       >
-        <Input placeholder='Question' />
+        <Input.TextArea placeholder='Question' autoSize />
       </Form.Item>
 
       {isQuestionDescriptionShown && (
