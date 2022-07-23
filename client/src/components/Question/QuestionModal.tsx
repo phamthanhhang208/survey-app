@@ -56,9 +56,9 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
   const dynamicQuestion = () => {
     switch (questionTypeState) {
       case 'checkboxes':
-        return <CheckboxCreate />;
+        return <CheckboxCreate form={form} />;
       case 'multiple-choice':
-        return <RadioCreate />;
+        return <RadioCreate form={form} />;
       case 'short-paragraph':
         return (
           <Form.Item name={'shortParagraph'}>
@@ -76,15 +76,6 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
   };
 
   const handleQuestionTypeChange = (v: any) => {
-    // if (v === MULTIPLECHOICE) {
-    //   setIsValidatorShown(false);
-    //   const prev = form.getFieldValue('additionalFields');
-    //   form.setFieldsValue({
-    //     additionalFields: prev.filter(
-    //       (el: any) => el !== 'response-validation'
-    //     ),
-    //   });
-    // }
     setIsValidatorShown(false);
     const prev = form.getFieldValue('additionalFields');
     form.setFieldsValue({

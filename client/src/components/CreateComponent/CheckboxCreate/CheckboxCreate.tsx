@@ -1,7 +1,7 @@
 import MyUploadImage from '@/components/MyUploadImage/MyUploadImage';
 import { BorderOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, FormInstance, Input } from 'antd';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import './CheckboxCreate.scss';
 
 interface CheckboxCreateProps {
@@ -9,6 +9,7 @@ interface CheckboxCreateProps {
 }
 
 const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
+  const [errorIndex, setErrorIndex] = useState<number>();
   return (
     <Form.Item name={'checkboxes'}>
       <Form.List name={'checkboxes'} initialValue={['']}>
@@ -36,15 +37,20 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                         message: 'Please input question answer',
                       },
                       {
-                        validator: (a, v) => {
-                          form
-                            ?.getFieldValue(['checkboxes'])
-                            .forEach((q: any, i: number) => {
-                              console.log({ ...restField });
-                              // if (i !== index) {
-                              //   console.log(q);
-                              // }
-                            });
+                        validator: (_, v) => {
+                          const answerArray = form?.getFieldValue([
+                            'checkboxes',
+                          ]);
+
+                          for (let i = 0; i < answerArray?.length; i++) {
+                            if (i !== name && answerArray[i]?.content === v) {
+                              setErrorIndex(name);
+                              return Promise.reject(
+                                new Error('Answers can not be duplicated.')
+                              );
+                            }
+                          }
+                          setErrorIndex(undefined);
                           return Promise.resolve();
                         },
                       },
@@ -65,8 +71,46 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                       style={{ marginLeft: '5px' }}
                       className='dynamic-delete-button'
                       onClick={() => {
-                        console.log(form?.getFieldValue(['checkboxes']));
                         remove(name);
+
+                        errorIndex &&
+                          form
+                            ?.getFieldInstance([
+                              'checkboxes',
+                              errorIndex,
+                              'content',
+                            ])
+                            .focus();
+
+                        errorIndex &&
+                          form
+                            ?.getFieldInstance([
+                              'checkboxes',
+                              errorIndex,
+                              'content',
+                            ])
+                            .blur();
+                        setTimeout(() => {
+                          errorIndex &&
+                            form
+                              ?.getFieldInstance([
+                                'checkboxes',
+                                errorIndex - 1,
+                                'content',
+                              ])
+                              .focus();
+
+                          errorIndex &&
+                            form
+                              ?.getFieldInstance([
+                                'checkboxes',
+                                errorIndex - 1,
+                                'content',
+                              ])
+                              .blur();
+
+                          setErrorIndex(undefined);
+                        }, 0);
                       }}
                     />
                   )}
@@ -75,6 +119,7 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
             })}
             <Form.Item>
               <Button
+                disabled={errorIndex ? true : false}
                 type='dashed'
                 onClick={() => {
                   add();

@@ -1,7 +1,7 @@
 import MyUploadImage from '@/components/MyUploadImage/MyUploadImage';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import './RadioCreate.scss';
 
 interface RadioCreateProps {
@@ -9,6 +9,7 @@ interface RadioCreateProps {
 }
 
 const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
+  const [errorIndex, setErrorIndex] = useState<number>();
   return (
     <Form.Item name={'multipleChoice'}>
       <Form.List name={'multipleChoice'} initialValue={['']}>
@@ -29,10 +30,29 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
                 <Form.Item
                   {...restField}
                   name={[name, 'content']}
+                  validateTrigger={['onChange', 'onBlur']}
                   rules={[
                     {
                       required: true,
                       message: 'Please input question answer',
+                    },
+                    {
+                      validator: (_, v) => {
+                        const answerArray = form?.getFieldValue([
+                          'multipleChoice',
+                        ]);
+
+                        for (let i = 0; i < answerArray?.length; i++) {
+                          if (i !== name && answerArray[i]?.content === v) {
+                            setErrorIndex(name);
+                            return Promise.reject(
+                              new Error('Answers can not be duplicated.')
+                            );
+                          }
+                        }
+                        setErrorIndex(undefined);
+                        return Promise.resolve();
+                      },
                     },
                   ]}
                   style={{ marginBottom: 0, width: 420 }}
@@ -41,7 +61,6 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
                 </Form.Item>
 
                 <MyUploadImage
-                  // field={field}
                   name={name}
                   initialQuestion={
                     form && form.getFieldValue('multipleChoice')[name]
@@ -51,13 +70,55 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
                   <CloseOutlined
                     style={{ marginLeft: '5px' }}
                     className='dynamic-delete-button'
-                    onClick={() => remove(name)}
+                    onClick={() => {
+                      remove(name);
+
+                      errorIndex &&
+                        form
+                          ?.getFieldInstance([
+                            'multipleChoice',
+                            errorIndex,
+                            'content',
+                          ])
+                          .focus();
+
+                      errorIndex &&
+                        form
+                          ?.getFieldInstance([
+                            'multipleChoice',
+                            errorIndex,
+                            'content',
+                          ])
+                          .blur();
+                      setTimeout(() => {
+                        errorIndex &&
+                          form
+                            ?.getFieldInstance([
+                              'multipleChoice',
+                              errorIndex - 1,
+                              'content',
+                            ])
+                            .focus();
+
+                        errorIndex &&
+                          form
+                            ?.getFieldInstance([
+                              'multipleChoice',
+                              errorIndex - 1,
+                              'content',
+                            ])
+                            .blur();
+
+                        setErrorIndex(undefined);
+                      }, 0);
+                    }}
                   />
                 )}
               </div>
             ))}
             <Form.Item>
               <Button
+                disabled={errorIndex ? true : false}
                 type='dashed'
                 onClick={() => {
                   add();
