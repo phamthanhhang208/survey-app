@@ -14,8 +14,8 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
       <Form.List name={'multipleChoice'} initialValue={['']}>
         {(fields, { add, remove }, { errors }) => (
           <>
-            {fields.map((field, index) => (
-              <div key={field.key} className={'dynamic-question-item'}>
+            {fields.map(({ key, name, ...restField }) => (
+              <div key={key} className={'dynamic-question-item'}>
                 <svg width='24' height='32'>
                   <circle
                     cx='10'
@@ -27,7 +27,8 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
                   />
                 </svg>
                 <Form.Item
-                  name={[field.name, 'content']}
+                  {...restField}
+                  name={[name, 'content']}
                   rules={[
                     {
                       required: true,
@@ -40,16 +41,17 @@ const RadioCreate: FunctionComponent<RadioCreateProps> = ({ form }) => {
                 </Form.Item>
 
                 <MyUploadImage
-                  field={field}
+                  // field={field}
+                  name={name}
                   initialQuestion={
-                    form && form.getFieldValue('multipleChoice')[index]
+                    form && form.getFieldValue('multipleChoice')[name]
                   }
                 />
                 {fields?.length > 1 && (
                   <CloseOutlined
                     style={{ marginLeft: '5px' }}
                     className='dynamic-delete-button'
-                    onClick={() => remove(field.name)}
+                    onClick={() => remove(name)}
                   />
                 )}
               </div>

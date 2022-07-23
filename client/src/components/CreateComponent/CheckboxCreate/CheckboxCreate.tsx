@@ -1,11 +1,11 @@
 import MyUploadImage from '@/components/MyUploadImage/MyUploadImage';
 import { BorderOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, FormInstance, Input } from 'antd';
 import { FunctionComponent } from 'react';
 import './CheckboxCreate.scss';
 
 interface CheckboxCreateProps {
-  form?: any;
+  form?: FormInstance;
 }
 
 const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
@@ -14,9 +14,9 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
       <Form.List name={'checkboxes'} initialValue={['']}>
         {(fields, { add, remove }, { errors }) => (
           <>
-            {fields.map((field, index) => {
+            {fields.map(({ key, name, ...restField }) => {
               return (
-                <div key={field.key} className={'dynamic-question-item'}>
+                <div key={key} className={'dynamic-question-item'}>
                   <BorderOutlined
                     style={{
                       marginRight: '5px',
@@ -26,13 +26,27 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                     }}
                   />
                   <Form.Item
+                    {...restField}
                     style={{ marginBottom: 0, width: 420 }}
-                    name={[field.name, 'content']}
+                    name={[name, 'content']}
                     validateTrigger={['onChange', 'onBlur']}
                     rules={[
                       {
                         required: true,
                         message: 'Please input question answer',
+                      },
+                      {
+                        validator: (a, v) => {
+                          form
+                            ?.getFieldValue(['checkboxes'])
+                            .forEach((q: any, i: number) => {
+                              console.log({ ...restField });
+                              // if (i !== index) {
+                              //   console.log(q);
+                              // }
+                            });
+                          return Promise.resolve();
+                        },
                       },
                     ]}
                   >
@@ -40,9 +54,9 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                   </Form.Item>
 
                   <MyUploadImage
-                    field={field}
+                    name={name}
                     initialQuestion={
-                      form && form.getFieldValue('checkboxes')[index]
+                      form && form.getFieldValue('checkboxes')[name]
                     }
                   />
 
@@ -50,7 +64,10 @@ const CheckboxCreate: FunctionComponent<CheckboxCreateProps> = ({ form }) => {
                     <CloseOutlined
                       style={{ marginLeft: '5px' }}
                       className='dynamic-delete-button'
-                      onClick={() => remove(field.name)}
+                      onClick={() => {
+                        console.log(form?.getFieldValue(['checkboxes']));
+                        remove(name);
+                      }}
                     />
                   )}
                 </div>
