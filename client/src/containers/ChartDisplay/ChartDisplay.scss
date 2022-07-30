@@ -1,0 +1,11 @@
+@import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
+@import '@/styles/card_styles.scss';
+
+.chart-display {
+  @include question-card;
+
+  &:hover {
+    box-shadow: none;
+  }
+}

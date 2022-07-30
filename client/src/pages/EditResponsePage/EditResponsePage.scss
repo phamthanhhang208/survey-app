@@ -1,9 +1,17 @@
+@import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
+@import '@/styles/card_styles.scss';
+
 .edit-response-page {
-	width: 60%;
-	margin: 20px auto;
-	&-header {
-		display: flex;
-		justify-content: space-between;
-		position: relative;
-	}
+  @include page-style;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .edit-response-page-header {
+    @include question-card;
+  }
 }
