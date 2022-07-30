@@ -1,9 +1,8 @@
 @import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
 
 .create-form-page {
-  width: 60%;
-  margin: 20px auto;
-  max-width: 768px;
+  @include page-style;
 
   .create-question-fields {
     margin: 20px 0;

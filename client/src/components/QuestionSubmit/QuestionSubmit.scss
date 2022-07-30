@@ -1,0 +1,10 @@
+@import '@/styles/globalStyles.scss';
+@import '@/styles/card_styles.scss';
+
+.question-submit-card {
+  @include question-card;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
