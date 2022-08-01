@@ -1,13 +1,28 @@
+@import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
+
 .submit-form-page {
-	width: 60%;
-	margin: 20px auto;
+  @include page-style;
+
+  .form-title {
+    border: 1px solid rgb(202, 202, 202);
+    border-top: 7px solid $main-red-color;
+    // padding: 15px 30px 5px 30px;
+    background-color: white;
+    width: 100%;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(0, 0, 0, 0.19);
+    transition: 0.3s ease-in-out;
+  }
 }
 
-.question-list {
-	display: flex;
-	position: relative;
-	width: 100%;
-	flex-direction: column;
-	gap: 5px;
-	justify-content: center;
-}
+// .question-list {
+//   display: flex;
+//   position: relative;
+//   width: 100%;
+//   flex-direction: column;
+//   gap: 5px;
+//   justify-content: center;
+// }

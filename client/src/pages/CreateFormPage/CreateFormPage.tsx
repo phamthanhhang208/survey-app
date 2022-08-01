@@ -5,7 +5,7 @@ import { useAddQuestion } from '@/hooks/question.hook';
 import { VerticalAlignTopOutlined, EyeOutlined } from '@ant-design/icons';
 import { BackTop, Button, Form, Input, Modal, Spin } from 'antd';
 import { FunctionComponent, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './CreateFormPage.scss';
 
 interface CreateFormPageProps {}
@@ -159,6 +159,14 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
     navigate(`${newPath}/viewform`);
   };
 
+  const getNewPath = () => {
+    const tmp = location.pathname.split('/');
+    tmp.pop();
+    const newPath = tmp.join().replaceAll(',', '/');
+
+    return `${newPath}/viewform`;
+  };
+
   return (
     <div className='create-form-page'>
       <BackTop className='back-top-icon'>
@@ -234,10 +242,14 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       </Form>
 
       <div className='create-question-fields'>
-        <div className='viewform-btn' onClick={() => handleViewFormBtn()}>
+        {/* <div className='viewform-btn' onClick={() => handleViewFormBtn()}>
           <EyeOutlined />
           Viewform
-        </div>
+        </div> */}
+        <Link className='viewform-btn' to={getNewPath()} target='_blank'>
+          <EyeOutlined />
+          Viewform
+        </Link>
 
         <Button type='primary' onClick={showModal}>
           Add question

@@ -23,9 +23,6 @@ const AnswerView = (props: any) => {
         <div
           key={a.content}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 5,
             marginBottom: 20,
           }}
         >
@@ -39,7 +36,7 @@ const AnswerView = (props: any) => {
             />
             <span>{a.content}</span>
           </div>
-          {a.media?.url ? <Image height={200} src={a?.media?.url} /> : null}
+          {a.media?.url ? <Image width={150} src={a?.media?.url} /> : null}
         </div>
       );
     });
@@ -48,19 +45,26 @@ const AnswerView = (props: any) => {
   if (type === MULTIPLECHOICE) {
     element = answer.map((a: any) => {
       return (
-        <div key={a.content} style={{ display: 'flex' }}>
-          <svg width='24' height='24'>
-            <circle
-              cx='10'
-              cy='12'
-              r='8'
-              stroke='#9d9d9d'
-              strokeWidth='2'
-              fill='white'
-            />
-          </svg>
-          <span>{a.content}</span>
-          {a?.media?.url ? <Image height={200} src={a?.media?.url} /> : null}
+        <div
+          key={a.content}
+          style={{
+            marginBottom: 20,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <svg width='24' height='24'>
+              <circle
+                cx='10'
+                cy='12'
+                r='8'
+                stroke='#9d9d9d'
+                strokeWidth='2'
+                fill='white'
+              />
+            </svg>
+            <span>{a.content}</span>
+          </div>
+          {a?.media?.url ? <Image width={150} src={a?.media?.url} /> : null}
         </div>
       );
     });
