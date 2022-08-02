@@ -1,74 +1,121 @@
-import React from 'react';
-import './SubmitFormPage.scss';
-import { Card, Typography, Divider, Form, Button, Spin } from 'antd';
+import React from "react";
+import "./SubmitFormPage.scss";
+import { Card, Typography, Divider, Form, Button, Spin } from "antd";
 //import AnswerSubmit from "@/components/Answer/AnswerSubmit";
-import { useGetForm } from '@/hooks/form.hook';
-import { useAddResponse } from '@/hooks/response.hook';
-import { useParams } from 'react-router-dom';
-import QuestionSubmit from '@/components/QuestionSubmit/QuestionSubmit';
-import { validateMessage } from '@/utills/validateMessage';
+import { useGetForm } from "@/hooks/form.hook";
+import { useAddResponse } from "@/hooks/response.hook";
+import { useParams } from "react-router-dom";
+import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
+import { validateMessage } from "@/utills/validateMessage";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
+const layout = {
+	labelCol: {
+		xs: { span: 24 },
+		sm: { span: 12 },
+		md: { span: 8 },
+		lg: { span: 8 },
+	},
+	wrapperCol: {
+		xs: { span: 24 },
+		sm: { span: 12 },
+		md: { span: 12 },
+		lg: { span: 12 },
+	},
+};
 
 const SubmitFormPage: React.FC = () => {
-  const { id } = useParams();
-  const { data: formDetail, isLoading } = useGetForm();
-  const { mutate: addResponse } = useAddResponse();
-  const [form] = Form.useForm();
+	const { id } = useParams();
+	const { data: formDetail, isLoading } = useGetForm();
+	const { mutate: addResponse } = useAddResponse();
+	const [form] = Form.useForm();
 
-  if (isLoading) {
-    return <Spin />;
-  }
+	if (isLoading) {
+		return <Spin />;
+	}
 
-  const onFinish = (values: any) => {
-    const answers = [];
-    for (const [questionId, response] of Object.entries(values)) {
-      const answer = [];
-      if (response) {
-        if (Array.isArray(response)) {
-          for (const content of response) {
-            answer.push({ content: content });
-          }
-        } else {
-          answer.push({ content: response });
-        }
-        answers.push({ questionId, answer });
-      }
-    }
-    addResponse({ id, values: answers });
-    //console.log(values);
-  };
-  return (
-    <>
-      <div className='submit-form-page'>
-        <Card className='form-title'>
-          <Typography>
-            <Title>{formDetail.title}</Title>
-          </Typography>
-          {formDetail?.description && (
-            <Card.Meta description={formDetail?.description} />
-          )}
-        </Card>
+	const onFinish = (values: any) => {
+		const answers = [];
+		for (const [questionId, response] of Object.entries(values)) {
+			const answer = [];
+			if (response) {
+				if (Array.isArray(response)) {
+					for (const content of response) {
+						answer.push({ content: content });
+					}
+				} else {
+					answer.push({ content: response });
+				}
+				answers.push({ questionId, answer });
+			}
+		}
+		addResponse({ id, values: answers });
+		//console.log(values);
+	};
+	return (
+		<>
+			<div className="submit-form-page">
+				<Card className="form-title">
+					<Typography>
+						<Title>{formDetail.title}</Title>
+					</Typography>
+					{formDetail?.isAcceptResponse ? (
+						formDetail?.description && (
+							<Card.Meta description={formDetail?.description} />
+						)
+					) : (
+						<>
+							<Card.Meta
+								description={"This form is no longer accepting responses"}
+							/>
+							<Card.Meta
+								description={
+									"Try contacting the owner of the form if you think this is a mistake"
+								}
+							/>
+						</>
+					)}
+					{/* {formDetail?.description && (
+						<Card.Meta description={formDetail?.description} />
+					)} */}
+				</Card>
+				{formDetail?.isAcceptResponse && (
+					<>
+						<Divider />
+						<Card className="form-title">
+							{formDetail?.isAllowAnonymous ? (
+								<Paragraph>
+									<EyeInvisibleOutlined /> This form does not collect your email
+								</Paragraph>
+							) : (
+								<Paragraph>
+									<EyeOutlined /> This form collects your email
+								</Paragraph>
+							)}
+						</Card>
+						<Divider />
+						<Form
+							{...layout}
+							layout="vertical"
+							onFinish={onFinish}
+							validateMessages={validateMessage}
+							scrollToFirstError
+							form={form}
+						>
+							{formDetail.questions.map((q: any) => {
+								return <QuestionSubmit key={q._id} question={q} />;
+							})}
 
-        <Divider />
-        <Form
-          layout='vertical'
-          onFinish={onFinish}
-          validateMessages={validateMessage}
-          scrollToFirstError
-          form={form}
-        >
-          {formDetail.questions.map((q: any) => {
-            return <QuestionSubmit key={q._id} question={q} />;
-          })}
-
-          <div className='submit-btn' onClick={() => form?.submit()}>
-            Submit
-          </div>
-        </Form>
-      </div>
-    </>
-  );
+							<div className="submit-btn" onClick={() => form?.submit()}>
+								Submit
+							</div>
+						</Form>
+					</>
+				)}
+			</div>
+		</>
+	);
 };
 
 export default SubmitFormPage;

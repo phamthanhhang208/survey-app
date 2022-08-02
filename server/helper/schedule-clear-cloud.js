@@ -1,4 +1,5 @@
-const { cloudinary } = require("../cloudinary");
+//const { cloudinary } = require("../cloudinary");
+const { deleteImg } = require("../cloudinary/ultis");
 const DeleteMedia = require("../model/deleteMedia");
 
 const deleteImages = async () => {
@@ -7,7 +8,8 @@ const deleteImages = async () => {
 		if (images.length !== 0) {
 			console.log("deleting images on cloudinary");
 			for (const img of images) {
-				await cloudinary.uploader.destroy(img.filename);
+				//await cloudinary.uploader.destroy(img.filename);
+				await deleteImg(img.filename);
 				await DeleteMedia.findByIdAndDelete(img._id);
 			}
 		} else {

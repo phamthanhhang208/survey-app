@@ -45,6 +45,7 @@ const EditLayout: FunctionComponent<EditLayoutProps> = ({ children }) => {
 			<ShareModal
 				isModalVisible={isModalVisible}
 				setIsModalVisible={setIsModalVisible}
+				formId={params.id}
 			/>
 		</>
 	);
