@@ -10,20 +10,6 @@ import { validateMessage } from "@/utills/validateMessage";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
 const { Title, Paragraph } = Typography;
-const layout = {
-	labelCol: {
-		xs: { span: 24 },
-		sm: { span: 12 },
-		md: { span: 8 },
-		lg: { span: 8 },
-	},
-	wrapperCol: {
-		xs: { span: 24 },
-		sm: { span: 12 },
-		md: { span: 12 },
-		lg: { span: 12 },
-	},
-};
 
 const SubmitFormPage: React.FC = () => {
 	const { id } = useParams();
@@ -96,7 +82,6 @@ const SubmitFormPage: React.FC = () => {
 						</Card>
 						<Divider />
 						<Form
-							{...layout}
 							layout="vertical"
 							onFinish={onFinish}
 							validateMessages={validateMessage}
