@@ -214,14 +214,23 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
       ref={provided.innerRef}
     >
       <Card className={'question-view-card'}>
-        <Typography.Title level={4}> {question.questionText}</Typography.Title>
+        <Typography.Title level={4}>
+          {question.questionText}{' '}
+          {question?.required && <span style={{ color: '#AA1D2A' }}>*</span>}
+        </Typography.Title>
+
         {question.description && (
           <Card.Meta description={question.description} />
         )}
         <br />
         {question?.questionMedia?.url ? (
-          <Image src={question?.questionMedia?.url} />
+          <Image
+            style={{ marginBottom: 20 }}
+            width={300}
+            src={question?.questionMedia?.url}
+          />
         ) : null}
+
         <AnswerView answer={question.answer} type={question.type} />
 
         <div>

@@ -1,0 +1,11 @@
+FROM node:16.16-alpine
+
+WORKDIR /client
+
+COPY . .
+
+RUN npm install --force
+
+EXPOSE 3001
+
+CMD ["npm", "start"]

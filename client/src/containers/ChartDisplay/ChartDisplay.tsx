@@ -3,6 +3,7 @@ import { SHORT, PARAGRAPH, CHECKBOX, MULTIPLECHOICE } from "@/const/question";
 import PieChartDisplay from "@/components/Chart/PieChartDisplay";
 import BarChartDisplay from "@/components/Chart/BarChartDisplay";
 import ListDisplay from "@/components/Chart/ListDisplay";
+import "./ChartDisplay.scss";
 
 const { Title } = Typography;
 const ChartDisplay = (props: any) => {
@@ -39,9 +40,13 @@ const ChartDisplay = (props: any) => {
 		chart = <PieChartDisplay labels={labels} dataset={dataset} />;
 	}
 	return (
-		<Card>
+		<Card className="chart-display">
 			<Title level={4}>{question.questionText}</Title>
-			<Card.Meta description={`${question.records} responses`} />
+			<Card.Meta
+				description={`${question.records} ${
+					question.records <= 1 ? "response" : "responses"
+				}`}
+			/>
 			{question.records ? chart : <Empty />}
 		</Card>
 	);

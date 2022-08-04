@@ -1,7 +1,8 @@
 @import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
 @import '@/styles/card_styles.scss';
 
-.question-submit-card {
+.chart-display {
   @include question-card;
 
   &:hover {

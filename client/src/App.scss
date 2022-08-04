@@ -4,3 +4,38 @@
 body {
   background-color: $main-background-color;
 }
+
+.back-top-icon {
+  background-color: $main-red-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.submit-btn {
+  background: $main-red-color;
+  color: white;
+  font-size: 500;
+  height: 36px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 10px 20px;
+  border-radius: 4px;
+
+  @include user-select-none;
+  @include hover-shadow;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

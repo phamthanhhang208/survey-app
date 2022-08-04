@@ -1,0 +1,12 @@
+FROM node:16.16-alpine
+
+WORKDIR /server
+COPY package.json .
+
+COPY . .
+COPY .env .env.local
+# COPY ./server/.env.production .env.production
+
+EXPOSE 8080
+
+CMD ["npm", "start"]

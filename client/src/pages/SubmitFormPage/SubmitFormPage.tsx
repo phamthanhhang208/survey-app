@@ -7,13 +7,15 @@ import { useAddResponse } from "@/hooks/response.hook";
 import { useParams } from "react-router-dom";
 import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
 import { validateMessage } from "@/utills/validateMessage";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const SubmitFormPage: React.FC = () => {
 	const { id } = useParams();
 	const { data: formDetail, isLoading } = useGetForm();
 	const { mutate: addResponse } = useAddResponse();
+	const [form] = Form.useForm();
 
 	if (isLoading) {
 		return <Spin />;
@@ -40,32 +42,62 @@ const SubmitFormPage: React.FC = () => {
 	return (
 		<>
 			<div className="submit-form-page">
-				<div className="form-title">
-					<Card>
-						<Typography>
-							<Title>{formDetail.title}</Title>
-						</Typography>
-						{formDetail?.description && (
+				<Card className="form-title">
+					<Typography>
+						<Title>{formDetail.title}</Title>
+					</Typography>
+					{formDetail?.isAcceptResponse ? (
+						formDetail?.description && (
 							<Card.Meta description={formDetail?.description} />
-						)}
-					</Card>
-				</div>
-				<Divider />
-				<Form
-					layout="vertical"
-					onFinish={onFinish}
-					validateMessages={validateMessage}
-					scrollToFirstError
-				>
-					{formDetail.questions.map((q: any) => {
-						return <QuestionSubmit key={q._id} question={q} />;
-					})}
-					<Form.Item>
-						<Button type="primary" htmlType="submit">
-							Submit
-						</Button>
-					</Form.Item>
-				</Form>
+						)
+					) : (
+						<>
+							<Card.Meta
+								description={"This form is no longer accepting responses"}
+							/>
+							<Card.Meta
+								description={
+									"Try contacting the owner of the form if you think this is a mistake"
+								}
+							/>
+						</>
+					)}
+					{/* {formDetail?.description && (
+						<Card.Meta description={formDetail?.description} />
+					)} */}
+				</Card>
+				{formDetail?.isAcceptResponse && (
+					<>
+						<Divider />
+						<Card className="form-title">
+							{formDetail?.isAllowAnonymous ? (
+								<Paragraph>
+									<EyeInvisibleOutlined /> This form does not collect your email
+								</Paragraph>
+							) : (
+								<Paragraph>
+									<EyeOutlined /> This form collects your email
+								</Paragraph>
+							)}
+						</Card>
+						<Divider />
+						<Form
+							layout="vertical"
+							onFinish={onFinish}
+							validateMessages={validateMessage}
+							scrollToFirstError
+							form={form}
+						>
+							{formDetail.questions.map((q: any) => {
+								return <QuestionSubmit key={q._id} question={q} />;
+							})}
+
+							<div className="submit-btn" onClick={() => form?.submit()}>
+								Submit
+							</div>
+						</Form>
+					</>
+				)}
 			</div>
 		</>
 	);

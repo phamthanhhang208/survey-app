@@ -1,0 +1,7 @@
+@import '@/styles/globalStyles.scss';
+
+@mixin page-style {
+  width: 90%;
+  margin: 20px auto;
+  max-width: 768px;
+}

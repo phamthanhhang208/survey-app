@@ -2,8 +2,10 @@ import QuestionModal from '@/components/Question/QuestionModal';
 import QuestionListView from '@/components/QuestionListView/QuestionListView';
 import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
 import { useAddQuestion } from '@/hooks/question.hook';
-import { Button, Form, Input, Modal, Spin } from 'antd';
+import { VerticalAlignTopOutlined, EyeOutlined } from '@ant-design/icons';
+import { BackTop, Button, Form, Input, Modal, Spin } from 'antd';
 import { FunctionComponent, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './CreateFormPage.scss';
 
 interface CreateFormPageProps {}
@@ -17,6 +19,8 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [isDestroyOnClose, setIsDestroyOnClose] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const showModal = () => {
     setIsDestroyOnClose(false);
@@ -147,8 +151,28 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
     }
   };
 
+  const handleViewFormBtn = () => {
+    const tmp = location.pathname.split('/');
+    tmp.pop();
+    const newPath = tmp.join().replaceAll(',', '/');
+
+    navigate(`${newPath}/viewform`);
+  };
+
+  const getNewPath = () => {
+    const tmp = location.pathname.split('/');
+    tmp.pop();
+    const newPath = tmp.join().replaceAll(',', '/');
+
+    return `${newPath}/viewform`;
+  };
+
   return (
     <div className='create-form-page'>
+      <BackTop className='back-top-icon'>
+        <VerticalAlignTopOutlined />
+      </BackTop>
+
       <Modal
         title='Add question'
         visible={visible}
@@ -218,6 +242,15 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       </Form>
 
       <div className='create-question-fields'>
+        {/* <div className='viewform-btn' onClick={() => handleViewFormBtn()}>
+          <EyeOutlined />
+          Viewform
+        </div> */}
+        <Link className='viewform-btn' to={getNewPath()} target='_blank'>
+          <EyeOutlined />
+          Viewform
+        </Link>
+
         <Button type='primary' onClick={showModal}>
           Add question
         </Button>
