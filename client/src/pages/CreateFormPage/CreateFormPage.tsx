@@ -1,12 +1,12 @@
-import QuestionModal from '@/components/Question/QuestionModal';
-import QuestionListView from '@/components/QuestionListView/QuestionListView';
-import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
-import { useAddQuestion } from '@/hooks/question.hook';
-import { VerticalAlignTopOutlined, EyeOutlined } from '@ant-design/icons';
-import { BackTop, Button, Form, Input, Modal, Spin } from 'antd';
-import { FunctionComponent, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './CreateFormPage.scss';
+import QuestionModal from "@/components/Question/QuestionModal";
+import QuestionListView from "@/components/QuestionListView/QuestionListView";
+import { useGetForm, useUpdateForm } from "@/hooks/form.hook";
+import { useAddQuestion } from "@/hooks/question.hook";
+import { VerticalAlignTopOutlined, EyeOutlined } from "@ant-design/icons";
+import { BackTop, Button, Form, Input, Modal, Skeleton, Spin } from "antd";
+import { FunctionComponent, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./CreateFormPage.scss";
 
 interface CreateFormPageProps {}
 
@@ -36,9 +36,9 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
 
     try {
       const formData = new FormData();
-      formData.append('questionText', v.questionText);
-      formData.append('type', v.type);
-      formData.append('required', v.required);
+      formData.append("questionText", v.questionText);
+      formData.append("type", v.type);
+      formData.append("required", v.required);
 
       if (v?.validator) {
         Object.entries(v?.validator).forEach(([key, value]) => {
@@ -49,19 +49,19 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       }
 
       if (v?.description) {
-        formData.append('description', v?.description);
+        formData.append("description", v?.description);
       }
 
       if (v?.questionImage) {
         formData.append(
-          'questionMedia',
+          "questionMedia",
           v.questionImage.fileList[0].originFileObj,
           v.questionImage.fileList[0].uid
         );
       }
 
       switch (v.type) {
-        case 'multiple-choice':
+        case "multiple-choice":
           const arrMultipleChoice = [
             ...v?.multipleChoice.map((c: any) => {
               return { content: c.content, media: c.media?.fileList[0] };
@@ -84,7 +84,7 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
           }
 
           break;
-        case 'checkboxes':
+        case "checkboxes":
           const arrCheckbox = [
             ...v?.checkboxes.map((c: any) => {
               return { content: c.content, media: c.media?.fileList[0] };
@@ -104,9 +104,9 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
           }
 
           break;
-        case 'paragraph':
-        case 'short-paragraph':
-          formData.append('answer[0][content]', '');
+        case "paragraph":
+        case "short-paragraph":
+          formData.append("answer[0][content]", "");
           break;
 
         default:
@@ -129,18 +129,14 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
+    console.log("Clicked cancel button");
     setVisible(false);
   };
 
-  if (isLoading) {
-    return <Spin />;
-  }
-
   const handleUpdateFormHeader = (v: any) => {
     const values = {
-      title: formHeader.getFieldValue('title'),
-      description: formHeader.getFieldValue('description'),
+      title: formHeader.getFieldValue("title"),
+      description: formHeader.getFieldValue("description"),
     };
 
     if (
@@ -152,29 +148,29 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
   };
 
   const handleViewFormBtn = () => {
-    const tmp = location.pathname.split('/');
+    const tmp = location.pathname.split("/");
     tmp.pop();
-    const newPath = tmp.join().replaceAll(',', '/');
+    const newPath = tmp.join().replaceAll(",", "/");
 
     navigate(`${newPath}/viewform`);
   };
 
   const getNewPath = () => {
-    const tmp = location.pathname.split('/');
+    const tmp = location.pathname.split("/");
     tmp.pop();
-    const newPath = tmp.join().replaceAll(',', '/');
+    const newPath = tmp.join().replaceAll(",", "/");
 
     return `${newPath}/viewform`;
   };
 
   return (
-    <div className='create-form-page'>
-      <BackTop className='back-top-icon'>
+    <div className="create-form-page">
+      <BackTop className="back-top-icon">
         <VerticalAlignTopOutlined />
       </BackTop>
 
       <Modal
-        title='Add question'
+        title="Add question"
         visible={visible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -185,11 +181,11 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
       >
         <Form
           form={form}
-          className='question'
+          className="question"
           onFinish={handleSubmit}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 20 }}
-          labelAlign='left'
+          labelAlign="left"
           labelWrap
           preserve={false}
         >
@@ -203,64 +199,68 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
           title: formDetail?.title,
           description: formDetail?.description,
         }}
-        className='create-form-header'
+        className="create-form-header"
         onFinish={handleUpdateFormHeader}
       >
         <Form.Item
-          name={'title'}
-          rules={[{ required: true, message: 'Title can not be empty' }]}
+          name={"title"}
+          rules={[{ required: true, message: "Title can not be empty" }]}
         >
           <Input
-            placeholder='Form title'
+            placeholder="Form title"
             style={{
-              border: 'none',
-              fontSize: '1.9rem',
+              border: "none",
+              fontSize: "1.9rem",
               fontWeight: 400,
-              borderBottom: '0.5px solid grey',
+              borderBottom: "0.5px solid grey",
               padding: 0,
             }}
             onBlur={() => formHeader.submit()}
             onPressEnter={() => {
-              formHeader.getFieldInstance('title').blur();
+              formHeader.getFieldInstance("title").blur();
             }}
           />
         </Form.Item>
-        <Form.Item name={'description'}>
+        <Form.Item name={"description"}>
           <Input.TextArea
             autoSize
-            placeholder='Form description'
+            placeholder="Form description"
             style={{
-              border: 'none',
-              fontSize: '0.96rem',
+              border: "none",
+              fontSize: "0.96rem",
               fontWeight: 300,
               padding: 0,
-              borderBottom: '0.5px solid grey',
+              borderBottom: "0.5px solid grey",
             }}
             onBlur={() => formHeader.submit()}
           />
         </Form.Item>
       </Form>
 
-      <div className='create-question-fields'>
+      <div className="create-question-fields">
         {/* <div className='viewform-btn' onClick={() => handleViewFormBtn()}>
           <EyeOutlined />
           Viewform
         </div> */}
-        <Link className='viewform-btn' to={getNewPath()} target='_blank'>
+        <Link className="viewform-btn" to={getNewPath()} target="_blank">
           <EyeOutlined />
           Viewform
         </Link>
 
-        <Button type='primary' onClick={showModal}>
+        <Button type="primary" onClick={showModal}>
           Add question
         </Button>
       </div>
 
-      <QuestionListView
-        className={'question-list-view'}
-        questions={formDetail?.questions}
-        formId={formDetail._id}
-      />
+      {isLoading ? (
+        <Skeleton active />
+      ) : (
+        <QuestionListView
+          className={"question-list-view"}
+          questions={formDetail?.questions}
+          formId={formDetail._id}
+        />
+      )}
     </div>
   );
 };

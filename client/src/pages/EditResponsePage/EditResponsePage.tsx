@@ -1,140 +1,175 @@
-import React from "react";
-import {
-	Tabs,
-	Spin,
-	Card,
-	Typography,
-	// Button,
-	Empty,
-	Menu,
-	Dropdown,
-	Modal,
-} from "antd";
-import {
-	useGetFormAnalytic,
-	useGetForm,
-	useDownloadFormAnalytic,
-} from "@/hooks/form.hook";
-import { useDeleteAllResponses } from "@/hooks/response.hook";
-import { DownloadOutlined, DeleteOutlined } from "@ant-design/icons";
-import "./EditResponsePage.scss";
 import ChartDisplay from "@/containers/ChartDisplay/ChartDisplay";
 import ViewResponse from "@/containers/ViewResponse/ViewResponse";
-import { exportExcel } from "@/utills/utils";
-import { useState } from "react";
+import {
+  useDownloadFormAnalytic,
+  useGetForm,
+  useGetFormAnalytic,
+} from "@/hooks/form.hook";
+import { useDeleteAllResponses } from "@/hooks/response.hook";
+import { exportExcel } from "@/utils/utils";
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
+import {
+  Dropdown,
+  Empty,
+  Menu,
+  Modal,
+  Skeleton,
+  Spin,
+  Tabs,
+  Typography,
+} from "antd";
+import { Content } from "antd/lib/layout/layout";
+import React, { useState } from "react";
+import "./EditResponsePage.scss";
 const { TabPane } = Tabs;
 
 const EditResponsePage: React.FC = () => {
-	const { data: questions, isLoading: isLoadingAnalytic } =
-		useGetFormAnalytic();
+  const { data: questions, isLoading: isLoadingAnalytic } =
+    useGetFormAnalytic();
+  const [tabPage, setTabPage] = useState(1);
+  const { data: formDetail, isLoading } = useGetForm();
+  const { refetch } = useDownloadFormAnalytic();
+  const { mutate: deleteResponses } = useDeleteAllResponses();
+  const [visible, setVisible] = useState(false);
 
-	const { data: formDetail, isLoading } = useGetForm();
+  const showModal = () => {
+    setVisible(true);
+  };
 
-	const { refetch } = useDownloadFormAnalytic();
+  const handleOk = () => {
+    deleteResponses();
+    setVisible(false);
+  };
 
-	const { mutate: deleteResponses } = useDeleteAllResponses();
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
-	const [visible, setVisible] = useState(false);
+  const handleOnClickDownload = async () => {
+    const { data: excelContent } = await refetch();
+    const { fileName, header, rows } = excelContent;
+    exportExcel({ fileName, header, rows });
+  };
 
-	if (isLoadingAnalytic) {
-		return <Spin />;
-	}
+  const handleMenuClick = async (e: any) => {
+    switch (e.key) {
+      case "download-excel":
+        await handleOnClickDownload();
+        break;
+      case "delete-responses":
+        showModal();
+        break;
+    }
+  };
 
-	if (!formDetail) {
-		return <Spin />;
-	}
+  const menu = (
+    <Menu
+      style={{
+        minWidth: 184,
+        padding: 0,
+        border: "1px solid #eaeaea",
+        borderRadius: 4,
+      }}
+      onClick={handleMenuClick}
+      items={[
+        {
+          label: "Download Excel File",
+          key: "download-excel",
+          icon: <DownloadOutlined />,
+          style: { height: 42 },
+        },
+        {
+          label: "Delete all responses",
+          key: "delete-responses",
+          icon: <DeleteOutlined />,
+          style: { height: 42 },
+        },
+      ]}
+    />
+  );
 
-	const showModal = () => {
-		setVisible(true);
-	};
+  return (
+    <div className="edit-response-page">
+      <div className="edit-response-page-header">
+        <div className="card-header-top">
+          <Typography.Title level={2}>
+            {formDetail?.responses.length}{" "}
+            {formDetail?.responses.length <= 1 ? "response" : "responses"}
+          </Typography.Title>
+          <Dropdown
+            overlay={menu}
+            trigger={["click"]}
+            placement="bottomRight"
+            destroyPopupOnHide
+          >
+            <EllipsisOutlined
+              className="more-icon"
+              style={{
+                fontSize: 22,
+                transform: "rotate(90deg) translateX(-7px)",
+              }}
+            />
+          </Dropdown>
+        </div>
 
-	const handleOk = () => {
-		deleteResponses();
-		setVisible(false);
-	};
+        <Tabs centered onChange={(v: any) => setTabPage(Number(v))}>
+          <TabPane tab="Summary" key="1"></TabPane>
+          <TabPane tab="Response" key="2"></TabPane>
+        </Tabs>
 
-	const handleCancel = () => {
-		setVisible(false);
-	};
+        <div
+          className="response-control-field"
+          style={tabPage === 2 ? undefined : { display: "none" }}
+        >
+          2
+        </div>
+      </div>
 
-	const handleOnClickDownload = async () => {
-		const { data: excelContent } = await refetch();
-		const { fileName, header, rows } = excelContent;
-		exportExcel({ fileName, header, rows });
-	};
+      {isLoadingAnalytic || !formDetail ? (
+        <Skeleton active />
+      ) : (
+        <Content style={tabPage === 1 ? undefined : { display: "none" }}>
+          {formDetail?.responses.length ? (
+            <>
+              {questions.map((q: any) => {
+                return <ChartDisplay key={q._id} question={q} />;
+              })}
+            </>
+          ) : (
+            <Empty />
+          )}
+        </Content>
+      )}
 
-	const handleMenuClick = async (e: any) => {
-		switch (e.key) {
-			case "download-excel":
-				await handleOnClickDownload();
-				break;
-			case "delete-responses":
-				showModal();
-				break;
-		}
-	};
+      {isLoadingAnalytic || !formDetail ? (
+        <Skeleton active />
+      ) : (
+        <Content style={tabPage === 2 ? undefined : { display: "none" }}>
+          {formDetail?.responses.length === 0 ? (
+            <Empty />
+          ) : isLoading ? (
+            <Skeleton active />
+          ) : (
+            <ViewResponse formDetail={formDetail} />
+          )}
+        </Content>
+      )}
 
-	const menu = (
-		<Menu
-			onClick={handleMenuClick}
-			items={[
-				{
-					label: "Download Excel File",
-					key: "download-excel",
-					icon: <DownloadOutlined />,
-				},
-				{
-					label: "Delete all responses",
-					key: "delete-responses",
-					icon: <DeleteOutlined />,
-				},
-			]}
-		/>
-	);
-
-	return (
-		<div className="edit-response-page">
-			<Tabs centered>
-				<TabPane tab="Summary" key="1">
-					{formDetail?.responses.length ? (
-						<>
-							<Card className="edit-response-page-header">
-								<Typography.Title level={2}>
-									{formDetail?.responses.length}{" "}
-									{formDetail?.responses.length <= 1 ? "response" : "responses"}
-								</Typography.Title>
-								<Dropdown.Button overlay={menu} />
-							</Card>
-							{questions.map((q: any) => {
-								return <ChartDisplay key={q._id} question={q} />;
-							})}
-						</>
-					) : (
-						<Empty />
-					)}
-				</TabPane>
-				<TabPane tab="Response" key="2">
-					{formDetail?.responses.length === 0 ? (
-						<Empty />
-					) : isLoading ? (
-						<Spin />
-					) : (
-						<ViewResponse formDetail={formDetail} />
-					)}
-				</TabPane>
-			</Tabs>
-			<Modal
-				title="Delete All Responses"
-				visible={visible}
-				onOk={handleOk}
-				//confirmLoading={isDeletingResponse}
-				onCancel={handleCancel}
-			>
-				<p>Are you sure you want to delete?</p>
-				<p>Once deleted, these responses can not be restore</p>
-			</Modal>
-		</div>
-	);
+      <Modal
+        title="Delete All Responses"
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Are you sure you want to delete?</p>
+        <p>Once deleted, these responses can not be restore</p>
+      </Modal>
+    </div>
+  );
 };
 
 export default EditResponsePage;

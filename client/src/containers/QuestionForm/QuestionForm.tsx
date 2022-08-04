@@ -1,6 +1,6 @@
 import Answer from '@/components/Answer/Answer';
 import { question } from '@/const/question';
-import { removeUndefinedValue } from '@/utills/utils';
+import { removeUndefinedValue } from '@/utils/utils';
 import { Button, Card, Form, Input, Select, Space, Switch } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import './QuestionForm.scss';

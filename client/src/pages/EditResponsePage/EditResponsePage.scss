@@ -1,17 +1,48 @@
-@import '@/styles/globalStyles.scss';
-@import '@/styles/page_styles.scss';
-@import '@/styles/card_styles.scss';
+@import "@/styles/globalStyles.scss";
+@import "@/styles/page_styles.scss";
+@import "@/styles/card_styles.scss";
 
 .edit-response-page {
   @include page-style;
 
-  &-header {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-  }
-
   .edit-response-page-header {
     @include question-card;
+
+    position: relative;
+
+    padding-bottom: 0;
+    &:hover {
+      box-shadow: none;
+    }
+
+    .card-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 24px;
+      padding-top: 12px;
+
+      .more-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          background-color: rgb(235, 235, 235);
+        }
+      }
+    }
+
+    .response-control-field {
+      // background-color: red;
+      height: 60px;
+    }
+  }
+
+  .ant-tabs-nav {
+    margin: 0;
   }
 }
