@@ -17,6 +17,7 @@
     "axios": "^0.26.0",
     "chart.js": "^3.8.0",
     "dayjs": "^1.11.3",
+    "firebase": "^9.9.1",
     "moment": "^2.29.3",
     "react": "^18.1.0",
     "react-beautiful-dnd": "^13.1.0",

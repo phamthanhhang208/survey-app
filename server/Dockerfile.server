@@ -5,6 +5,7 @@ COPY package.json .
 
 COPY . .
 COPY .env .env.local
+COPY serviceAccountKey.json serviceAccountKey.json
 # COPY ./server/.env.production .env.production
 
 EXPOSE 8080
