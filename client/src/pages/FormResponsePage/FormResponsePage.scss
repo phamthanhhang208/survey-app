@@ -1,0 +1,16 @@
+@import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
+@import '@/styles/card_styles.scss';
+
+.form-response-page {
+  @include page-style;
+  @include question-card;
+
+  border-top: 1px solid rgb(202, 202, 202);
+  &:hover {
+    box-shadow: none;
+  }
+
+  width: 90%;
+  max-width: 678px;
+}

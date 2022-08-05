@@ -1,6 +1,7 @@
-import React from 'react';
-import { Card, Form, Switch, Spin, Skeleton, Divider } from 'antd';
 import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
+import { VerticalAlignTopOutlined } from '@ant-design/icons';
+import { BackTop, Card, Divider, Form, Spin, Switch } from 'antd';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import './EditSettingPage.scss';
 
@@ -17,6 +18,9 @@ const EditSettingPage: React.FC = () => {
 
   return (
     <Card className='edit-setting-page'>
+      <BackTop className='back-top-icon'>
+        <VerticalAlignTopOutlined />
+      </BackTop>
       <h1>Settings</h1>
       <Divider style={{ marginTop: 12, marginBottom: 24 }} />
       {isLoading ? (

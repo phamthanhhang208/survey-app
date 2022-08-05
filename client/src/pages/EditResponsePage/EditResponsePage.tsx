@@ -11,11 +11,22 @@ import {
   DeleteOutlined,
   DownloadOutlined,
   EllipsisOutlined,
+  VerticalAlignTopOutlined,
 } from '@ant-design/icons';
-import { Dropdown, Empty, Menu, Modal, Skeleton, Tabs, Typography } from 'antd';
+import {
+  BackTop,
+  Dropdown,
+  Empty,
+  Menu,
+  Modal,
+  Skeleton,
+  Tabs,
+  Typography,
+} from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
 import './EditResponsePage.scss';
+
 const { TabPane } = Tabs;
 
 const EditResponsePage: React.FC = () => {
@@ -85,6 +96,9 @@ const EditResponsePage: React.FC = () => {
 
   return (
     <div className='edit-response-page'>
+      <BackTop className='back-top-icon'>
+        <VerticalAlignTopOutlined />
+      </BackTop>
       <div className='edit-response-page-header'>
         <div className='card-header-top'>
           <Typography.Title level={2}>
