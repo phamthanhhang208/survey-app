@@ -13,6 +13,7 @@ import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
 import { useEffect, useState } from "react";
 import { useGetResponse, useDeleteResponse } from "@/hooks/response.hook";
 import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
 import "./ViewResponse.scss";
 
 const convertResponseData = (response: any) => {
@@ -80,11 +81,11 @@ export default function ViewResponse(props: any) {
 					onChange={handleOnChange}
 					total={responses.length * 10}
 				/>
-
 				<Button onClick={showModal}>Delete Response</Button>
 			</div>
 
 			{/* <Divider /> */}
+
 			{isLoading ? (
 				<Skeleton active style={{ marginTop: 24 }} />
 			) : (
@@ -96,6 +97,13 @@ export default function ViewResponse(props: any) {
 							</Form.Item>
 						</Card>
 					)}
+					<Card className="view-response-card">
+						<Form.Item label={"Sent date"}>
+							<Typography.Text strong>
+								{dayjs.unix(response.createdAt).format("DD-MM-YYYY hh:mm:ss")}
+							</Typography.Text>
+						</Form.Item>
+					</Card>
 					{questions.map((q: any) => {
 						return (
 							<QuestionSubmit
