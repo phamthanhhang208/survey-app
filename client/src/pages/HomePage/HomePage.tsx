@@ -16,12 +16,6 @@ const { Item } = Form;
 const HomePage: FunctionComponent<HomePageProps> = () => {
 	const auth = useAuth();
 	let navigate = useNavigate();
-	// const { data, isFetching } = useForms();
-	// const [isModalVisible, setIsModalVisible] = useState(false);
-	// const { mutate: createForm } = useCreateForm();
-	// const { mutate: deleteForm } = useDeleteForm();
-	// const [form] = Form.useForm();
-	// let navigate = useNavigate();
 	const { data, isFetching } = useForms();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const { mutate: createForm } = useCreateForm();
