@@ -1,6 +1,10 @@
 import { FunctionComponent, useState } from "react";
 import "./HomePage.scss";
+<<<<<<< HEAD
 import { Input, Button, Tooltip, Modal, Form, Spin } from "antd";
+=======
+import { Input, Button, Tooltip, Modal, Form, Spin, Skeleton } from "antd";
+>>>>>>> main
 import MyTable from "@/components/MyTable/MyTable";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +27,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 		setIsModalVisible(true);
 	};
 
+<<<<<<< HEAD
 	const handleSignOut = () => {};
 
 	if (isFetching) {
@@ -33,6 +38,21 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 		form.submit();
 		form.getFieldValue("form-name") && setIsModalVisible(false);
 	};
+=======
+  const handleOk = () => {
+    form.submit();
+    form.getFieldValue("form-name") && setIsModalVisible(false);
+  };
+
+  const handleSubmit = (data: any) => {
+    const newForm = {
+      title: data["form-name"],
+      description: data["form-description"],
+    };
+    createForm(newForm);
+    form.resetFields();
+  };
+>>>>>>> main
 
 	const handleSubmit = (data: any) => {
 		const newForm = {
@@ -52,6 +72,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 		deleteForm(v);
 	};
 
+<<<<<<< HEAD
 	const handleEdit = (v: any) => {
 		navigate(`/forms/${v}/edit`);
 	};
@@ -147,6 +168,97 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 			</Modal>
 		</div>
 	);
+=======
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "title",
+      width: 1000,
+
+      render: (v: any, record: any) => {
+        return (
+          <Link key={record._id} to={`/forms/${record?._id}/edit`}>
+            {v}
+          </Link>
+        );
+      },
+    },
+    {
+      title: "Last Edited",
+      dataIndex: "updatedAt",
+      width: 200,
+      render: (v: any) => {
+        return dayjs.unix(v).format("DD-MM-YYYY");
+      },
+    },
+    {
+      title: "Actions",
+      dataIndex: "name",
+      width: 100,
+      required: true,
+      render: (v: any, record: any) => {
+        return (
+          <div className="actions" key={record._id}>
+            <Tooltip
+              title={"Edit form"}
+              mouseEnterDelay={0.05}
+              mouseLeaveDelay={0.05}
+            >
+              <EditOutlined onClick={() => handleEdit(record?._id)} />
+            </Tooltip>
+            <Tooltip
+              title={"Delete form"}
+              mouseEnterDelay={0.05}
+              mouseLeaveDelay={0.05}
+            >
+              <DeleteOutlined
+                className="delete-icon"
+                onClick={() => handleDelete(record?._id)}
+              />
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+  ];
+  return (
+    <div className="home-page">
+      <div className="functions">
+        <Input className="search-input" placeholder="Search" allowClear />
+        <Button type="primary" onClick={showModal}>
+          New form
+        </Button>
+      </div>
+      <MyTable
+        columns={columns}
+        dataSource={data}
+        rowKey={(item) => item?._id}
+        loading={isFetching}
+      />
+      <Modal
+        title="Create new form"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+          <Item
+            label={"Form name:"}
+            rules={[
+              { required: true, message: "Form name must not be empty." },
+            ]}
+            name={"form-name"}
+          >
+            <Input placeholder="Form name" />
+          </Item>
+          <Item label={"Description:"} name={"form-description"}>
+            <Input.TextArea placeholder="Description" />
+          </Item>
+        </Form>
+      </Modal>
+    </div>
+  );
+>>>>>>> main
 };
 
 export default HomePage;

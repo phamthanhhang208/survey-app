@@ -1,69 +1,76 @@
 @import "@/styles/globalStyles.scss";
 
 .app-layout {
-	.ant-layout {
-		display: flex;
-		justify-content: center;
-		width: 100vw;
-		position: relative;
-		background-color: $main-background-color;
+  .ant-layout {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: relative;
+    background-color: $main-background-color;
 
-		& .ant-layout-header {
-			min-height: 85px;
-			background-color: $main-red-color;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			padding: 0 30px;
-			line-height: 0;
+    & .ant-layout-header {
+      min-height: 85px;
+      background-color: $main-red-color;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      line-height: 0;
 
-			.logo {
-				height: 100%;
-				display: flex;
-				align-items: center;
+      @media (max-width: 800px) {
+        justify-content: center;
+      }
+      .logo {
+        height: 100%;
+        display: flex;
+        align-items: center;
 
-				.logo-text {
-					margin-left: 1rem;
-					height: 80%;
-					display: flex;
-					align-items: flex-start;
-					flex-direction: column;
-					justify-content: center;
-					gap: 1.3rem;
-					color: white;
-					flex-wrap: content;
+        .logo-text {
+          @media (max-width: 800px) {
+            display: none;
+          }
 
-					create-form-page span:first-child {
-						font-weight: 600;
-						font-size: 18px;
-					}
+          margin-left: 1rem;
+          height: 80%;
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          gap: 1.3rem;
+          color: white;
+          flex-wrap: content;
 
-					span {
-						font-size: 15px;
-						width: 100%;
-						text-overflow: hidden;
-					}
-				}
+          create-form-page span:first-child {
+            font-weight: 600;
+            font-size: 18px;
+          }
 
-				a {
-					height: 100%;
-					display: flex;
-					align-items: center;
+          span {
+            font-size: 15px;
+            width: 100%;
+            text-overflow: hidden;
+          }
+        }
 
-					img {
-						height: 80%;
-					}
-				}
-			}
-		}
+        a {
+          height: 100%;
+          display: flex;
+          align-items: center;
 
-		.ant-layout-content {
-			background-color: $main-background-color;
-			width: 100%;
-		}
+          img {
+            height: 80%;
+          }
+        }
+      }
+    }
 
-		.ant-layout-footer {
-			background-color: $main-background-color;
-		}
-	}
+    .ant-layout-content {
+      background-color: $main-background-color;
+      width: 100%;
+    }
+
+    .ant-layout-footer {
+      background-color: $main-background-color;
+    }
+  }
 }
