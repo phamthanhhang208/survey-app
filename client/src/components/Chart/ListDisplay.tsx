@@ -1,8 +1,10 @@
-import { List, Table } from 'antd';
+import { Table } from 'antd';
+import { useId } from 'react';
 
 const ListDisplay = (props: any) => {
   const { dataset } = props;
   console.log(dataset);
+  const id = useId();
 
   const columns = [
     {
@@ -21,6 +23,7 @@ const ListDisplay = (props: any) => {
 
   return (
     <Table
+      rowKey={() => id}
       dataSource={dataset}
       columns={columns}
       pagination={{ pageSize: 3 }}
