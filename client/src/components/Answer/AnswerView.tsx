@@ -36,7 +36,7 @@ const AnswerView = (props: any) => {
             />
             <span>{a.content}</span>
           </div>
-          {a.media?.url ? <Image width={150} src={a?.media?.url} /> : null}
+          {a.media?.url ? <Image width={250} src={a?.media?.url} /> : null}
         </div>
       );
     });
@@ -64,7 +64,7 @@ const AnswerView = (props: any) => {
             </svg>
             <span>{a.content}</span>
           </div>
-          {a?.media?.url ? <Image width={150} src={a?.media?.url} /> : null}
+          {a?.media?.url ? <Image width={250} src={a?.media?.url} /> : null}
         </div>
       );
     });

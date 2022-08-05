@@ -11,7 +11,11 @@ const ShortParagraphCreate: FunctionComponent<
   const permission = useCurrentPermission();
 
   return (
-    <Form.Item name={'short-paragraph'} className={'short-paragraph-create'}>
+    <Form.Item
+      name={'short-paragraph'}
+      className={'short-paragraph-create'}
+      wrapperCol={{ span: 24 }}
+    >
       <Input.TextArea
         disabled={permission === 'edit' ? true : false}
         placeholder={'Answer'}

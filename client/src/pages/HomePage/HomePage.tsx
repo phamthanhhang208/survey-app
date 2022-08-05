@@ -26,7 +26,6 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 
   useEffect(() => {
     if (firstTime && data) {
-      console.log(data);
       setDataSource(data);
       setFirstTime(false);
     }

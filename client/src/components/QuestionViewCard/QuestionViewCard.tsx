@@ -226,7 +226,6 @@ const QuestionViewCard: FunctionComponent<QuestionViewCardProps> = ({
         {question?.questionMedia?.url ? (
           <Image
             style={{ marginBottom: 20 }}
-            width={300}
             src={question?.questionMedia?.url}
           />
         ) : null}

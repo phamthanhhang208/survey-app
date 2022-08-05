@@ -1,13 +1,13 @@
-import React from "react";
-import "./SubmitFormPage.scss";
-import { Card, Typography, Divider, Form, Button, Spin, Skeleton } from "antd";
+import React from 'react';
+import './SubmitFormPage.scss';
+import { Card, Typography, Divider, Form, Button, Spin, Skeleton } from 'antd';
 //import AnswerSubmit from "@/components/Answer/AnswerSubmit";
-import { useGetForm } from "@/hooks/form.hook";
-import { useAddResponse } from "@/hooks/response.hook";
-import { useParams } from "react-router-dom";
-import QuestionSubmit from "@/components/QuestionSubmit/QuestionSubmit";
-import { validateMessage } from "@/utils/validateMessage";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import { useGetForm } from '@/hooks/form.hook';
+import { useAddResponse } from '@/hooks/response.hook';
+import { useParams } from 'react-router-dom';
+import QuestionSubmit from '@/components/QuestionSubmit/QuestionSubmit';
+import { validateMessage } from '@/utils/validateMessage';
+import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
@@ -37,9 +37,9 @@ const SubmitFormPage: React.FC = () => {
   };
   return (
     <>
-      <div className="submit-form-page">
+      <div className='submit-form-page'>
         {isLoading ? null : (
-          <Card className="form-title">
+          <Card className='form-title'>
             <Typography>
               <Title>{formDetail.title}</Title>
             </Typography>
@@ -50,11 +50,11 @@ const SubmitFormPage: React.FC = () => {
             ) : (
               <>
                 <Card.Meta
-                  description={"This form is no longer accepting responses"}
+                  description={'This form is no longer accepting responses'}
                 />
                 <Card.Meta
                   description={
-                    "Try contacting the owner of the form if you think this is a mistake"
+                    'Try contacting the owner of the form if you think this is a mistake'
                   }
                 />
               </>
@@ -70,7 +70,7 @@ const SubmitFormPage: React.FC = () => {
           formDetail?.isAcceptResponse && (
             <>
               <Divider />
-              <Card className="form-title">
+              <Card className='form-title'>
                 {formDetail?.isAllowAnonymous ? (
                   <Paragraph>
                     <EyeInvisibleOutlined /> This form does not collect your
@@ -84,7 +84,7 @@ const SubmitFormPage: React.FC = () => {
               </Card>
               <Divider />
               <Form
-                layout="vertical"
+                layout='vertical'
                 onFinish={onFinish}
                 validateMessages={validateMessage}
                 scrollToFirstError
@@ -94,7 +94,7 @@ const SubmitFormPage: React.FC = () => {
                   return <QuestionSubmit key={q._id} question={q} />;
                 })}
 
-                <div className="submit-btn" onClick={() => form?.submit()}>
+                <div className='submit-btn' onClick={() => form?.submit()}>
                   Submit
                 </div>
               </Form>
