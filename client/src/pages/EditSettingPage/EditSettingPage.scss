@@ -1,4 +1,23 @@
+@import '@/styles/globalStyles.scss';
+@import '@/styles/page_styles.scss';
+@import '@/styles/card_styles.scss';
+
 .edit-setting-page {
-	width: 60%;
-	margin: 20px auto;
+  @include page-style;
+  @include question-card;
+
+  &:hover {
+    box-shadow: none;
+  }
+  border-top: 1px solid rgb(202, 202, 202);
+  padding-bottom: 0;
+
+  .setting-form {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  label {
+    height: auto;
+  }
 }

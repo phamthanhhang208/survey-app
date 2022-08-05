@@ -10,7 +10,11 @@ const ParagraphCreate: FunctionComponent<ParagraphCreateProps> = () => {
 
   return (
     <div>
-      <Form.Item name={['paragraph', 'content']} className={'paragraph-create'}>
+      <Form.Item
+        name={['paragraph', 'content']}
+        className={'paragraph-create'}
+        wrapperCol={{ span: 24 }}
+      >
         <Input.TextArea
           disabled={permission === 'edit' ? true : false}
           placeholder={'Answer'}
