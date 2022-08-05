@@ -61,8 +61,13 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
         return <RadioCreate form={form} />;
       case 'short-paragraph':
         return (
-          <Form.Item name={'shortParagraph'}>
+          <Form.Item
+            wrapperCol={{ span: 24 }}
+            name={'shortParagraph'}
+            style={{ width: '100%' }}
+          >
             <Input
+              style={{ width: '100%' }}
               disabled={permission === 'edit' ? true : false}
               placeholder={'Answer'}
             ></Input>
@@ -156,7 +161,9 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
         </Select>
       </Form.Item>
 
-      <div className='dynamic-questions'>{dynamicQuestion()}</div>
+      <div className='dynamic-questions' style={{ width: '100%' }}>
+        {dynamicQuestion()}
+      </div>
 
       {isValidatorShown && (
         <DynamicValidator questionType={questionTypeState as any} form={form} />
@@ -223,6 +230,7 @@ const QuestionModal: FunctionComponent<QuestionModalProps> = ({ form }) => {
                 </Checkbox>
                 {questionTypeState === MULTIPLECHOICE ? null : (
                   <Checkbox
+                    disabled={!questionTypeState ? true : false}
                     checked={isValidatorShown}
                     value={'response-validation'}
                     onChange={(v) => {

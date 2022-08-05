@@ -86,6 +86,48 @@ export default function ViewResponse(props: any) {
 
 			{/* <Divider /> */}
 
+			{/* {isLoading ? (
+				<Skeleton active style={{ marginTop: 24 }} />
+			) : (
+				<Form layout="vertical" form={form} disabled style={{ marginTop: 20 }}>
+					<Card className="view-response-card">
+						<Form.Item label={"Sent date"}>
+							<Typography.Text strong>
+								{dayjs.unix(response.createdAt).format("DD-MM-YYYY hh:mm:ss")}
+							</Typography.Text>
+						</Form.Item>
+					</Card>
+					{!formDetail.isAllowAnonymous && (
+						<Card className="view-response-card">
+							<Form.Item label={"Email"} required={true}>
+								<Typography.Text strong>{response?.user || ""}</Typography.Text>
+							</Form.Item>
+						</Card>
+					)}
+					{questions.map((q: any) => {
+						return (
+							<QuestionSubmit
+								key={q._id}
+								form={form}
+								question={q}
+								disabled={true}
+							/>
+						);
+					})}
+				</Form>
+			)}
+			<Modal
+				title="Delete Response"
+				visible={visible}
+				onOk={handleOk}
+				confirmLoading={isDeletingResponse}
+				onCancel={handleCancel}
+			>
+				<p>Are you sure you want to delete?</p>
+				<p>Once deleted, this response can not be restore</p>
+			</Modal>
+		</div>
+	); */}
 			{isLoading ? (
 				<Skeleton active style={{ marginTop: 24 }} />
 			) : (

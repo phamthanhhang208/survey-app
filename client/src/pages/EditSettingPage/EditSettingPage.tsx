@@ -1,8 +1,8 @@
-import React from "react";
-import { Card, Form, Switch, Spin, Skeleton } from "antd";
-import { useGetForm, useUpdateForm } from "@/hooks/form.hook";
-import { useParams } from "react-router-dom";
-import "./EditSettingPage.scss";
+import React from 'react';
+import { Card, Form, Switch, Spin, Skeleton, Divider } from 'antd';
+import { useGetForm, useUpdateForm } from '@/hooks/form.hook';
+import { useParams } from 'react-router-dom';
+import './EditSettingPage.scss';
 
 const EditSettingPage: React.FC = () => {
   const { id } = useParams();
@@ -16,38 +16,67 @@ const EditSettingPage: React.FC = () => {
   };
 
   return (
-    <div className="edit-setting-page">
-      <Card>
-        {isLoading ? (
-          <Spin size="large" />
-        ) : (
-          <Form
-            layout="horizontal"
-            form={form}
-            onValuesChange={handleOnChange}
-            initialValues={{
-              isAcceptResponse: formDetail?.isAcceptResponse,
-              isAllowAnonymous: formDetail?.isAllowAnonymous,
-            }}
+    <Card className='edit-setting-page'>
+      <h1>Settings</h1>
+      <Divider style={{ marginTop: 12, marginBottom: 24 }} />
+      {isLoading ? (
+        <Spin size='large' />
+      ) : (
+        <Form
+          layout='horizontal'
+          labelAlign='left'
+          colon={false}
+          labelCol={{ span: 22 }}
+          wrapperCol={{ span: 1 }}
+          form={form}
+          onValuesChange={handleOnChange}
+          initialValues={{
+            isAcceptResponse: formDetail?.isAcceptResponse,
+            isAllowAnonymous: formDetail?.isAllowAnonymous,
+          }}
+          className={'setting-form'}
+        >
+          <Form.Item
+            name='isAcceptResponse'
+            label={
+              <div>
+                <p style={{ fontSize: 16, marginBottom: 0 }}>
+                  Accept response:
+                </p>
+                <p
+                  style={{ fontStyle: 'italic', opacity: 0.8, marginBottom: 0 }}
+                >
+                  Descriptiuon
+                </p>
+              </div>
+            }
+            valuePropName='checked'
+            style={{ height: 64, marginBottom: 10 }}
           >
-            <Form.Item
-              name="isAcceptResponse"
-              label="Accepting Responses"
-              valuePropName="checked"
-            >
-              <Switch />
-            </Form.Item>
-            <Form.Item
-              name="isAllowAnonymous"
-              label="Allow anonymous respondents"
-              valuePropName="checked"
-            >
-              <Switch />
-            </Form.Item>
-          </Form>
-        )}
-      </Card>
-    </div>
+            <Switch />
+          </Form.Item>
+          <Form.Item
+            name='isAllowAnonymous'
+            label={
+              <div>
+                <p style={{ fontSize: 16, marginBottom: 0 }}>
+                  Allow anonymous respondents:
+                </p>
+                <p
+                  style={{ fontStyle: 'italic', opacity: 0.8, marginBottom: 0 }}
+                >
+                  Descriptiuon
+                </p>
+              </div>
+            }
+            valuePropName='checked'
+            style={{ marginBottom: 10 }}
+          >
+            <Switch />
+          </Form.Item>
+        </Form>
+      )}
+    </Card>
   );
 };
 
