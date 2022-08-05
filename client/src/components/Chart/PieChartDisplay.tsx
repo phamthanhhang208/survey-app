@@ -44,8 +44,9 @@ const PieChartDisplay = (props: any) => {
       },
     ],
   };
+
   return (
-    <div style={{ width: '80%', margin: 'auto' }}>
+    <div style={{ width: '50%', margin: 'auto' }}>
       <Pie data={data} />
     </div>
   );

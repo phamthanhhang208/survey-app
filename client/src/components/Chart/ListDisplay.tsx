@@ -1,20 +1,31 @@
-import { List } from "antd";
+import { List, Table } from 'antd';
 
 const ListDisplay = (props: any) => {
-	const { dataset } = props;
+  const { dataset } = props;
+  console.log(dataset);
 
-	return (
-		<List
-			bordered
-			dataSource={dataset}
-			renderItem={(item: any) => (
-				<List.Item>
-					{item.content}
-					<p>count: {item.count}</p>
-				</List.Item>
-			)}
-		/>
-	);
+  const columns = [
+    {
+      title: 'Content',
+      dataIndex: 'content',
+      key: 'content',
+    },
+    {
+      title: 'Count',
+      dataIndex: 'count',
+      key: 'count',
+      sorter: (a: any, b: any) => a.count - b.count,
+      width: 120,
+    },
+  ];
+
+  return (
+    <Table
+      dataSource={dataset}
+      columns={columns}
+      pagination={{ pageSize: 3 }}
+    />
+  );
 };
 
 export default ListDisplay;
