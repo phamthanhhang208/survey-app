@@ -1,14 +1,17 @@
+@import "@/styles/globalStyles.scss";
+@import "@/styles/page_styles.scss";
+
 .home-page {
-  width: 60%;
-  margin: 20px auto;
+	width: 60%;
+	margin: 20px auto;
 
-  .functions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+	.functions {
+		display: flex;
+		justify-content: space-between;
+		gap: 10px;
 
-    .ant-input-affix-wrapper .search-input {
-      width: 80%;
-    }
-  }
+		.ant-input-affix-wrapper .search-input {
+			width: 80%;
+		}
+	}
 }

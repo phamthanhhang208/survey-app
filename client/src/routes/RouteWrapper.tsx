@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Spin } from "antd";
 
 export default function RouteWrapper(props: any) {
+	//const location = useLocation();
 	const navigate = useNavigate();
 	const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 	const { grantPermission } = props;
@@ -12,11 +13,15 @@ export default function RouteWrapper(props: any) {
 	const userHasRequiredRole = user && grantPermission.includes(role);
 
 	useEffect(() => {
-		if (user) {
-			setIsLoadingAuth(false);
-		} else {
+		if (user === undefined) {
+			setIsLoadingAuth(true);
+		}
+		if (user === null) {
 			setIsLoadingAuth(false);
 			navigate("/sign-in");
+		}
+		if (user) {
+			setIsLoadingAuth(false);
 		}
 	}, [user, navigate]);
 
@@ -32,12 +37,12 @@ export default function RouteWrapper(props: any) {
 					borderRadius: "4px",
 				}}
 			>
-				<Spin size="large" />;
+				<Spin size="large" />
 			</div>
 		);
 	}
 
-	// if (!user) {
+	// if (user === null) {
 	// 	setIsLoadingAuth(false);
 	// 	return <Navigate to="/sign-in" state={{ from: location }} />;
 	// }

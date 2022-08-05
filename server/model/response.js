@@ -8,7 +8,7 @@ const responseSchema = new Schema(
 		updatedAt: Number,
 		user: {
 			type: String,
-			default: "student.name232312@example.com",
+			//default: "student.name232312@example.com",
 		},
 		answers: [
 			{

@@ -10,7 +10,7 @@ const formSchema = new Schema(
 		description: String,
 		author: {
 			type: String,
-			default: "teacher.name4477@example.com",
+			//default: "teacher.name4477@example.com",
 		},
 		questions: [
 			{

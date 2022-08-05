@@ -45,8 +45,6 @@ const SubmitFormPage: React.FC = () => {
 		//navigate("/sign-in", { replace: true });
 	};
 
-	console.log(user);
-
 	return (
 		<>
 			<div className="submit-form-page">

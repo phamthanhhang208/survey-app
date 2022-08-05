@@ -115,9 +115,7 @@ const HomePage: FunctionComponent<HomePageProps> = () => {
 				<Button type="primary" onClick={showModal}>
 					New form
 				</Button>
-				<Button type="primary" onClick={handleSignOut}>
-					Sign out
-				</Button>
+				<Button onClick={handleSignOut}>Sign Out</Button>
 			</div>
 			<MyTable
 				columns={columns}

@@ -11,8 +11,8 @@ import {
 
 const auth = getAuth(app);
 const authContext = createContext({
-	role: null,
-	user: null,
+	role: undefined,
+	user: undefined,
 	signin: (email: any, password: any) => {},
 	signout: () => {},
 });
@@ -29,8 +29,8 @@ export const useAuth = () => {
 };
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-	const [user, setUser] = useState<any | null>(null);
-	const [role, setRole] = useState<any | null>(null);
+	const [user, setUser] = useState<any | null>();
+	const [role, setRole] = useState<any | null>();
 
 	// Wrap any Firebase methods we want to use making sure ...
 	// ... to save the user to state.
@@ -43,8 +43,8 @@ function useProvideAuth() {
 	};
 	const signout = async () => {
 		await signOut(auth);
-		setRole(null);
-		setUser(null);
+		setRole(undefined);
+		setUser(undefined);
 	};
 
 	// Subscribe to user on mount

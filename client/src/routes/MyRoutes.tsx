@@ -4,8 +4,11 @@ import { routerConfig } from "@/routes/routeConfig";
 import EditLayout from "@/layouts/EditLayout/EditLayout";
 import RouteWrapper from "./RouteWrapper";
 import SignInPage from "@/pages/SignInPage/SignInPage";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function MyRoutes() {
+	const { role } = useAuth();
+	console.log(role);
 	return (
 		<Routes>
 			{routerConfig.map((el: any) => {

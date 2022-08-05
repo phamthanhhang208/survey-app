@@ -90,13 +90,6 @@ export default function ViewResponse(props: any) {
 				<Skeleton active style={{ marginTop: 24 }} />
 			) : (
 				<Form layout="vertical" form={form} disabled style={{ marginTop: 20 }}>
-					{!formDetail.isAllowAnonymous && (
-						<Card>
-							<Form.Item label={"Email"} required={true}>
-								<Typography.Text strong>{response?.user || ""}</Typography.Text>
-							</Form.Item>
-						</Card>
-					)}
 					<Card className="view-response-card">
 						<Form.Item label={"Sent date"}>
 							<Typography.Text strong>
@@ -104,6 +97,13 @@ export default function ViewResponse(props: any) {
 							</Typography.Text>
 						</Form.Item>
 					</Card>
+					{!formDetail.isAllowAnonymous && (
+						<Card className="view-response-card">
+							<Form.Item label={"Email"} required={true}>
+								<Typography.Text strong>{response?.user || ""}</Typography.Text>
+							</Form.Item>
+						</Card>
+					)}
 					{questions.map((q: any) => {
 						return (
 							<QuestionSubmit
