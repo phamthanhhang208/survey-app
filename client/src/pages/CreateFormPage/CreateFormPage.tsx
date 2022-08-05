@@ -154,14 +154,6 @@ const CreateFormPage: FunctionComponent<CreateFormPageProps> = () => {
     }
   };
 
-  const handleViewFormBtn = () => {
-    const tmp = location.pathname.split('/');
-    tmp.pop();
-    const newPath = tmp.join().replaceAll(',', '/');
-
-    navigate(`${newPath}/viewform`);
-  };
-
   const getNewPath = () => {
     const tmp = location.pathname.split('/');
     tmp.pop();
