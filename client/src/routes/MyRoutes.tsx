@@ -6,18 +6,24 @@ import RouteWrapper from "./RouteWrapper";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import { useAuth } from "@/hooks/useAuth";
 import { roles } from "@/const/roles";
-import Redirect from "@/pages/Redirect/Redirect";
+import StudentHomePage from "@/pages/StudentHomePage/StudentHomePage";
+//import Redirect from "@/pages/Redirect/Redirect";
 
 export default function MyRoutes() {
 	const { role } = useAuth();
-	//console.log(role);
+	console.log(role);
 	let element: any;
 	if (role === roles.TEACHER) {
 		element = <Navigate to="/forms" replace />;
 	}
 	if (role === roles.STUDENT) {
-		element = <Redirect url="https://qldt.hust.edu.vn/" />;
+		element = <Navigate to="/home" replace />;
+		//Redirect url = "https://qldt.hust.edu.vn/" />;
 	}
+	if (role === null) {
+		element = <Navigate to="/sign-in" replace />;
+	}
+	// if (role)
 	return (
 		<Routes>
 			{routerConfig.map((el: any) => {
@@ -60,6 +66,7 @@ export default function MyRoutes() {
 				);
 			})}
 
+			<Route path="/home" element={<StudentHomePage />} />
 			<Route path="/" element={element} />
 			<Route path="/notFound" element={<NotFoundPage />} />
 			<Route path="*" element={<NotFoundPage />} />
