@@ -3,9 +3,10 @@ import {
   questionOperators,
   questionValidation,
 } from '@/const/question';
-import { Form, FormInstance, Input, Select } from 'antd';
+import { Form, FormInstance, Input, Select, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import DynamicValidatorInput from './DynamicValidatorInput';
+import './DynamicValidator.scss';
 
 const { Option } = Select;
 
@@ -54,9 +55,16 @@ const DynamicValidator = ({ questionType, form }: DynamicValidatorProps) => {
   };
 
   return questionType === MULTIPLECHOICE ? null : (
-    <Form.Item label='Validator'>
-      <Input.Group style={{ width: '100%', whiteSpace: 'nowrap' }} compact>
-        <Form.Item name={['validator', 'type']}>
+    <Form.Item className='dynamic-validator' wrapperCol={{ span: 24 }}>
+      <Input.Group style={{ whiteSpace: 'nowrap', display: 'flex', gap: 10 }}>
+        <Form.Item
+          name={['validator', 'type']}
+          style={
+            questionValidation[questionType]?.length > 1
+              ? { display: 'flex' }
+              : { display: 'none' }
+          }
+        >
           <Select onChange={handleChange}>
             {questionValidation[questionType]?.map((type: any) => {
               return (
@@ -75,7 +83,7 @@ const DynamicValidator = ({ questionType, form }: DynamicValidatorProps) => {
                 prevValues.validator?.type !== curValues.validator?.type
               }
             >
-              <Select allowClear>
+              <Select>
                 {operations.map((s: any) => {
                   return (
                     <Option key={s?.type} value={s.type}>
@@ -101,8 +109,12 @@ const DynamicValidator = ({ questionType, form }: DynamicValidatorProps) => {
           </>
         ) : null}
 
-        <Form.Item name={['validator', 'message']}>
-          <Input placeholder='Enter custom message ...' allowClear />
+        <Form.Item name={['validator', 'message']} style={{ width: '100%' }}>
+          <Input
+            placeholder='Enter custom message ...'
+            allowClear
+            style={{ width: '100%' }}
+          />
         </Form.Item>
       </Input.Group>
     </Form.Item>
