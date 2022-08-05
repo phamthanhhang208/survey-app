@@ -6,6 +6,7 @@ import SubmitFormPage from "@/pages/SubmitFormPage/SubmitFormPage";
 import EditSettingPage from "@/pages/EditSettingPage/EditSettingPage";
 //import SignInPage from "@/pages/SignInPage/SignInPage";
 import { roles } from "@/const/roles";
+import FormResponsePage from "@/pages/FormResponsePage/FormResponsePage";
 
 export interface RouterInterface {
 	path?: string;
@@ -51,10 +52,11 @@ export const routerConfig: Array<RouterInterface> = [
 		needAuthor: true,
 		grantPermission: [roles.TEACHER],
 	},
-	// {
-	// 	path: routePaths.SIGN_IN,
-	// 	component: SignInPage,
-	// 	needAuthor: false,
-	// 	grantPermission: [roles.TEACHER, roles.STUDENT],
-	// },
+
+	{
+		path: routePaths.FORM_RESPONSE,
+		component: FormResponsePage,
+		needAuthor: true,
+		grantPermission: [roles.STUDENT],
+	},
 ];
