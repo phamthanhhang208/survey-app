@@ -31,9 +31,9 @@ router.get("/", checkAuth, checkRole(), catchAsync(form.getAllForms));
 router.get(
 	"/:id",
 	checkAuth,
-	checkRole(),
+	checkRole(["teacher", "student"]),
 	validateFormId,
-	isAuthor,
+	//isAuthor,
 	catchAsync(form.getForm)
 );
 router.delete(

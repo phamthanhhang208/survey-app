@@ -18,7 +18,7 @@ axiosClient.interceptors.request.use(
 	async (config: any) => {
 		config.headers["Authorization"] =
 			"Bearer " + (await auth.currentUser?.getIdToken());
-		config.headers["content-type"] = "multipart/form-data";
+		//config.headers["content-type"] = "multipart/form-data";
 		return config;
 	},
 	(error) => {

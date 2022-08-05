@@ -46,7 +46,7 @@ exports.validateAllQuestionIds = async (req, res, next) => {
 // check if every response question id belong or exist in form
 exports.validateResponseQuestionId = async (req, res, next) => {
 	//const { id } = req.params;
-	if (!ObjectId.isValid(id)) return next(new AppError(404, "Invalid Form"));
+	//if (!ObjectId.isValid(id)) return next(new AppError(404, "Invalid Form"));
 	//check if form exist
 	// const form = await Form.findById(id);
 	// if (!form) return next(new Error("form not found"));

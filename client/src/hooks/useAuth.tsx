@@ -6,7 +6,8 @@ import {
 	signOut,
 	onAuthStateChanged,
 } from "firebase/auth";
-import { roles } from "@/const/roles";
+
+//import { roles } from "@/const/roles";
 
 const auth = getAuth(app);
 const authContext = createContext({
@@ -30,23 +31,20 @@ export const useAuth = () => {
 function useProvideAuth() {
 	const [user, setUser] = useState<any | null>(null);
 	const [role, setRole] = useState<any | null>(null);
+
 	// Wrap any Firebase methods we want to use making sure ...
 	// ... to save the user to state.
 	const signin = async (email: any, password: any) => {
 		const response = await signInWithEmailAndPassword(auth, email, password);
-		setUser(response.user);
+		setUser(response.user.email);
 		const idTokenResult = await response.user.getIdTokenResult();
-		if (idTokenResult.claims.teacher) {
-			setRole(roles.TEACHER);
-		} else {
-			setRole(roles.STUDENT);
-		}
+		setRole(idTokenResult.claims.role);
 		return response.user;
 	};
 	const signout = async () => {
 		await signOut(auth);
 		setRole(null);
-		return setUser(null);
+		setUser(null);
 	};
 
 	// Subscribe to user on mount
@@ -60,7 +58,7 @@ function useProvideAuth() {
 		};
 		const unsubscribe = onAuthStateChanged(auth, (user: any) => {
 			if (user) {
-				setUser(user);
+				setUser(user.email);
 				getRole(user);
 			} else {
 				setUser(null);

@@ -17,12 +17,13 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
 
 	const handleLogin = async (v: any) => {
 		//console.log(v);
-		auth.signin(v.email, v.password);
+		await auth.signin(v.email, v.password);
 	};
 
 	useEffect(() => {
 		if (user && role) {
-			navigate("/", { replace: true });
+			//navigate("/", { replace: true });
+			navigate(-1);
 		}
 	}, [user, role, navigate]);
 
