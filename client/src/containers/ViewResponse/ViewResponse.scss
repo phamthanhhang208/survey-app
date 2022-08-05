@@ -3,16 +3,19 @@
 @import "@/styles/card_styles.scss";
 
 .view-response {
-  .view-response-header {
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid rgb(202, 202, 202);
-    border-top: none;
-    height: 60px;
-    border-radius: 0 0 8px 8px;
-    padding: 14px;
-    padding-right: 24px;
-  }
+	.view-response-header {
+		background-color: white;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border: 1px solid rgb(202, 202, 202);
+		border-top: none;
+		height: 60px;
+		border-radius: 0 0 8px 8px;
+		padding: 14px;
+		padding-right: 24px;
+	}
+	.view-response-card {
+		@include question-card;
+	}
 }
