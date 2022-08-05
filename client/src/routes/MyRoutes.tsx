@@ -5,10 +5,19 @@ import EditLayout from "@/layouts/EditLayout/EditLayout";
 import RouteWrapper from "./RouteWrapper";
 import SignInPage from "@/pages/SignInPage/SignInPage";
 import { useAuth } from "@/hooks/useAuth";
+import { roles } from "@/const/roles";
+import Redirect from "@/pages/Redirect/Redirect";
 
 export default function MyRoutes() {
 	const { role } = useAuth();
-	console.log(role);
+	//console.log(role);
+	let element: any;
+	if (role === roles.TEACHER) {
+		element = <Navigate to="/forms" replace />;
+	}
+	if (role === roles.STUDENT) {
+		element = <Redirect url="https://qldt.hust.edu.vn/" />;
+	}
 	return (
 		<Routes>
 			{routerConfig.map((el: any) => {
@@ -51,7 +60,8 @@ export default function MyRoutes() {
 				);
 			})}
 
-			<Route path="/" element={<Navigate to="/forms" replace />} />
+			<Route path="/" element={element} />
+			<Route path="/notFound" element={<NotFoundPage />} />
 			<Route path="*" element={<NotFoundPage />} />
 			<Route path="/sign-in" element={<SignInPage />} />
 		</Routes>

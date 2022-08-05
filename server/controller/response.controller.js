@@ -6,7 +6,6 @@ module.exports.addResponseToForm = async (req, res) => {
 	const response = new Response(req.body);
 	form.responses.push(response);
 	await response.save();
-	console.log(form.isAllowAnonymous);
 	if (!form.isAllowAnonymous) {
 		response.user = req.user.email;
 	}

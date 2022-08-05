@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { Spin } from "antd";
 
 export default function RouteWrapper(props: any) {
-	//const location = useLocation();
+	const location = useLocation();
 	const navigate = useNavigate();
 	const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 	const { grantPermission } = props;
@@ -47,7 +47,7 @@ export default function RouteWrapper(props: any) {
 	// 	return <Navigate to="/sign-in" state={{ from: location }} />;
 	// }
 	if (user && !userHasRequiredRole) {
-		return <p>403</p>;
+		return <Navigate to="/notFound" state={{ from: location }} />;
 	}
 
 	return props.children;
