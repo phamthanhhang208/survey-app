@@ -1,3 +1,7 @@
+@import "@/styles/page_styles.scss";
+@import "@/styles/card_styles.scss";
+
 .student-home-page {
-	height: calc(100vh - 266px);
+	@include page-style;
+	@include question-card;
 }

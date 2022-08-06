@@ -4,6 +4,7 @@ import CreateFormPage from "@/pages/CreateFormPage/CreateFormPage";
 import EditResponsePage from "@/pages/EditResponsePage/EditResponsePage";
 import SubmitFormPage from "@/pages/SubmitFormPage/SubmitFormPage";
 import EditSettingPage from "@/pages/EditSettingPage/EditSettingPage";
+import StudentHomePage from "@/pages/StudentHomePage/StudentHomePage";
 //import SignInPage from "@/pages/SignInPage/SignInPage";
 import { roles } from "@/const/roles";
 import FormResponsePage from "@/pages/FormResponsePage/FormResponsePage";
@@ -56,6 +57,12 @@ export const routerConfig: Array<RouterInterface> = [
 	{
 		path: routePaths.FORM_RESPONSE,
 		component: FormResponsePage,
+		needAuthor: true,
+		grantPermission: [roles.STUDENT, roles.TEACHER],
+	},
+	{
+		path: routePaths.STUDENT_HOME,
+		component: StudentHomePage,
 		needAuthor: true,
 		grantPermission: [roles.STUDENT],
 	},

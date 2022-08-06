@@ -11,7 +11,6 @@ import StudentHomePage from "@/pages/StudentHomePage/StudentHomePage";
 
 export default function MyRoutes() {
 	const { role } = useAuth();
-	//console.log(role);
 	let element: any;
 	if (role === roles.TEACHER) {
 		element = <Navigate to="/forms" replace />;
