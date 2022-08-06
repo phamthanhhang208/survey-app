@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import "./HomePage.scss";
-import { Input, Button, Tooltip, Modal, Form, Spin, Skeleton } from "antd";
+import { Input, Button, Tooltip, Modal, Form } from "antd";
 import MyTable from "@/components/MyTable/MyTable";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";

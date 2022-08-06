@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Form, Switch, Spin, Skeleton, Divider } from "antd";
+import { Card, Form, Switch, Spin, Divider } from "antd";
 import { useGetForm, useUpdateForm } from "@/hooks/form.hook";
 import { useParams } from "react-router-dom";
 import "./EditSettingPage.scss";
