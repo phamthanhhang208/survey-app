@@ -7,11 +7,20 @@ export default function QuestionSubmit(props: any) {
   return (
     <Card key={question._id} className='question-list question-submit-card'>
       <Form.Item
-        label={question.questionText}
+        label={
+          <p style={{ fontWeight: 600, fontSize: 20 }}>
+            {question.questionText}
+          </p>
+        }
         required={question.required}
         style={{ marginBottom: 0 }}
       >
-        {question.questionMedia && <Image src={question.questionMedia.url} />}
+        {question.questionMedia && (
+          <Image
+            src={question.questionMedia.url}
+            style={{ marginBottom: 32 }}
+          />
+        )}
         <AnswerSubmit
           name={question._id}
           type={question.type}

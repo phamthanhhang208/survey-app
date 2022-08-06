@@ -23,11 +23,11 @@ const DynamicValidationInput = ({ operator }: DynamicValidationInputProps) => {
       );
     case 'inBetween':
       return (
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 8 }}>
           <Form.Item name={['validator', 'min']} rules={[{ required: true }]}>
             <InputNumber placeholder='From' />
           </Form.Item>
-          <span style={{ transform: 'translateY(3px)' }}>to</span>
+          <span style={{ transform: 'translateY(5px)' }}>to</span>
           <Form.Item name={['validator', 'max']} rules={[{ required: true }]}>
             <InputNumber placeholder='To' />
           </Form.Item>
@@ -36,7 +36,7 @@ const DynamicValidationInput = ({ operator }: DynamicValidationInputProps) => {
     case 'pattern':
       return (
         <Form.Item name={['validator', 'pattern']} rules={[{ required: true }]}>
-          <Input />
+          <Input placeholder='Regex' />
         </Form.Item>
       );
     //break;
