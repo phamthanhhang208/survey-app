@@ -19,12 +19,14 @@ const ListDisplay = (props: any) => {
 	];
 
 	return (
-		<Table
-			rowKey={(item) => item.content}
-			dataSource={dataset}
-			columns={columns}
-			pagination={{ pageSize: 3 }}
-		/>
+		<div style={{ paddingTop: 10 }}>
+			<Table
+				rowKey={(item) => item.content}
+				dataSource={dataset}
+				columns={columns}
+				pagination={{ pageSize: 3 }}
+			/>
+		</div>
 	);
 };
 
