@@ -23,7 +23,7 @@ export default function RouteWrapper(props: any) {
 		if (user) {
 			setIsLoadingAuth(false);
 		}
-		console.log("not infity");
+		// console.log("not infity");
 	}, [user, navigate, location]);
 
 	if (isLoadingAuth) {
