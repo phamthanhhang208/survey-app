@@ -18,12 +18,13 @@ export default function RouteWrapper(props: any) {
 		}
 		if (user === null) {
 			setIsLoadingAuth(false);
-			navigate("/sign-in");
+			navigate("/sign-in", { state: location.pathname });
 		}
 		if (user) {
 			setIsLoadingAuth(false);
 		}
-	}, [user, navigate]);
+		console.log("not infity");
+	}, [user, navigate, location]);
 
 	if (isLoadingAuth) {
 		return (
@@ -47,7 +48,7 @@ export default function RouteWrapper(props: any) {
 	// 	return <Navigate to="/sign-in" state={{ from: location }} />;
 	// }
 	if (user && !userHasRequiredRole) {
-		return <Navigate to="/notFound" state={{ from: location }} />;
+		return <Navigate to="/notFound" state={{ from: location.pathname }} />;
 	}
 
 	return props.children;

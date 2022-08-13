@@ -10,7 +10,7 @@ import StudentHomePage from "@/pages/StudentHomePage/StudentHomePage";
 //import Redirect from "@/pages/Redirect/Redirect";
 
 export default function MyRoutes() {
-	const { role } = useAuth();
+	const { role, user } = useAuth();
 	let element: any;
 	if (role === roles.TEACHER) {
 		element = <Navigate to="/forms" replace />;
@@ -19,7 +19,7 @@ export default function MyRoutes() {
 		element = <Navigate to="/home" replace />;
 		//Redirect url = "https://qldt.hust.edu.vn/" />;
 	}
-	if (role === null) {
+	if (role === null || user === undefined) {
 		element = <Navigate to="/sign-in" replace />;
 	}
 	// if (role)

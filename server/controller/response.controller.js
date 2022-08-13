@@ -5,10 +5,10 @@ module.exports.addResponseToForm = async (req, res) => {
 	const form = await Form.findById(req.params.id);
 	const response = new Response(req.body);
 	form.responses.push(response);
-	await response.save();
 	if (!form.isAllowAnonymous) {
 		response.user = req.user.email;
 	}
+	await response.save();
 	await form.save();
 	return res.status(201).send("added response");
 };

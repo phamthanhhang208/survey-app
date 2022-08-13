@@ -1,7 +1,7 @@
 import { Form, Input } from "antd";
 import { FunctionComponent, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import "./SignInPage.scss";
 
@@ -11,8 +11,10 @@ const { Item } = Form;
 
 const SignInPage: FunctionComponent<SignInPageProps> = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const state: any = location.state;
 	const auth = useAuth();
-	const { user, role } = auth;
+	const { user } = auth;
 	const [formSignIn] = Form.useForm();
 
 	const handleLogin = async (v: any) => {
@@ -21,11 +23,18 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
 	};
 
 	useEffect(() => {
-		if (user && role) {
+		if (user) {
 			//navigate("/", { replace: true });
-			navigate(-1);
+			//navigate(location, { state: location });
+
+			if (state !== null && state.includes("/forms/")) {
+				navigate(-1);
+			} else {
+				navigate("/", { state: location.pathname });
+			}
+			console.log("not infinity");
 		}
-	}, [user, role, navigate]);
+	}, [user, navigate, location, state]);
 
 	return (
 		<div className="sign-in-page">
