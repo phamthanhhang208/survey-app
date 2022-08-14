@@ -48,6 +48,10 @@ export function useDeleteResponse(id: any, responseId: any) {
 	return useMutation(() => deleteResponse({ id: id, responseId: responseId }), {
 		onSuccess: () => {
 			message.success("Deleted response!");
+			queryClient.resetQueries(
+				["forms", "detail", id, "responses", responseId],
+				{ exact: true }
+			);
 			queryClient.invalidateQueries(["forms", "detail", id]);
 			queryClient.invalidateQueries(["forms", "detail", id, "responses"]);
 		},
@@ -57,6 +61,13 @@ export function useDeleteResponse(id: any, responseId: any) {
 		},
 		onMutate: () => {
 			message.loading("loading");
+			queryClient.cancelQueries([
+				"forms",
+				"detail",
+				id,
+				"responses",
+				responseId,
+			]);
 		},
 	});
 }
@@ -70,6 +81,7 @@ export function useGetResponse(id: any, responseId: any) {
 				console.log(error);
 				message.error(error.response?.data);
 			},
+			refetchOnMount: false,
 		}
 	);
 }

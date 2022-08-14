@@ -32,7 +32,6 @@ const SignInPage: FunctionComponent<SignInPageProps> = () => {
 			} else {
 				navigate("/", { state: location.pathname });
 			}
-			console.log("not infinity");
 		}
 	}, [user, navigate, location, state]);
 

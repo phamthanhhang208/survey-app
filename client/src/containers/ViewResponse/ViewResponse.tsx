@@ -48,8 +48,8 @@ export default function ViewResponse(props: any) {
 		setVisible(true);
 	};
 
-	const handleOk = () => {
-		deleteResponse();
+	const handleOk = async () => {
+		await deleteResponse();
 		setVisible(false);
 	};
 
@@ -59,7 +59,13 @@ export default function ViewResponse(props: any) {
 	};
 
 	useEffect(() => {
-		setResponseId(responses[page - 1]);
+		//console.log(responses[page - 1]);
+		if (responses[page - 1] !== undefined) {
+			setResponseId(responses[page - 1]);
+		} else {
+			setResponseId(responses[responses.length - 1]);
+			setPage(page - 1);
+		}
 	}, [responses, page]);
 
 	useEffect(() => {
@@ -76,6 +82,7 @@ export default function ViewResponse(props: any) {
 				<Pagination
 					simple
 					defaultCurrent={page}
+					current={page}
 					onChange={handleOnChange}
 					total={responses.length * 10}
 				/>
@@ -84,7 +91,7 @@ export default function ViewResponse(props: any) {
 
 			{/* <Divider /> */}
 
-			{isLoading ? (
+			{isLoading || !response ? (
 				<Skeleton active style={{ marginTop: 24 }} />
 			) : (
 				<Form layout="vertical" form={form} disabled style={{ marginTop: 20 }}>
