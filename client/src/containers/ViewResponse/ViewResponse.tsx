@@ -40,7 +40,7 @@ export default function ViewResponse(props: any) {
 		setResponseId(responses[page - 1]);
 	};
 
-	const { data: response, isLoading } = useGetResponse(id, responseId);
+	const { data: response, isLoading, refetch } = useGetResponse(id, responseId);
 	const { mutate: deleteResponse, isLoading: isDeletingResponse } =
 		useDeleteResponse(id, responseId);
 
@@ -76,6 +76,10 @@ export default function ViewResponse(props: any) {
 		}
 	}, [response, form, responseId]);
 
+	useEffect(() => {
+		refetch();
+	}, [responseId, refetch]);
+
 	return (
 		<div className="view-response" style={{ transform: "translateY(-80px)" }}>
 			<div className="view-response-header">
@@ -91,7 +95,7 @@ export default function ViewResponse(props: any) {
 
 			{/* <Divider /> */}
 
-			{isLoading || !response ? (
+			{isLoading || response === undefined ? (
 				<Skeleton active style={{ marginTop: 24 }} />
 			) : (
 				<Form layout="vertical" form={form} disabled style={{ marginTop: 20 }}>

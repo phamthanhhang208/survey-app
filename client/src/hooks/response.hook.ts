@@ -73,6 +73,7 @@ export function useDeleteResponse(id: any, responseId: any) {
 }
 
 export function useGetResponse(id: any, responseId: any) {
+	//const queryClient = useQueryClient();
 	return useQuery(
 		["forms", "detail", id, "responses", responseId],
 		() => getResponse({ id: id, responseId: responseId }),
@@ -82,6 +83,9 @@ export function useGetResponse(id: any, responseId: any) {
 				message.error(error.response?.data);
 			},
 			refetchOnMount: false,
+			refetchOnWindowFocus: false,
+			retry: false,
+			enabled: false,
 		}
 	);
 }
