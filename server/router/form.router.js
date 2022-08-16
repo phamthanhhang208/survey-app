@@ -7,15 +7,43 @@ const exportFile = require("../controller/export.controller");
 const { validateFormInput } = require("../middleware/validateInput");
 const catchAsync = require("../helper/catchAsync");
 
+//const { checkAuth, checkRole } = require("../auth");
+//const { isAuthor } = require("../middleware/validateAuthorize");
+//const {roles} = require("../constant/role")
+
 const {
 	validateFormId,
 	validateAllQuestionIds,
 } = require("../middleware/validateId");
 
-router.post("/", validateFormInput, catchAsync(form.createForm));
-router.get("/", catchAsync(form.getAllForms));
-router.get("/:id", validateFormId, catchAsync(form.getForm));
-router.delete("/:id", validateFormId, catchAsync(form.deleteForm));
+router.post(
+	"/",
+	// checkAuth,
+	// checkRole(),
+	validateFormInput,
+	catchAsync(form.createForm)
+);
+router.get(
+	"/",
+	// checkAuth,
+	// checkRole(),
+	catchAsync(form.getAllForms)
+);
+router.get(
+	"/:id",
+	// checkAuth,
+	// checkRole([roles.teacher, roles.student]),
+	validateFormId,
+	catchAsync(form.getForm)
+);
+router.delete(
+	"/:id",
+	// checkAuth,
+	// checkRole(),
+	validateFormId,
+	//isAuthor,
+	catchAsync(form.deleteForm)
+);
 router.put(
 	"/:id",
 	validateFormId,
@@ -25,14 +53,29 @@ router.put(
 
 router.patch(
 	"/:id",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	validateAllQuestionIds,
 	catchAsync(question.reorderQuestions)
 );
 
-router.get("/:id/analytic", catchAsync(analytic.getAnalytics));
+router.get(
+	"/:id/analytic",
+	// checkAuth,
+	// checkRole(),
+	// isAuthor,
+	catchAsync(analytic.getAnalytics)
+);
 
-router.get("/:id/download", catchAsync(exportFile.exportsToExcel));
+router.get(
+	"/:id/download",
+	// checkAuth,
+	// checkRole(),
+	// isAuthor,
+	catchAsync(exportFile.exportsToExcel)
+);
 
 router.use((err, req, res, next) => {
 	console.log(err);

@@ -3,7 +3,7 @@ import { CopyOutlined } from "@ant-design/icons";
 
 export default function ShareModal(props: any) {
 	const { isModalVisible, setIsModalVisible, formId } = props;
-	const url = `${window.location.origin}/forms/${formId}`;
+	const url = `${window.location.origin}/#/forms/${formId}`;
 
 	const copy = async () => {
 		await navigator.clipboard.writeText(url);

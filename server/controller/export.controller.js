@@ -25,7 +25,14 @@ module.exports.exportsToExcel = async (req, res, next) => {
 	for (let response of responses) {
 		let row = [];
 		row.push(dayjs.unix(response.createdAt).format("DD-MM-YYYY hh:mm:ss"));
-		response.user?.email && row.push(response.user.email);
+
+		if (header.includes("Email")) {
+			if (response.user) {
+				row.push(response.user);
+			} else {
+				row.push("");
+			}
+		}
 		const reorderedResponse = questionIds.map((id) =>
 			response.answers.find(({ questionId }) => questionId === id.toString())
 		);

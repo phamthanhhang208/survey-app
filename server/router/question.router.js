@@ -39,11 +39,17 @@ const {
 	validateAllQuestionMedias,
 } = require("../middleware/validateMedia");
 
+// const { checkAuth, checkRole } = require("../auth");
+// const { isAuthor } = require("../middleware/validateAuthorize");
+
 const catchAsync = require("../helper/catchAsync");
 
 router.post(
 	"/many",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	upload.any(),
 	validationQuestionList,
 	catchAsync(question.addQuestions)
@@ -51,35 +57,50 @@ router.post(
 
 router.post(
 	"/",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	upload.any(),
 	validateQuestionInput,
 	question.addQuestion
 );
 router.delete(
 	"/:questionId",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	validateQuesionId,
 	catchAsync(question.deleteQuestion)
 );
 
 router.get(
 	"/:questionId",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	validateQuesionId,
 	catchAsync(question.getQuestion)
 );
 
 router.post(
 	"/:questionId/duplicate",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	validateQuesionId,
 	catchAsync(question.duplicateQuestion)
 );
 
 router.put(
 	"/:questionId",
+	// checkAuth,
+	// checkRole(),
 	validateFormId,
+	//isAuthor,
 	upload.any(),
 	validateQuesionId,
 	validateQuestionInput,
@@ -89,6 +110,9 @@ router.put(
 
 router.delete(
 	"/:questionId/media",
+	// checkAuth,
+	// checkRole(),
+	//isAuthor,
 	validateQuestionMedia,
 	catchAsync(question.deleteQuestionMedia)
 );

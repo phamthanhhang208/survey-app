@@ -23,8 +23,11 @@ module.exports.createForm = async (req, res, next) => {
 
 //get all form sorted by recent
 module.exports.getAllForms = async (req, res, next) => {
-	const form = await Form.find({}).sort({ updatedAt: -1 });
-	return res.status(200).send(form);
+	const forms = await Form.find({}).sort({ updatedAt: -1 });
+	// const forms = await Form.find({ author: req.user.email }).sort({
+	// 	updatedAt: -1,
+	// });
+	return res.status(200).send(forms);
 };
 
 //get form and sorted questions
