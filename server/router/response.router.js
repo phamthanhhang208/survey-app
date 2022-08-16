@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const response = require("../controller/response.controller");
-const form = require("../controller/form.controller");
 
 const { validationResponseInput } = require("../middleware/validateInput");
 
@@ -38,15 +37,15 @@ router.post(
 );
 
 //for testing
-router.post(
-	"/test",
-	validationResponseInput,
-	validateFormId,
-	validateResponseQuestionId,
-	isAnswerExist,
-	validateAnswer,
-	form.dummyApi
-);
+// router.post(
+// 	"/test",
+// 	validationResponseInput,
+// 	validateFormId,
+// 	validateResponseQuestionId,
+// 	isAnswerExist,
+// 	validateAnswer,
+// 	form.dummyApi
+// );
 
 router.get(
 	"/",

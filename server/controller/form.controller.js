@@ -78,9 +78,3 @@ module.exports.updateForm = async (req, res, next) => {
 	await Form.findByIdAndUpdate(id, req.body);
 	return res.status(200).send("form updated");
 };
-
-module.exports.dummyApi = async (req, res) => {
-	console.log(req.user);
-	//console.log(req.body);
-	return res.status(200).send("this shall pass");
-};
