@@ -103,6 +103,7 @@ const SubmitFormPage: React.FC = () => {
 								validateMessages={validateMessage}
 								scrollToFirstError
 								form={form}
+								requiredMark={false}
 							>
 								{formDetail.questions.map((q: any) => {
 									return <QuestionSubmit key={q._id} question={q} />;

@@ -14,12 +14,6 @@ const {
 	validateAllQuestionIds,
 } = require("../middleware/validateId");
 
-router.get(
-	"/test",
-	checkAuth,
-	checkRole(["teacher", "student"]),
-	form.dummyApi
-);
 router.post(
 	"/",
 	checkAuth,
